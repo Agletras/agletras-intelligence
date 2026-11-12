@@ -1,0 +1,116 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro'
+import { paths } from '@/lib/routes'
+---
+
+<BaseLayout
+  title="404 — Target Coordinate Unresolved | AGLETRAS"
+  description="Requested route or coordinate does not resolve in the Agletras intelligence atlas."
+  currentPath="/404"
+  noindex={true}
+>
+  <div class="notfound-page-wrap">
+    <div class="grid-container">
+      <div class="notfound-col panel-telemetry">
+        <div class="notfound-meta font-mono text-xs">
+          <span class="text-rose">ERR: 404_TARGET_UNRESOLVED</span>
+          <span class="text-muted">ATLAS_PROJECTION_FAILURE</span>
+        </div>
+
+        <div class="notfound-code font-mono text-emerald">404</div>
+
+        <h1 class="font-display text-2xl font-bold">Coordinate Not Resolved in Atlas.</h1>
+
+        <p class="text-secondary text-sm leading-relaxed max-w-md">
+          The requested path does not map to an active route, research specification, or public report. 
+          Verify the target URL or return to the Agletras homepage.
+        </p>
+
+        <div class="notfound-links">
+          <a href={paths.home()} class="btn-primary">
+            <span>Return to Home</span>
+          </a>
+          <a href={paths.intelligence()} class="btn-secondary">
+            <span>Capabilities & Specs</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .notfound-page-wrap {
+    min-height: calc(100vh - 72px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 100px;
+    padding-bottom: 100px;
+    background-color: var(--bg-deep);
+  }
+
+  .notfound-col {
+    grid-column: 6 / span 22;
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 64px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 24px;
+  }
+
+  .notfound-meta {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 12px;
+  }
+
+  .notfound-code {
+    font-size: clamp(4rem, 8vw, 7rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    text-shadow: 0 0 32px rgba(16, 185, 129, 0.4);
+  }
+
+  .notfound-links {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+  }
+
+  .text-rose {
+    color: var(--accent-rose);
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1024px) {
+    .notfound-col {
+      grid-column: span 32;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .notfound-col {
+      grid-column: span 8;
+      padding: 32px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .notfound-col {
+      grid-column: span 4;
+    }
+  }
+</style>

@@ -1,0 +1,156 @@
+---
+import { ClientRouter } from 'astro:transitions'
+import Navbar from './Navbar.astro'
+import Footer from './Footer.astro'
+import { SITE_URL } from '@/lib/routes'
+import '@/styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+  currentPath?: string
+  ogImage?: string
+  noindex?: boolean
+}
+
+const {
+  title = 'AGLETRAS — AI-Native Research & Intelligence',
+  description = 'Agletras builds research infrastructure and conducts corporate intelligence. We turn fragmented public records into structured, well-supported findings.',
+  currentPath = Astro.url.pathname,
+  ogImage = '/logo.png',
+  noindex = false,
+} = Astro.props
+
+const siteOrigin = (Astro.site ? Astro.site.origin : SITE_URL).replace(/\/+$/, '')
+const cleanPath = currentPath === '/' ? '' : currentPath.replace(/\/+$/, '')
+const canonicalUrl = `${siteOrigin}${cleanPath}`
+const ogImageUrl = `${siteOrigin}${ogImage}`
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/png" href="/logo.png" />
+
+    {noindex ? (
+      <meta name="robots" content="noindex, nofollow" />
+    ) : (
+      <link rel="canonical" href={canonicalUrl} />
+    )}
+
+    <!-- Open Graph / LinkedIn / Facebook -->
+    <meta property="og:type" content="website" />
+    {!noindex && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary" />
+    {!noindex && <meta name="twitter:url" content={canonicalUrl} />}
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <ClientRouter />
+  </head>
+  <body>
+    {/* CRT Scanline & Grain Atmospheric Treatment */}
+    <div class="crt-overlay" aria-hidden="true"></div>
+    <div class="crt-grain" aria-hidden="true"></div>
+
+    {/* Global Header Navigation */}
+    <Navbar currentPath={currentPath} />
+
+    {/* Full Page Content & Narrative Conduit Wrapper */}
+    <div id="page-canvas-wrapper" class="page-canvas-wrapper">
+      <slot name="trace" />
+
+      {/* Main Page Content */}
+      <main id="main-content">
+        <slot />
+      </main>
+
+      {/* Global Site Footer */}
+      <Footer />
+    </div>
+
+    {/* Text Decryption & Telemetry Micro-interaction Script */}
+    <script>
+      import { initTextScramble } from '@/lib/scrambleText'
+
+      let activeRevealObserver: IntersectionObserver | null = null
+
+      function initScrollReveals() {
+        if (activeRevealObserver) {
+          activeRevealObserver.disconnect()
+          activeRevealObserver = null
+        }
+
+        const reveals = document.querySelectorAll<HTMLElement>('.reveal-on-scroll')
+        if (!reveals.length) return
+
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          reveals.forEach((el) => el.classList.add('is-revealed'))
+          return
+        }
+
+        activeRevealObserver = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-revealed')
+              }
+            })
+          },
+          { threshold: 0.08, rootMargin: '0px 0px -30px 0px' }
+        )
+
+        reveals.forEach((el) => {
+          const rect = el.getBoundingClientRect()
+          if (rect.top < window.innerHeight && rect.bottom > 0) {
+            el.classList.add('is-revealed')
+          }
+          activeRevealObserver?.observe(el)
+        })
+      }
+
+      function setupPage() {
+        initTextScramble()
+        initScrollReveals()
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setupPage)
+      } else {
+        setupPage()
+      }
+
+      document.addEventListener('astro:page-load', setupPage)
+      document.addEventListener('astro:before-swap', () => {
+        if (activeRevealObserver) {
+          activeRevealObserver.disconnect()
+          activeRevealObserver = null
+        }
+      })
+    </script>
+  </body>
+</html>
+
+<style>
+  .page-canvas-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  #main-content {
+    min-height: calc(100vh - 72px);
+    position: relative;
+    z-index: 1;
+  }
+</style>

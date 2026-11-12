@@ -1,0 +1,6 @@
+# Agletras - Cloudflare Pages Edge Redirects
+# 301 Moved Permanently redirects for legacy routes to unified /intelligence
+/approach       /intelligence   301
+/research       /intelligence   301
+/methodology    /intelligence   301
+/mcp            /intelligence   301

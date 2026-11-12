@@ -1,0 +1,253 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro'
+import { companyData } from '@/lib/companyData'
+import { paths } from '@/lib/routes'
+---
+
+<BaseLayout
+  title="About Agletras — Company, Philosophy & Analytical Ethics"
+  description="Learn about Agletras's mission, research intelligence philosophy, and non-intrusive ethical boundaries."
+  currentPath="/about"
+>
+  <div class="about-page-wrap">
+    {/* Page Header */}
+    <section class="about-hero">
+      <div class="grid-container">
+        <div class="about-hero-col">
+          <div class="eyebrow-badge">
+            <span class="beacon-dot"></span>
+            <span data-scramble="ABOUT // COMPANY & GOVERNANCE">ABOUT // COMPANY & GOVERNANCE</span>
+          </div>
+
+          <h1 class="page-title font-display">
+            Evidence-First <br />
+            <span class="text-emerald">Research Intelligence.</span>
+          </h1>
+
+          <p class="page-intro text-secondary">
+            {companyData.positioning.subheading}
+          </p>
+
+          <div class="telemetry-rules font-mono text-xs text-muted">
+            <span>JURISDICTION: NASHIK, MH, INDIA</span>
+            <span class="separator">/</span>
+            <span>HUMAN GOVERNANCE</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Section 1: Trust Pillars */}
+    <section class="trust-pillars-section">
+      <div class="grid-container">
+        <div class="section-subhead-col">
+          <h2 class="font-display text-2xl font-bold">The Three Trust Pillars</h2>
+          <span class="font-mono text-xs text-muted">ARCHITECTURAL RIGOR</span>
+        </div>
+
+        {companyData.trustPillars.map((pillar, idx) => (
+          <div class="pillar-box-col panel-telemetry">
+            <span class="font-mono text-xs text-emerald font-bold">0{idx + 1} // PILLAR</span>
+            <h3 class="font-display text-xl font-bold">{pillar.title}</h3>
+            <p class="text-secondary text-sm leading-relaxed">{pillar.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* Section 3: Principles & Ethical Boundaries */}
+    <section class="principles-section">
+      <div class="grid-container">
+        <div class="section-subhead-col">
+          <h2 class="font-display text-2xl font-bold">Guiding Analytical Principles</h2>
+          <span class="font-mono text-xs text-muted">ETHICAL & OPERATIONAL BOUNDARIES</span>
+        </div>
+
+        {companyData.principles.map((pr, idx) => (
+          <div class="principle-card panel-telemetry">
+            <div class="principle-header font-mono text-xs">
+              <span class="text-emerald font-bold">PRIN-0{idx + 1}</span>
+              <span class="text-muted uppercase">NON-INTRUSIVE MANDATE</span>
+            </div>
+            <h3 class="font-display text-lg font-bold">{pr.label}</h3>
+            <p class="text-secondary text-sm leading-relaxed">{pr.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    {/* Section 4: Non-Intrusion & Non-Hacking Guarantee */}
+    <section class="guarantee-section" id="guarantee">
+      <div class="grid-container">
+        <div class="guarantee-box panel-telemetry font-mono text-xs">
+          <div class="guarantee-header">
+            <span class="text-emerald font-bold">EXPLICIT NON-INTRUSION DECLARATION:</span>
+            <span class="text-muted">LEGAL & ETHICAL CONTRACT</span>
+          </div>
+          <p class="text-secondary leading-relaxed mt-2">
+            Agletras does not engage in penetration testing, vulnerability exploitation, credential harvesting, unauthorized network intrusion, or clandestine surveillance. We do not accept assignments that require crossing into private, password-protected, or unconsented systems. All research is hypothesis-driven, evidence-classified, and 100% grounded in lawfully available open public sources.
+          </p>
+          <div class="guarantee-actions mt-4">
+            <a href={paths.methodology()} class="text-emerald mr-6">Read Methodology Lifecycle →</a>
+            <a href={paths.contact()} class="text-emerald">Initiate Scoped Engagement →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .about-page-wrap {
+    padding-top: 100px;
+    padding-bottom: 120px;
+    background-color: var(--bg-deep);
+  }
+
+  .about-hero {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border-hairline);
+    margin-bottom: 60px;
+  }
+
+  .about-hero-col {
+    grid-column: span 26;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .page-intro {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+
+  .telemetry-rules {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .separator {
+    color: var(--border-subtle);
+  }
+
+  .trust-pillars-section {
+    margin-bottom: 80px;
+  }
+
+  .trust-pillars-section .grid-container {
+    row-gap: 24px;
+  }
+
+  .section-subhead-col {
+    grid-column: span 32;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+  }
+
+  .pillar-box-col {
+    grid-column: span 10;
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .pillar-box-col:last-child {
+    grid-column: span 12;
+  }
+
+  .principles-section {
+    margin-bottom: 80px;
+  }
+
+  .principles-section .grid-container {
+    row-gap: 24px;
+  }
+
+  .principle-card {
+    grid-column: span 16;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .principle-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 10px;
+  }
+
+  .guarantee-section {
+    margin-top: 40px;
+  }
+
+  .guarantee-box {
+    grid-column: span 32;
+    padding: 32px 36px;
+    background: rgba(16, 185, 129, 0.03);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .guarantee-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+    padding-bottom: 10px;
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1280px) {
+    .pillar-box-col, .pillar-box-col:last-child {
+      grid-column: span 16;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .about-hero-col {
+      grid-column: span 8;
+    }
+    .pillar-box-col, .pillar-box-col:last-child, .principle-card {
+      grid-column: span 8;
+      padding: 24px 20px;
+    }
+    .guarantee-box {
+      grid-column: span 8;
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about-hero-col {
+      grid-column: span 4;
+    }
+    .pillar-box-col, .principle-card, .guarantee-box {
+      grid-column: span 4;
+    }
+  }
+</style>

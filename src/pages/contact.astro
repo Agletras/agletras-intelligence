@@ -1,0 +1,366 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro'
+import { companyData } from '@/lib/companyData'
+---
+
+<BaseLayout
+  title="Contact & Research Scoping — AGLETRAS"
+  description="Initiate a scoped research intelligence inquiry or contact Agletras's analytical team directly."
+  currentPath="/contact"
+>
+  <div class="contact-page-wrap">
+    {/* Page Header */}
+    <section class="contact-hero">
+      <div class="grid-container">
+        <div class="contact-hero-col">
+          <div class="eyebrow-badge">
+            <span class="beacon-dot"></span>
+            <span data-scramble="CONTACT // ENGAGEMENT SCOPING">CONTACT // ENGAGEMENT SCOPING</span>
+          </div>
+
+          <h1 class="page-title font-display">
+            Initiate an Engagement <br />
+            <span class="text-emerald">Scoping Brief.</span>
+          </h1>
+
+          <p class="page-intro text-secondary">
+            Every investigation begins with a structured scoping discussion. Contact our team to discuss 
+            factual anchors, evidentiary boundaries, and project timelines. All initial correspondence is confidential.
+          </p>
+
+          <div class="telemetry-rules font-mono text-xs text-muted">
+            <span>DISPATCH: TRANSPARENT DIRECT INTAKE</span>
+            <span class="separator">/</span>
+            <span>NO FAKE FORMS</span>
+            <span class="separator">/</span>
+            <span>MUTUAL NDA PRIOR TO RESEARCH</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Contact Layout Grid */}
+    <section class="contact-content-section">
+      <div class="grid-container">
+        {/* Left Column: Direct Corporate Channels & Official Records */}
+        <div class="contact-channels-col">
+          <div class="channel-card panel-telemetry">
+            <span class="font-mono text-xs text-emerald font-bold uppercase">OFFICIAL INTAKE CHANNEL:</span>
+            
+            <div class="channel-group font-mono text-xs">
+              <span class="text-muted">DIRECT CORPORATE INQUIRIES & RESEARCH BRIEFS:</span>
+              <a href={`mailto:${companyData.contacts.corporateEmail}`} class="channel-email text-primary font-bold">
+                {companyData.contacts.corporateEmail}
+              </a>
+            </div>
+          </div>
+
+          <div class="channel-card panel-telemetry">
+            <span class="font-mono text-xs text-emerald font-bold uppercase">OFFICIAL DOMICILE:</span>
+
+            <div class="domicile-details font-mono text-xs text-secondary leading-relaxed">
+              <p class="text-primary font-bold">{companyData.legalName}</p>
+              <p>{companyData.contacts.jurisdiction}</p>
+            </div>
+
+            <div class="social-links-row font-mono text-xs pt-4 border-t border-hairline">
+              <span class="text-muted">CODE & SOCIAL:</span>
+              <a href={companyData.contacts.socials.github} target="_blank" rel="noopener noreferrer" class="text-emerald">
+                GitHub Repository ↗
+              </a>
+              <span class="text-muted">/</span>
+              <a href={companyData.contacts.socials.linkedin} target="_blank" rel="noopener noreferrer" class="text-emerald">
+                LinkedIn ↗
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column: Honest Scoping Brief Form */}
+        <div class="contact-form-col">
+          <div class="form-panel panel-telemetry">
+            <div class="form-header font-mono text-xs">
+              <span class="text-emerald font-bold">RESEARCH SCOPING INTAKE SPECIFICATION</span>
+              <span class="text-muted">HONEST_DISPATCH_PROTOCOL</span>
+            </div>
+
+            <form id="scoping-form" class="scoping-form">
+              <div class="form-field">
+                <label for="form-org" class="form-label font-mono text-xs text-muted">
+                  01 // ORGANIZATION / COUNTERPARTY NAME:
+                </label>
+                <input 
+                  type="text" 
+                  id="form-org" 
+                  name="organization" 
+                  class="form-input font-mono text-sm" 
+                  placeholder="Acme Global Corporation / Counsel / Advisory" 
+                  required 
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="form-email" class="form-label font-mono text-xs text-muted">
+                  02 // AUTHORIZED REPRESENTATIVE EMAIL:
+                </label>
+                <input 
+                  type="email" 
+                  id="form-email" 
+                  name="email" 
+                  class="form-input font-mono text-sm" 
+                  placeholder="principal@organization.com" 
+                  required 
+                />
+              </div>
+
+              <div class="form-field">
+                <label for="form-service" class="form-label font-mono text-xs text-muted">
+                  03 // RESEARCH INQUIRY FOCUS:
+                </label>
+                <select id="form-service" name="service" class="form-select font-mono text-sm">
+                  <option value="Partner & Company Checks">Partner & Company Checks (Commercial Due Diligence)</option>
+                  <option value="Ownership & Relationships">Ownership & Corporate Relationship Tracing</option>
+                  <option value="Leadership Backgrounds">Leadership Background & Credential Verification</option>
+                  <option value="Online Threats & Impersonation">Online Threats & Brand Impersonation Research</option>
+                  <option value="Agletras MCP Infrastructure">Agletras MCP Integration & Infrastructure</option>
+                  <option value="General Scoping Inquiry">General Scoping & Research Inquiry</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="form-scope" class="form-label font-mono text-xs text-muted">
+                  04 // TARGET ANCHORS & SCOPING OBJECTIVE:
+                </label>
+                <textarea 
+                  id="form-scope" 
+                  name="scope" 
+                  rows="4" 
+                  class="form-textarea font-mono text-sm" 
+                  placeholder="Outline the commercial question, known entity names, jurisdictions, domains, and expected turnaround timeline..."
+                  required
+                ></textarea>
+              </div>
+
+              {/* Form Action Notice: Explaining Honest Mailto Dispatch */}
+              <div class="form-notice font-mono text-xs text-muted">
+                <p>
+                  <strong class="text-emerald font-bold">HONEST DISPATCH NOTICE:</strong> This form compiles your brief directly into a pre-structured email addressed to <code class="text-primary font-bold">info.agletras@gmail.com</code>. We do not transmit or store your scoping details on third-party marketing servers.
+                </p>
+              </div>
+
+              <button type="submit" class="btn-primary" style="width: 100%;">
+                <span>Compile & Dispatch Scoping Email</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .contact-page-wrap {
+    padding-top: 100px;
+    padding-bottom: 120px;
+    background-color: var(--bg-deep);
+  }
+
+  .contact-hero {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border-hairline);
+    margin-bottom: 60px;
+  }
+
+  .contact-hero-col {
+    grid-column: span 26;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .page-intro {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+
+  .telemetry-rules {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .separator {
+    color: var(--border-subtle);
+  }
+
+  .contact-channels-col {
+    grid-column: span 12;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .channel-card {
+    padding: 32px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .channel-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .channel-email {
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color var(--transition-fast);
+  }
+
+  .channel-email:hover {
+    color: var(--brand-green-bright);
+    text-decoration: underline;
+  }
+
+  .domicile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .social-links-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .contact-form-col {
+    grid-column: span 20;
+  }
+
+  .form-panel {
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 12px;
+  }
+
+  .scoping-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .form-input, .form-select, .form-textarea {
+    width: 100%;
+    background: rgba(3, 6, 8, 0.8);
+    border: 1px solid var(--border-subtle);
+    padding: 12px 14px;
+    color: var(--text-primary);
+    border-radius: 2px;
+    transition: border-color var(--transition-fast);
+  }
+
+  .form-input:focus, .form-select:focus, .form-textarea:focus {
+    border-color: var(--brand-green-bright);
+    outline: none;
+    box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
+  }
+
+  .form-notice {
+    padding: 14px 16px;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 2px;
+    line-height: 1.5;
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1280px) {
+    .contact-channels-col {
+      grid-column: span 32;
+    }
+    .contact-form-col {
+      grid-column: span 32;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .contact-hero-col {
+      grid-column: span 8;
+    }
+    .contact-channels-col, .contact-form-col {
+      grid-column: span 8;
+    }
+    .form-panel {
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .contact-hero-col {
+      grid-column: span 4;
+    }
+    .contact-channels-col, .contact-form-col {
+      grid-column: span 4;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('scoping-form') as HTMLFormElement
+  if (form) {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault()
+      const org = (document.getElementById('form-org') as HTMLInputElement).value
+      const email = (document.getElementById('form-email') as HTMLInputElement).value
+      const service = (document.getElementById('form-service') as HTMLSelectElement).value
+      const scope = (document.getElementById('form-scope') as HTMLTextAreaElement).value
+
+      const subject = encodeURIComponent(`Scoped Engagement Inquiry — ${org} [${service}]`)
+      const body = encodeURIComponent(
+        `ORGANIZATION: ${org}\r\n` +
+        `AUTHORIZED CONTACT: ${email}\r\n` +
+        `SERVICE AREA: ${service}\r\n\r\n` +
+        `TARGET ANCHORS & SCOPING OBJECTIVE:\r\n${scope}\r\n\r\n` +
+        `CONFIDENTIALITY ACKNOWLEDGMENT:\r\nWe request Agletras mutual NDA prior to delivering sensitive evidentiary targets.`
+      )
+
+      window.location.href = `mailto:info.agletras@gmail.com?subject=${subject}&body=${body}`
+    })
+  }
+</script>

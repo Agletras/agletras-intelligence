@@ -1,0 +1,634 @@
+---
+/**
+ * ConnectedTraceLine.astro
+ *
+ * Continuous cinematic SVG intelligence trace line benchmarked against Ethiack.
+ * Connects the narrative journey from Hero (01 // APERTURE) down to Conversion (07 // ENGAGE).
+ * Dynamically draws as user scrolls, sends traveling electric energy packets,
+ * and docks at each section's milestone beacon.
+ */
+---
+
+<div class="trace-line-container" id="trace-line-container" aria-hidden="true">
+  <svg class="trace-svg" id="trace-svg" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      {/* Botanical Green Glow Filters */}
+      <filter id="trace-glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="3" result="blur" />
+        <feMerge>
+          <feMergeNode in="blur" />
+          <feMergeNode in="blur" />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
+      <filter id="trace-beacon-glow" x="-60%" y="-60%" width="220%" height="220%">
+        <feGaussianBlur stdDeviation="6" result="blur" />
+        <feColorMatrix type="matrix" values="0 0 0 0 0.37  0 0 0 0 1.0  0 0 0 0 0.53  0 0 0 0.9 0" />
+        <feMerge>
+          <feMergeNode />
+          <feMergeNode in="SourceGraphic" />
+        </feMerge>
+      </filter>
+
+      {/* Dynamic Trace Gradient */}
+      <linearGradient id="trace-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+        <stop offset="0%" stop-color="#34d399" stop-opacity="0.9" />
+        <stop offset="35%" stop-color="#10b981" stop-opacity="0.95" />
+        <stop offset="70%" stop-color="#5eff88" stop-opacity="1" />
+        <stop offset="100%" stop-color="#34d399" stop-opacity="0.9" />
+      </linearGradient>
+
+      {/* Radial Gradient for Packets */}
+      <radialGradient id="packet-glow-gradient">
+        <stop offset="0%" stop-color="#ffffff" />
+        <stop offset="40%" stop-color="#5eff88" stop-opacity="0.9" />
+        <stop offset="100%" stop-color="#10b981" stop-opacity="0" />
+      </radialGradient>
+    </defs>
+
+    {/* Layer 1: Passive Background Guide Conduit (Subtle Translucent Track) */}
+    <path id="trace-path-bg" class="trace-path-bg" fill="none" />
+
+    {/* Layer 2: Active Scroll-Drawn Signal Line (Luminous Emerald) */}
+    <path id="trace-path-active" class="trace-path-active" fill="none" />
+
+    {/* Layer 3: Secondary Trailing Dash Line for Atmospheric Depth */}
+    <path id="trace-path-dashes" class="trace-path-dashes" fill="none" />
+
+    {/* Layer 4: Docking Milestone Beacons */}
+    <g id="trace-beacons-group" class="trace-beacons-group"></g>
+
+    {/* Layer 5: Continuous Traveling Data Packets Group */}
+    <g id="trace-packets-group" class="trace-packets-group">
+      <g class="trace-packet" id="trace-packet-0" style="opacity: 0;">
+        <circle r="10" fill="rgba(94, 255, 136, 0.25)" />
+        <circle r="5" fill="rgba(52, 211, 153, 0.7)" />
+        <circle r="2.5" fill="#ffffff" />
+      </g>
+      <g class="trace-packet" id="trace-packet-1" style="opacity: 0;">
+        <circle r="9" fill="rgba(94, 255, 136, 0.2)" />
+        <circle r="4.5" fill="rgba(52, 211, 153, 0.6)" />
+        <circle r="2" fill="#ffffff" />
+      </g>
+      <g class="trace-packet" id="trace-packet-2" style="opacity: 0;">
+        <circle r="9" fill="rgba(94, 255, 136, 0.2)" />
+        <circle r="4.5" fill="rgba(52, 211, 153, 0.6)" />
+        <circle r="2" fill="#ffffff" />
+      </g>
+    </g>
+
+    {/* Layer 6: Leading Edge Traveling Photon */}
+    <g id="trace-energy-packet" class="trace-energy-packet" style="opacity: 0;">
+      <circle class="packet-aura" r="16" fill="rgba(94, 255, 136, 0.25)" />
+      <circle class="packet-flare" r="7" fill="rgba(52, 211, 153, 0.8)" />
+      <circle class="packet-core" r="3.5" fill="#ffffff" />
+    </g>
+  </svg>
+</div>
+
+<style>
+  .trace-line-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    overflow: hidden;
+  }
+
+  .trace-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  /* Passive Background Track */
+  .trace-path-bg {
+    stroke: rgba(16, 185, 129, 0.12);
+    stroke-width: 1.5px;
+    stroke-dasharray: 4 8;
+    stroke-linecap: round;
+  }
+
+  /* Active Scroll-Linked Stroke */
+  .trace-path-active {
+    stroke: url(#trace-gradient);
+    stroke-width: 2.5px;
+    stroke-linecap: round;
+    filter: url(#trace-glow);
+    will-change: stroke-dashoffset;
+  }
+
+  /* Decorative Energy Dashes */
+  .trace-path-dashes {
+    stroke: rgba(94, 255, 136, 0.8);
+    stroke-width: 1.5px;
+    stroke-dasharray: 14 160;
+    stroke-linecap: round;
+    animation: dashCruise 7s linear infinite;
+  }
+
+  @keyframes dashCruise {
+    from {
+      stroke-dashoffset: 0;
+    }
+    to {
+      stroke-dashoffset: -1000;
+    }
+  }
+
+  /* Docking Beacon Nodes */
+  :global(.trace-beacon-node) {
+    cursor: pointer;
+    pointer-events: auto;
+    transition: transform var(--transition-fast);
+  }
+
+  :global(.beacon-ring-outer) {
+    stroke: rgba(16, 185, 129, 0.35);
+    stroke-width: 1px;
+    stroke-dasharray: 2 4;
+    transform-origin: center;
+    animation: beaconSpin 14s linear infinite;
+    transition: stroke var(--transition-fast), r var(--transition-fast);
+  }
+
+  @keyframes beaconSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  :global(.beacon-ring-inner) {
+    stroke: rgba(16, 185, 129, 0.55);
+    stroke-width: 1.5px;
+    fill: #030705;
+    transition: stroke var(--transition-fast);
+  }
+
+  :global(.beacon-center-dot) {
+    fill: #064e3b;
+    transition: fill 0.3s ease, r 0.3s ease;
+  }
+
+  :global(.trace-beacon-node.is-docked .beacon-center-dot) {
+    fill: #5eff88;
+    filter: url(#trace-beacon-glow);
+  }
+
+  :global(.trace-beacon-node.is-docked .beacon-ring-outer) {
+    stroke: rgba(94, 255, 136, 0.85);
+    r: 15;
+  }
+
+  :global(.trace-beacon-node.is-docked .beacon-ring-inner) {
+    stroke: #5eff88;
+  }
+
+  :global(.beacon-label-text) {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    fill: var(--text-muted);
+    transition: fill var(--transition-fast);
+    user-select: none;
+  }
+
+  :global(.trace-beacon-node.is-docked .beacon-label-text) {
+    fill: #5eff88;
+    font-weight: 700;
+  }
+
+  /* Ripple Shockwave Ring on Dock */
+  :global(.beacon-shockwave) {
+    fill: none;
+    stroke: #5eff88;
+    stroke-width: 1.5px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  :global(.trace-beacon-node.just-docked .beacon-shockwave) {
+    animation: shockwavePulse 0.9s ease-out forwards;
+  }
+
+  @keyframes shockwavePulse {
+    0% {
+      r: 6;
+      opacity: 0.9;
+      stroke-width: 2px;
+    }
+    100% {
+      r: 32;
+      opacity: 0;
+      stroke-width: 0.5px;
+    }
+  }
+
+  /* Traveling Energy Packets */
+  .trace-energy-packet,
+  .trace-packet {
+    will-change: transform;
+    pointer-events: none;
+  }
+
+  .packet-aura {
+    animation: packetPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes packetPulse {
+    0%, 100% {
+      r: 13;
+      opacity: 0.35;
+    }
+    50% {
+      r: 20;
+      opacity: 0.75;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .trace-path-dashes,
+    .packet-aura,
+    :global(.beacon-ring-outer),
+    :global(.beacon-shockwave) {
+      animation: none !important;
+    }
+  }
+</style>
+
+<script>
+  let traceAnimId: number | null = null
+  let scrollListenerAttached = false
+  let resizeListenerAttached = false
+
+  function cleanupConnectedTraceLine() {
+    if (traceAnimId !== null) {
+      cancelAnimationFrame(traceAnimId)
+      traceAnimId = null
+    }
+  }
+
+  function initConnectedTraceLine() {
+    cleanupConnectedTraceLine()
+
+    const container = document.getElementById('trace-line-container') as HTMLElement | null
+    const svg = document.getElementById('trace-svg') as SVGSVGElement | null
+    const bgPath = document.getElementById('trace-path-bg') as SVGPathElement | null
+    const activePath = document.getElementById('trace-path-active') as SVGPathElement | null
+    const dashesPath = document.getElementById('trace-path-dashes') as SVGPathElement | null
+    const beaconsGroup = document.getElementById('trace-beacons-group') as SVGGElement | null
+    const energyPacket = document.getElementById('trace-energy-packet') as SVGGElement | null
+    const packet0 = document.getElementById('trace-packet-0')
+    const packet1 = document.getElementById('trace-packet-1')
+    const packet2 = document.getElementById('trace-packet-2')
+
+    if (!container || !svg || !bgPath || !activePath || !beaconsGroup || !energyPacket) return
+
+    const elContainer: HTMLElement = container
+    const elBgPath: SVGPathElement = bgPath
+    const elActivePath: SVGPathElement = activePath
+    const elBeaconsGroup: SVGGElement = beaconsGroup
+    const elEnergyPacket: SVGGElement = energyPacket
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    // Section milestone definitions with target anchor elements
+    const milestoneDefs = [
+      { id: 'hero', label: '01 // APERTURE', targetSelector: '#hero .hero-scroll-cue', fallbackOffset: 850 },
+      { id: 'narrative', label: '02 // STRATA', targetSelector: '#narrative .eyebrow-badge', fallbackOffset: 1100 },
+      { id: 'topology', label: '03 // TOPOLOGY', targetSelector: '#topology .eyebrow-badge', fallbackOffset: 2300 },
+      { id: 'research', label: '04 // RESEARCH', targetSelector: '#research .eyebrow-badge', fallbackOffset: 4800 },
+      { id: 'methodology', label: '05 // EPISTEMICS', targetSelector: '#methodology .eyebrow-badge', fallbackOffset: 6200 },
+      { id: 'engagement', label: '06 // ENGAGE', targetSelector: '#engagement .conversion-panel', fallbackOffset: 8400 },
+      { id: 'site-footer', label: '07 // TERMINUS', targetSelector: '#site-footer .footer-terminal-badge', fallbackOffset: 9600 },
+    ]
+
+    interface MilestonePoint {
+      id: string
+      label: string
+      x: number
+      y: number
+      pathLength: number
+      el: HTMLElement | null
+    }
+
+    let milestonePoints: MilestonePoint[] = []
+    let totalPathLength = 0
+    let currentDrawnLength = 0
+
+    // Autonomous traveling packet phases
+    const signalPackets = [
+      { el: packet0, phase: 0.15, speed: 0.0035 },
+      { el: packet1, phase: 0.50, speed: 0.0040 },
+      { el: packet2, phase: 0.85, speed: 0.0030 },
+    ]
+
+    // Measure milestone coordinates cleanly anchored within the left visible corridor
+    function computeMilestonePoints() {
+      const containerRect = elContainer.getBoundingClientRect()
+      const isMobile = window.innerWidth <= 768
+
+      milestonePoints = []
+
+      milestoneDefs.forEach((def) => {
+        const targetEl = document.querySelector(def.targetSelector) as HTMLElement | null
+        const sectionEl = document.getElementById(def.id)
+
+        let x = 0
+        let y = 0
+
+        if (targetEl) {
+          const rect = targetEl.getBoundingClientRect()
+          const targetY = rect.top - containerRect.top
+
+          if (isMobile) {
+            x = 22
+            y = targetY + rect.height / 2
+          } else {
+            // Anchor neatly in the left telemetry margin adjacent to the eyebrow badge
+            const baseLeft = rect.left - containerRect.left
+            // Guarantee beacon sits safely inside margin between 34px and 56px
+            x = Math.max(34, Math.min(60, baseLeft - 22))
+            y = targetY + rect.height / 2
+          }
+        } else if (sectionEl) {
+          const rect = sectionEl.getBoundingClientRect()
+          const targetY = rect.top - containerRect.top
+          x = isMobile ? 22 : 44
+          y = targetY + 60
+        } else {
+          x = isMobile ? 22 : 44
+          y = def.fallbackOffset
+        }
+
+        if (y > 0) {
+          milestonePoints.push({
+            id: def.id,
+            label: def.label,
+            x: Math.round(x),
+            y: Math.round(y),
+            pathLength: 0,
+            el: targetEl || sectionEl,
+          })
+        }
+      })
+    }
+
+    // Build smooth cubic Bézier SVG path through milestone points with organic cyber-curvature
+    function buildPathString(pts: MilestonePoint[]): string {
+      const first = pts[0]
+      if (!first || pts.length < 2) return ''
+
+      let d = `M ${first.x} ${first.y}`
+
+      for (let i = 0; i < pts.length - 1; i++) {
+        const curr = pts[i]
+        const next = pts[i + 1]
+        if (!curr || !next) continue
+
+        const dy = next.y - curr.y
+        const isMobile = window.innerWidth <= 768
+
+        // Elegant subtle lateral curve across section gaps
+        const bowOffset = isMobile ? 0 : (i % 2 === 0 ? 16 : -8)
+        const cp1x = curr.x + bowOffset
+        const cp1y = curr.y + dy * 0.42
+
+        const cp2x = next.x + bowOffset * 0.5
+        const cp2y = next.y - dy * 0.42
+
+        d += ` C ${cp1x.toFixed(1)} ${cp1y.toFixed(1)}, ${cp2x.toFixed(1)} ${cp2y.toFixed(1)}, ${next.x} ${next.y}`
+      }
+
+      return d
+    }
+
+    // Render milestone docking beacons into SVG group
+    function renderBeacons() {
+      elBeaconsGroup.innerHTML = ''
+
+      milestonePoints.forEach((pt) => {
+        const beaconG = document.createElementNS('http://www.w3.org/2000/svg', 'g')
+        beaconG.setAttribute('class', 'trace-beacon-node')
+        beaconG.setAttribute('id', `beacon-${pt.id}`)
+        beaconG.setAttribute('transform', `translate(${pt.x}, ${pt.y})`)
+        beaconG.setAttribute('role', 'button')
+        beaconG.setAttribute('tabindex', '0')
+        beaconG.setAttribute('aria-label', `Navigate to ${pt.label}`)
+
+        // Shockwave ripple ring
+        const shockwave = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+        shockwave.setAttribute('class', 'beacon-shockwave')
+        shockwave.setAttribute('r', '6')
+
+        // Outer radar ring
+        const outerRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+        outerRing.setAttribute('class', 'beacon-ring-outer')
+        outerRing.setAttribute('r', '12')
+
+        // Inner radar shield
+        const innerRing = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+        innerRing.setAttribute('class', 'beacon-ring-inner')
+        innerRing.setAttribute('r', '6')
+
+        // Central signal photon
+        const centerDot = document.createElementNS('http://www.w3.org/2000/svg', 'circle')
+        centerDot.setAttribute('class', 'beacon-center-dot')
+        centerDot.setAttribute('r', '3')
+
+        // Telemetry label
+        const isMobile = window.innerWidth <= 768
+        const labelText = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+        labelText.setAttribute('class', 'beacon-label-text')
+        labelText.setAttribute('x', isMobile ? '16' : '0')
+        labelText.setAttribute('y', isMobile ? '3' : '-16')
+        labelText.setAttribute('text-anchor', isMobile ? 'start' : 'middle')
+        labelText.textContent = pt.label
+
+        beaconG.appendChild(shockwave)
+        beaconG.appendChild(outerRing)
+        beaconG.appendChild(innerRing)
+        beaconG.appendChild(centerDot)
+        beaconG.appendChild(labelText)
+
+        // Smooth scroll to section when clicked
+        beaconG.addEventListener('click', (e) => {
+          e.stopPropagation()
+          const sec = document.getElementById(pt.id)
+          if (sec) {
+            sec.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
+        })
+
+        elBeaconsGroup.appendChild(beaconG)
+      })
+    }
+
+    // Binary search to find path length corresponding to target Y coordinate
+    function findLengthAtY(targetY: number): number {
+      if (totalPathLength <= 0) return 0
+      const first = milestonePoints[0]
+      const last = milestonePoints[milestonePoints.length - 1]
+      if (first && targetY <= first.y) return Math.min(80, totalPathLength * 0.05)
+      if (last && targetY >= last.y) return totalPathLength
+
+      let low = 0
+      let high = totalPathLength
+      for (let iter = 0; iter < 12; iter++) {
+        const mid = (low + high) / 2
+        const p = elActivePath.getPointAtLength(mid)
+        if (p.y < targetY) {
+          low = mid
+        } else {
+          high = mid
+        }
+      }
+      return (low + high) / 2
+    }
+
+    // Rebuild full SVG geometry
+    function rebuildGeometry() {
+      computeMilestonePoints()
+      const d = buildPathString(milestonePoints)
+
+      if (!d) return
+
+      elBgPath.setAttribute('d', d)
+      elActivePath.setAttribute('d', d)
+      if (dashesPath) dashesPath.setAttribute('d', d)
+
+      renderBeacons()
+
+      totalPathLength = elActivePath.getTotalLength()
+      elActivePath.style.strokeDasharray = `${totalPathLength} ${totalPathLength}`
+
+      // Calculate pathLength for each milestone beacon
+      milestonePoints.forEach((pt) => {
+        pt.pathLength = findLengthAtY(pt.y)
+      })
+
+      // Immediate initial scroll calculation
+      onScrollUpdate()
+    }
+
+    // Update draw target on scroll
+    function onScrollUpdate() {
+      if (!totalPathLength) return
+
+      const scrollY = window.scrollY || window.pageYOffset
+      const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight)
+      const isAtBottom = scrollY >= maxScroll - 40
+
+      if (isAtBottom) {
+        currentDrawnLength = totalPathLength
+      } else {
+        // Target leading draw tip is coupled to lower viewport horizon (~70%)
+        const targetHorizonY = scrollY + window.innerHeight * 0.70
+        currentDrawnLength = findLengthAtY(targetHorizonY)
+      }
+
+      // Update stroke dashoffset immediately on scroll
+      const offset = Math.max(0, totalPathLength - currentDrawnLength)
+      elActivePath.style.strokeDashoffset = `${offset.toFixed(1)}`
+
+      // Position leading draw photon
+      if (currentDrawnLength > 20) {
+        try {
+          const pt = elActivePath.getPointAtLength(currentDrawnLength)
+          elEnergyPacket.style.opacity = '1'
+          elEnergyPacket.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})`)
+        } catch (e) {}
+      } else {
+        elEnergyPacket.style.opacity = '0'
+      }
+
+      // Check docking beacons immediately
+      milestonePoints.forEach((pt) => {
+        const beaconEl = document.getElementById(`beacon-${pt.id}`)
+        if (!beaconEl) return
+
+        const isDocked = currentDrawnLength >= pt.pathLength - 10
+        const wasDocked = beaconEl.classList.contains('is-docked')
+
+        if (isDocked && !wasDocked) {
+          beaconEl.classList.add('is-docked')
+          beaconEl.classList.add('just-docked')
+          setTimeout(() => {
+            beaconEl.classList.remove('just-docked')
+          }, 900)
+        } else if (!isDocked && wasDocked) {
+          beaconEl.classList.remove('is-docked')
+        }
+      })
+    }
+
+    // Smooth animation frame loop for continuous packet streams
+    function animationTick() {
+      // Animate continuous autonomous traveling packets along the drawn path
+      if (!prefersReducedMotion && currentDrawnLength > 60) {
+        signalPackets.forEach((pkt) => {
+          pkt.phase = (pkt.phase + pkt.speed) % 1
+          const pktLen = pkt.phase * currentDrawnLength
+          try {
+            const pt = elActivePath.getPointAtLength(pktLen)
+            if (pkt.el) {
+              pkt.el.style.opacity = '1'
+              pkt.el.setAttribute('transform', `translate(${pt.x.toFixed(1)}, ${pt.y.toFixed(1)})`)
+            }
+          } catch (e) {}
+        })
+      } else {
+        signalPackets.forEach((pkt) => {
+          if (pkt.el) pkt.el.style.opacity = '0'
+        })
+      }
+
+      traceAnimId = requestAnimationFrame(animationTick)
+    }
+
+    // Attach listeners once
+    rebuildGeometry()
+    traceAnimId = requestAnimationFrame(animationTick)
+
+    if (!scrollListenerAttached) {
+      window.addEventListener('scroll', onScrollUpdate, { passive: true })
+      scrollListenerAttached = true
+    }
+
+    let resizeTimer: ReturnType<typeof setTimeout>
+    if (!resizeListenerAttached) {
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer)
+        resizeTimer = setTimeout(() => {
+          rebuildGeometry()
+        }, 120)
+      })
+      resizeListenerAttached = true
+    }
+
+    // Re-check geometry after fonts & layout settle
+    setTimeout(rebuildGeometry, 300)
+    setTimeout(rebuildGeometry, 800)
+  }
+
+  // Self-mount on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initConnectedTraceLine)
+  } else {
+    initConnectedTraceLine()
+  }
+
+  // ClientRouter page transition support
+  document.addEventListener('astro:page-load', initConnectedTraceLine)
+  document.addEventListener('astro:before-swap', cleanupConnectedTraceLine)
+</script>

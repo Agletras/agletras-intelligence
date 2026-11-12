@@ -1,0 +1,198 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro'
+import { companyData } from '@/lib/companyData'
+---
+
+<BaseLayout
+  title="Terms of Engagement — AGLETRAS"
+  description="Review Agletras's formal terms of engagement, evidentiary boundaries, confidentiality standards, and liability limitations."
+  currentPath="/terms"
+>
+  <div class="legal-page-wrap">
+    <section class="legal-hero">
+      <div class="grid-container">
+        <div class="legal-hero-col">
+          <div class="eyebrow-badge">
+            <span class="beacon-dot"></span>
+            <span>CONTRACTUAL GOVERNANCE</span>
+          </div>
+
+          <h1 class="page-title font-display">
+            Terms of <br />
+            <span class="text-emerald">Engagement & Rigor.</span>
+          </h1>
+
+          <p class="page-intro text-secondary">
+            These terms define the operating boundaries, confidentiality agreements, and evidentiary limitations 
+            governing all intelligence research engagements conducted by {companyData.legalName}.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="legal-body-section">
+      <div class="grid-container">
+        <div class="legal-prose-col panel-telemetry">
+          <div class="legal-header font-mono text-xs text-muted">
+            <span>DOCUMENT REF: AGL-TOE-2026-V1</span>
+            <span class="text-emerald font-bold">STATUTORY JURISDICTION: NASHIK, MH, INDIA</span>
+          </div>
+
+          <article class="legal-content">
+            <h2 class="font-display">1. Statement of Work & Engagement Scope</h2>
+            <p>
+              All professional intelligence engagements performed by {companyData.legalName} ("Agletras") require a bilaterally executed Statement of Work (SOW). The SOW explicitly defines the commercial question, approved target anchors (entities, jurisdictions, registered domains, or consenting individuals), authorized research methodology, deliverables, and financial terms. No investigative work commences prior to SOW authorization.
+            </p>
+
+            <h2 class="font-display">2. Non-Intrusive & Passive OSINT Boundary</h2>
+            <p>
+              Agletras operates exclusively through lawfully accessible open-source intelligence (OSINT), public corporate registries, official government gazettes, passive DNS telemetry, Certificate Transparency logs, and client-authorized data.
+            </p>
+            <p>
+              <strong>Strict Boundary:</strong> Agletras does not engage in penetration testing, unauthorized network intrusion, credential theft, computer fraud, or clandestine audio/visual surveillance. We will reject any request requiring unauthorized access to protected computing systems.
+            </p>
+
+            <h2 class="font-display">3. Epistemic Classification & Evidentiary Standards</h2>
+            <p>
+              All findings are classified against our 5-tier epistemic framework (FACT, INDICATOR, INFERENCE, ASSUMPTION, UNRESOLVED). While Agletras utilizes rigorous multi-source verification and Analysis of Competing Hypotheses (ACH), client acknowledges that open-source intelligence inherently reflects the availability, accuracy, and completeness of public records at the time of collection.
+            </p>
+
+            <h2 class="font-display">4. Confidentiality & Mutual Non-Disclosure</h2>
+            <p>
+              Agletras treats all client-supplied anchors, scoping inquiries, and customized intelligence deliverables as strictly confidential. We execute mutual non-disclosure agreements (NDAs) upon request prior to the disclosure of sensitive commercial objectives.
+            </p>
+
+            <h2 class="font-display">5. Intellectual Property & License to Deliverables</h2>
+            <p>
+              Upon receipt of full payment under the relevant Statement of Work, the client receives a perpetual, non-exclusive, irrevocable license to use, review, and internally distribute the customized Intelligence Briefs, relationship topologies, and raw evidence registers for lawful corporate decision-making. Agletras retains all intellectual property in its underlying research algorithms, extraction tooling, and proprietary data ingestion pipelines.
+            </p>
+
+            <h2 class="font-display">6. Legal & Regulatory Non-Advisory Disclaimer</h2>
+            <p>
+              Agletras is a research and intelligence agency, not a licensed legal counsel, investment bank, or accounting audit firm. Research findings and risk assessments provided by Agletras are designed for executive decision-support and do not constitute formal legal advice, investment recommendations, or certified financial audits.
+            </p>
+
+            <h2 class="font-display">7. Governing Law & Domicile</h2>
+            <p>
+              These Terms of Engagement and all associated Statements of Work are governed by and construed in accordance with the laws of India, within the statutory jurisdiction of the courts of Nashik, Maharashtra, India.
+            </p>
+          </article>
+
+          <div class="legal-footer font-mono text-xs">
+            <span class="text-muted">QUESTIONS REGARDING TERMS? CONTACT:</span>
+            <a href={`mailto:${companyData.contacts.corporateEmail}`} class="text-emerald font-bold">
+              {companyData.contacts.corporateEmail}
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page-wrap {
+    padding-top: 100px;
+    padding-bottom: 120px;
+    background-color: var(--bg-deep);
+  }
+
+  .legal-hero {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border-hairline);
+    margin-bottom: 60px;
+  }
+
+  .legal-hero-col {
+    grid-column: span 26;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .page-intro {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+
+  .legal-prose-col {
+    grid-column: span 26;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .legal-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 16px;
+  }
+
+  .legal-content {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 6px;
+  }
+
+  .legal-content p {
+    margin-bottom: 1.25rem;
+  }
+
+  .legal-content strong {
+    color: var(--text-primary);
+  }
+
+  .legal-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1280px) {
+    .legal-prose-col {
+      grid-column: span 32;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .legal-hero-col {
+      grid-column: span 8;
+    }
+    .legal-prose-col {
+      grid-column: span 8;
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .legal-hero-col, .legal-prose-col {
+      grid-column: span 4;
+    }
+  }
+</style>

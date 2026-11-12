@@ -1,0 +1,155 @@
+---
+import { companyData } from '@/lib/companyData'
+import { paths } from '@/lib/routes'
+---
+
+<section class="conversion-section" id="engagement" data-section="06 // ENGAGE">
+  <div class="grid-container">
+    <div class="conversion-panel panel-telemetry reveal-on-scroll">
+      <div class="conversion-meta font-mono text-xs">
+        <span class="text-emerald font-bold">06 // ENGAGEMENT SCOPING PROTOCOL</span>
+        <span class="text-muted">DIRECT_DISPATCH</span>
+      </div>
+
+      <div class="conversion-content">
+        <h2 class="conversion-title font-display">
+          Initiate a Scoped <br />
+          <span class="text-emerald">Research Engagement.</span>
+        </h2>
+
+        <p class="conversion-desc text-secondary">
+          Every investigation begins with a structured scoping discussion. We evaluate target anchors, 
+          verify open-source feasibility, agree upon epistemic boundaries, and execute mutual non-disclosure agreements before research commences.
+        </p>
+
+        {/* Honest Scoping Action Suite */}
+        <div class="conversion-action-box">
+          <div class="action-item">
+            <span class="font-mono text-xs text-muted uppercase">PRIMARY INTAKE EMAIL:</span>
+            <a href={`mailto:${companyData.contacts.corporateEmail}?subject=Research%20Scoping%20Inquiry%20%E2%80%94%20Agletras&body=Organization%3A%0D%0ACommercial%20Question%20%2F%20Objective%3A%0D%0AKnown%20Anchors%20(Entities%2C%20Domains%2C%20Jurisdictions)%3A%0D%0AEstimated%20Timeline%3A`} class="action-email font-mono text-emerald">
+              {companyData.contacts.corporateEmail}
+            </a>
+          </div>
+
+          <div class="action-item">
+            <span class="font-mono text-xs text-muted uppercase">STRUCTURED FORM:</span>
+            <a href={paths.contact()} class="btn-primary">
+              <span>Open Scoping Brief Form</span>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        {/* Boundary Assurances */}
+        <div class="conversion-assurances font-mono text-xs text-muted">
+          <div>✓ STRICT CONFIDENTIALITY & MUTUAL NDA</div>
+          <div>✓ ZERO INTRUSIVE NETWORK ACCESS</div>
+          <div>✓ CRYPTOGRAPHIC PROVENANCE TRACEABILITY</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .conversion-section {
+    padding-top: 120px;
+    padding-bottom: 140px;
+    position: relative;
+    background-color: var(--bg-surface);
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .conversion-panel {
+    grid-column: span 32;
+    padding: 64px 56px;
+    background: radial-gradient(circle at top right, rgba(16, 185, 129, 0.12) 0%, rgba(6, 78, 59, 0.05) 40%, var(--bg-surface) 75%);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    box-shadow: 0 0 60px rgba(16, 185, 129, 0.06);
+  }
+
+  .conversion-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 16px;
+    margin-bottom: 40px;
+  }
+
+  .conversion-content {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    max-width: 850px;
+  }
+
+  .conversion-title {
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  .conversion-desc {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .conversion-action-box {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+    padding: 24px 32px;
+    background: rgba(3, 6, 8, 0.6);
+    border: 1px solid var(--border-hairline);
+    border-radius: 2px;
+    margin-top: 12px;
+    flex-wrap: wrap;
+  }
+
+  .action-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .action-email {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .action-email:hover {
+    color: var(--brand-green-electric);
+    text-decoration: underline;
+  }
+
+  .conversion-assurances {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 768px) {
+    .conversion-panel {
+      padding: 32px 20px;
+    }
+    .conversion-action-box {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+      padding: 16px;
+    }
+  }
+</style>

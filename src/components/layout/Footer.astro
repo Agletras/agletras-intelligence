@@ -1,0 +1,409 @@
+---
+import { paths } from '@/lib/routes'
+import { companyData } from '@/lib/companyData'
+---
+
+<footer class="site-footer" id="site-footer">
+  <div class="grid-container footer-main">
+    {/* Column 1: Identity & Brand */}
+    <div class="footer-col-brand">
+      <div class="footer-brand-header">
+        <img 
+          src="/logo.png" 
+          alt="Agletras" 
+          width="36" 
+          height="36" 
+          class="footer-logo" 
+          loading="lazy" 
+          decoding="async"
+        />
+        <div class="brand-naming">
+          <span class="footer-brand-title font-display">AGLETRAS</span>
+          <span class="footer-brand-sub font-mono text-xs text-emerald">RESEARCH & INTELLIGENCE</span>
+        </div>
+      </div>
+
+      <p class="footer-tagline text-body-sm text-secondary">
+        Evidence-backed corporate intelligence and research infrastructure. We turn fragmented public records into well-supported findings.
+      </p>
+
+      <div class="footer-socials font-mono text-xs">
+        <a href={companyData.contacts.socials.github} target="_blank" rel="noopener noreferrer" class="social-link">
+          <span>GitHub</span>
+          <span class="arrow-glyph">↗</span>
+        </a>
+        <span class="text-muted">/</span>
+        <a href={companyData.contacts.socials.linkedin} target="_blank" rel="noopener noreferrer" class="social-link">
+          <span>LinkedIn</span>
+          <span class="arrow-glyph">↗</span>
+        </a>
+      </div>
+    </div>
+
+    {/* Column 2: Agletras Intelligence */}
+    <div class="footer-col-nav">
+      <h4 class="footer-heading font-mono text-xs text-muted">AGLETRAS INTELLIGENCE</h4>
+      <ul class="footer-links">
+        <li>
+          <a href={paths.intelligence()} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>What We Do</span>
+          </a>
+        </li>
+        <li>
+          <a href={`${paths.intelligence()}#capabilities`} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Our Capabilities</span>
+          </a>
+        </li>
+        <li>
+          <a href={`${paths.intelligence()}#services`} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Research Services</span>
+          </a>
+        </li>
+        <li>
+          <a href={paths.contact()} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Start an Engagement</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    {/* Column 3: Corporate & Legal */}
+    <div class="footer-col-nav">
+      <h4 class="footer-heading font-mono text-xs text-muted">CORPORATE</h4>
+      <ul class="footer-links">
+        <li>
+          <a href={paths.about()} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>About Agletras</span>
+          </a>
+        </li>
+        <li>
+          <a href={paths.contact()} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Contact & Inquiries</span>
+          </a>
+        </li>
+        <li>
+          <a href={paths.terms()} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Terms of Engagement</span>
+          </a>
+        </li>
+        <li>
+          <a href={paths.privacy()} class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Privacy Policy</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    {/* Column 4: Contact & Open Source */}
+    <div class="footer-col-nav">
+      <h4 class="footer-heading font-mono text-xs text-muted">OPEN SOURCE & INTAKE</h4>
+      <ul class="footer-links">
+        <li>
+          <a href="https://github.com/Agletras/Agletras-mcp.git" target="_blank" rel="noopener noreferrer" class="footer-link">
+            <span class="link-bullet text-emerald">›</span>
+            <span>Open Source Repository</span>
+            <span class="arrow-glyph">↗</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="footer-contact-block">
+        <span class="text-muted font-mono text-xs font-semibold">DIRECT INQUIRIES:</span>
+        <a href={`mailto:${companyData.contacts.corporateEmail}`} class="footer-email font-mono text-xs text-emerald">
+          {companyData.contacts.corporateEmail}
+        </a>
+      </div>
+    </div>
+  </div>
+
+  {/* Compact Operational Boundary Link Bar */}
+  <div class="grid-container footer-ethics">
+    <div class="ethics-bar font-mono text-xs">
+      <span class="beacon-dot"></span>
+      <a href={`${paths.about()}#guarantee`} class="ethics-link">
+        <span class="ethics-title text-emerald font-bold">OPERATIONAL BOUNDARY & NON-INTRUSION CHARTER</span>
+        <span class="ethics-desc text-secondary"> — Strict open-source intelligence standards: zero unauthorized network intrusion &rarr;</span>
+      </a>
+    </div>
+  </div>
+
+  {/* Bottom Bar */}
+  <div class="grid-container footer-bottom font-mono text-xs text-muted">
+    <div class="bottom-left">
+      © {new Date().getFullYear()} AGLETRAS. All rights reserved.
+    </div>
+    <div class="bottom-right">
+      <span class="jurisdiction-tag">JURISDICTION: NASHIK, MH, INDIA</span>
+      <span class="separator">|</span>
+      <span class="classification-tag text-emerald">CLASSIFIED PUBLIC OSINT RESEARCH</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background-color: var(--bg-surface);
+    border-top: 1px solid var(--border-hairline);
+    padding-top: 56px;
+    padding-bottom: 40px;
+    position: relative;
+    z-index: 10;
+  }
+
+  .footer-main {
+    row-gap: 40px;
+    margin-bottom: 36px;
+  }
+
+  .footer-col-brand {
+    grid-column: span 11;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .footer-brand-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .brand-naming {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .footer-brand-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+    line-height: 1;
+  }
+
+  .footer-brand-sub {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    font-weight: 700;
+  }
+
+  .footer-tagline {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+  }
+
+  .footer-socials {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .social-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .social-link:hover {
+    color: var(--brand-green-bright);
+  }
+
+  .arrow-glyph {
+    font-size: 0.75rem;
+    transition: transform var(--transition-fast);
+  }
+
+  .social-link:hover .arrow-glyph {
+    transform: translate(2px, -2px);
+  }
+
+  .footer-col-nav {
+    grid-column: span 7;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .footer-heading {
+    letter-spacing: 0.14em;
+    font-weight: 700;
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 10px;
+    color: var(--text-muted);
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .footer-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    transition: color var(--transition-fast), transform var(--transition-fast);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .link-bullet {
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+  }
+
+  .footer-link:hover {
+    color: var(--text-primary);
+    transform: translateX(3px);
+  }
+
+  .footer-link:hover .link-bullet {
+    opacity: 1;
+    color: var(--brand-green-bright);
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  .footer-contact-block {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-hairline);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .footer-email {
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-email:hover {
+    color: var(--brand-green-electric);
+    text-decoration: underline;
+  }
+
+  .footer-ethics {
+    margin-bottom: 40px;
+  }
+
+  .footer-ethics {
+    margin-bottom: 28px;
+  }
+
+  .ethics-bar {
+    grid-column: span 32;
+    padding: 12px 18px;
+    background: rgba(16, 185, 129, 0.03);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ethics-link {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    text-decoration: none;
+    transition: opacity var(--transition-fast);
+  }
+
+  .ethics-link:hover {
+    opacity: 0.85;
+  }
+
+  .ethics-title {
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+  }
+
+  .ethics-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  .footer-bottom {
+    padding-top: 24px;
+    border-top: 1px solid var(--border-hairline);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-size: 0.75rem;
+  }
+
+  .separator {
+    margin: 0 10px;
+    opacity: 0.3;
+  }
+
+  .jurisdiction-tag {
+    color: var(--text-muted);
+  }
+
+  .classification-tag {
+    font-weight: 600;
+  }
+
+  @media (max-width: 1024px) {
+    .footer-col-brand {
+      grid-column: span 16;
+    }
+    .footer-col-nav {
+      grid-column: span 8;
+    }
+    .ethics-bar {
+      grid-column: span 32;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .footer-col-brand {
+      grid-column: span 8;
+    }
+    .footer-col-nav {
+      grid-column: span 8;
+    }
+    .ethics-panel {
+      grid-column: span 8;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-col-brand,
+    .footer-col-nav,
+    .ethics-panel {
+      grid-column: span 4;
+    }
+  }
+</style>

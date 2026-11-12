@@ -1,0 +1,486 @@
+---
+// TerminalSimulator.astro - Interactive terminal-style research demonstration
+// Clearly labeled as a simulated demonstration of the actual Agletras MCP pipeline
+---
+
+<div class="terminal-card panel-telemetry">
+  <!-- Terminal Title Bar -->
+  <div class="terminal-header">
+    <div class="window-controls" aria-hidden="true">
+      <span class="ctrl-dot dot-red"></span>
+      <span class="ctrl-dot dot-yellow"></span>
+      <span class="ctrl-dot dot-green"></span>
+    </div>
+
+    <div class="terminal-title font-mono text-xs text-muted">
+      <span class="title-full">agletras-terminal — run_id: 1 [Target: Corporate Lineage & Funding]</span>
+      <span class="title-short">agletras</span>
+    </div>
+
+    <div class="terminal-badge font-mono text-xs">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald">STDIO // WAL</span>
+    </div>
+  </div>
+
+  <!-- Simulation Notice -->
+  <div class="simulation-banner font-mono text-xs">
+    <span class="text-amber font-bold">[SIMULATED DEMONSTRATION]</span>
+    <span class="text-muted">Illustrative telemetry demonstrating the 5-stage research pipeline of the 40 registered MCP tools. All displayed timings, sample entities, passage counts, and match scores are simulated examples and do not represent live customer results or production measurements.</span>
+  </div>
+
+  <!-- View Switcher Tabs -->
+  <div class="terminal-nav" role="tablist" aria-label="Terminal views">
+    <button 
+      type="button" 
+      class="sim-tab-btn is-active font-mono text-xs" 
+      data-target="tab-trace"
+      role="tab"
+      aria-selected="true"
+      aria-controls="tab-trace"
+      id="tab-btn-trace"
+    >
+      <span class="tab-label-full">01. Agent Execution Trace</span>
+      <span class="tab-label-short">01 Trace</span>
+    </button>
+    <button 
+      type="button" 
+      class="sim-tab-btn font-mono text-xs" 
+      data-target="tab-passages"
+      role="tab"
+      aria-selected="false"
+      aria-controls="tab-passages"
+      id="tab-btn-passages"
+    >
+      <span class="tab-label-full">02. Passage Evidence Graph</span>
+      <span class="tab-label-short">02 Evidence</span>
+    </button>
+    <button 
+      type="button" 
+      class="sim-tab-btn font-mono text-xs" 
+      data-target="tab-synthesis"
+      role="tab"
+      aria-selected="false"
+      aria-controls="tab-synthesis"
+      id="tab-btn-synthesis"
+    >
+      <span class="tab-label-full">03. Validated Synthesis</span>
+      <span class="tab-label-short">03 Synthesis</span>
+    </button>
+  </div>
+
+  <!-- Terminal Content Body -->
+  <div class="terminal-body font-mono text-xs">
+    <!-- Panel 1: Execution Trace -->
+    <div class="sim-panel is-active" id="tab-trace" role="tabpanel" aria-labelledby="tab-btn-trace">
+      <div class="log-line text-muted">
+        <span class="log-ts text-dim">[00:00.08]</span>
+        <span class="log-tag text-emerald font-bold">INIT</span>
+        <span>Agletras MCP Server v0.2.0 active (transport: stdio, 40 registered tools)</span>
+      </div>
+      <div class="log-line">
+        <span class="log-ts text-dim">[00:00.64]</span>
+        <span class="log-tag text-emerald font-bold">PLAN</span>
+        <span class="text-primary">save_research_plan() -> 4 subquestions formulated. Budget cap: 8 questions, 2 rounds, 20 unique sources.</span>
+      </div>
+      <div class="log-line">
+        <span class="log-ts text-dim">[00:01.32]</span>
+        <span class="log-tag text-cyan font-bold">SEARCH</span>
+        <span class="text-secondary">search_web(query='Target Entity ownership filings Maharashtra') -> 4 candidate URLs returned</span>
+      </div>
+      <div class="log-line">
+        <span class="log-ts text-dim">[00:02.15]</span>
+        <span class="log-tag text-cyan font-bold">INGEST</span>
+        <span class="text-secondary">collect_sources(sources=4, include_text=true) -> SSRF check: 4/4 PASS (RFC1918 blocked)</span>
+      </div>
+      <div class="log-line">
+        <span class="log-ts text-dim">[00:02.98]</span>
+        <span class="log-tag text-emerald font-bold">INDEX</span>
+        <span class="text-primary">64 content-addressed passages saved to SQLite with character offsets, SHA-256 hashes &amp; page locators</span>
+      </div>
+      <div class="log-line log-divider">
+        <span class="log-ts text-dim">[00:03.80]</span>
+        <span class="log-tag text-emerald font-bold">VERIFY</span>
+        <span class="text-primary">verify_claims() -> Evaluating claims against exact stored passage text:</span>
+      </div>
+      <div class="log-line log-indent">
+        <span class="log-bullet text-emerald">├─ [F1]</span>
+        <span class="text-secondary">Claim: 'Registered office located in Nashik, Maharashtra, PIN 422003'</span>
+        <span class="badge-status status-supported font-bold">SUPPORTED</span>
+        <span class="text-dim">(Passage #12: 94% term match)</span>
+      </div>
+      <div class="log-line log-indent">
+        <span class="log-bullet text-amber">├─ [F2]</span>
+        <span class="text-secondary">Claim: 'Reported $12M Series A funding in Q3 2024'</span>
+        <span class="badge-status status-conflict font-bold">CONFLICTING EVIDENCE</span>
+        <span class="text-dim">(Passage #19 vs #41)</span>
+      </div>
+      <div class="log-line log-indent">
+        <span class="log-bullet text-muted">└─ [F3]</span>
+        <span class="text-secondary">Claim: 'Unattributed market dominance claim'</span>
+        <span class="badge-status status-unverified font-bold">UNVERIFIED</span>
+        <span class="text-dim">(Coverage: 18%, 0 citations attached)</span>
+      </div>
+      <div class="log-line">
+        <span class="log-ts text-dim">[00:04.90]</span>
+        <span class="log-tag text-emerald font-bold">REPORT</span>
+        <span class="text-primary">generate_markdown_report() + generate_client_report() -> 10-section report & DOCX created</span>
+      </div>
+      <div class="log-line">
+        <span class="log-ts text-dim">[00:05.42]</span>
+        <span class="log-tag text-emerald font-bold">VALIDATE</span>
+        <span class="text-emerald font-bold">validate_report() -> STRUCTURAL INTEGRITY PASSED (0 dangling citations, hashes intact)</span>
+      </div>
+    </div>
+
+    <!-- Panel 2: Passage Evidence Graph -->
+    <div class="sim-panel" id="tab-passages" role="tabpanel" aria-labelledby="tab-btn-passages" hidden>
+      <div class="json-block">
+        <span class="json-comment">// Content-addressed passage slice in SQLite (FTS5 indexed, SHA-256 hashed)</span>
+        <span class="json-brace">&#123;</span>
+        <div class="json-row"><span class="json-key">"passage_id"</span>: <span class="json-num">12</span>,</div>
+        <div class="json-row"><span class="json-key">"source_id"</span>: <span class="json-num">1</span>,</div>
+        <div class="json-row"><span class="json-key">"source_type"</span>: <span class="json-str">"pdf"</span>,</div>
+        <div class="json-row"><span class="json-key">"locator"</span>: <span class="json-str">"page 3, sec: Statutory Registration"</span>,</div>
+        <div class="json-row"><span class="json-key">"start_offset"</span>: <span class="json-num">1420</span>,</div>
+        <div class="json-row"><span class="json-key">"end_offset"</span>: <span class="json-num">1780</span>,</div>
+        <div class="json-row"><span class="json-key">"sha256"</span>: <span class="json-str">"4b2f8a19c3e218e87d0921473fa0081d6..."</span>,</div>
+        <div class="json-row"><span class="json-key">"verbatim_quote"</span>: <span class="json-str">"Incorporated in Maharashtra with registered corporate office located in Nashik, PIN 422003."</span>,</div>
+        <div class="json-row"><span class="json-key">"exact_quote_match"</span>: <span class="json-bool">true</span>,</div>
+        <div class="json-row"><span class="json-key">"term_coverage"</span>: <span class="json-num">0.94</span>,</div>
+        <div class="json-row"><span class="json-key">"epistemic_status"</span>: <span class="json-str text-emerald">"SUPPORTED"</span></div>
+        <span class="json-brace">&#125;</span>
+      </div>
+    </div>
+
+    <!-- Panel 3: Validated Synthesis -->
+    <div class="sim-panel" id="tab-synthesis" role="tabpanel" aria-labelledby="tab-btn-synthesis" hidden>
+      <div class="report-preview">
+        <div class="report-header font-display text-sm text-primary font-bold">
+          AGLETRAS RESEARCH SYNTHESIS // RUN #1 (VALIDATED DELIVERABLE)
+        </div>
+        <div class="report-meta text-muted">
+          Method: Deterministic Text Comparison • Template: Phase 6 (10 Sections) • Integrity: Verified
+        </div>
+        <div class="report-section">
+          <div class="sec-title text-emerald font-bold">1. EXECUTIVE SUMMARY & KEY FINDINGS</div>
+          <p class="text-secondary leading-relaxed">
+            [F1] The entity maintains active statutory registration in Nashik, Maharashtra (PIN 422003) as confirmed by official filings <span class="text-emerald">[S1:p3]</span>. <span class="badge-status status-supported">SUPPORTED</span>
+          </p>
+          <p class="text-secondary leading-relaxed">
+            [F2] Capitalization disclosures exhibit irreconcilable dates: filing A records $12M Series A closing August 2024 <span class="text-cyan">[S2:p1]</span>, whereas registry B records $8.5M aggregate funding <span class="text-cyan">[S3:p4]</span>. <span class="badge-status status-conflict">CONFLICTING EVIDENCE — UNRESOLVED</span>
+          </p>
+          <p class="text-secondary leading-relaxed">
+            [F3] Claims of dominant regional market share lack corresponding primary documentation. <span class="badge-status status-unverified">UNVERIFIED</span>
+          </p>
+        </div>
+        <div class="report-section">
+          <div class="sec-title text-emerald font-bold">2. VERIFIED REFERENCES [Sn]</div>
+          <div class="text-muted">[S1] Ministry Filing Archive, retrieved 2026-08-01 (SHA-256: 4b2f8a...) • Locator: page 3</div>
+          <div class="text-muted">[S2] Gazette Publication Notice, retrieved 2026-08-01 (SHA-256: 9e102c...) • Locator: page 1</div>
+          <div class="text-muted">[S3] Commercial Registry Extract, retrieved 2026-08-01 (SHA-256: d841ba...) • Locator: page 4</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Footer Indicator -->
+  <div class="terminal-footer font-mono text-xs text-muted">
+    <div class="footer-left">
+      <span class="beacon-dot"></span>
+      <span>READY: 40 MCP tools registered • stdio JSON-RPC ready for agent connection</span>
+    </div>
+    <div class="footer-right">
+      <span>No Paid API Key Required for Core Operation</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Simple client-side tab switcher for terminal simulator
+  const tabButtons = document.querySelectorAll<HTMLButtonElement>('.sim-tab-btn')
+  const tabPanels = document.querySelectorAll<HTMLElement>('.sim-panel')
+
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target')
+      if (!targetId) return
+
+      tabButtons.forEach(b => {
+        b.classList.remove('is-active')
+        b.setAttribute('aria-selected', 'false')
+      })
+      tabPanels.forEach(p => {
+        p.classList.remove('is-active')
+        p.hidden = true
+      })
+
+      btn.classList.add('is-active')
+      btn.setAttribute('aria-selected', 'true')
+      const targetPanel = document.getElementById(targetId)
+      if (targetPanel) {
+        targetPanel.classList.add('is-active')
+        targetPanel.hidden = false
+      }
+    })
+  })
+</script>
+
+<style>
+  .terminal-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    background-color: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .window-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ctrl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+  }
+
+  .dot-red { background-color: #ff5f56; }
+  .dot-yellow { background-color: #ffbd2e; }
+  .dot-green { background-color: #27c93f; }
+
+  .terminal-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .simulation-banner {
+    padding: 8px 18px;
+    background-color: rgba(245, 158, 11, 0.08);
+    border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .terminal-nav {
+    display: flex;
+    background-color: var(--bg-surface);
+    border-bottom: 1px solid var(--border-hairline);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .terminal-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .sim-tab-btn {
+    padding: 10px 18px;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--border-hairline);
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .sim-tab-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--bg-surface-elevated);
+  }
+
+  .sim-tab-btn.is-active {
+    color: var(--accent-emerald);
+    background-color: var(--bg-surface-elevated);
+    border-bottom-color: var(--accent-emerald);
+  }
+
+  .terminal-body {
+    padding: 20px 24px;
+    min-height: 280px;
+    background-color: #030705;
+    line-height: 1.7;
+    overflow-x: auto;
+  }
+
+  .sim-panel {
+    display: none;
+  }
+
+  .sim-panel.is-active {
+    display: block;
+  }
+
+  .log-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: baseline;
+    margin-bottom: 6px;
+  }
+
+  .log-indent {
+    padding-left: 24px;
+  }
+
+  .log-divider {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  }
+
+  .log-ts {
+    min-width: 68px;
+  }
+
+  .log-tag {
+    min-width: 60px;
+  }
+
+  .badge-status {
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+  }
+
+  .status-supported {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: var(--accent-emerald);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .status-conflict {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: var(--accent-amber);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .status-unverified {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+  }
+
+  .json-block {
+    background-color: rgba(0, 0, 0, 0.3);
+    padding: 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-hairline);
+  }
+
+  .json-comment { color: var(--text-muted); font-style: italic; display: block; margin-bottom: 8px; }
+  .json-row { padding-left: 20px; }
+  .json-key { color: var(--accent-emerald); }
+  .json-str { color: #86efac; }
+  .json-num { color: #f59e0b; }
+  .json-bool { color: #38bdf8; }
+
+  .report-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .report-section {
+    padding: 12px 16px;
+    background-color: var(--bg-surface-elevated);
+    border-left: 2px solid var(--accent-emerald);
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .terminal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 18px;
+    background-color: var(--bg-surface-elevated);
+    border-top: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .footer-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-label-short,
+  .title-short {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .tab-label-full,
+    .title-full {
+      display: none;
+    }
+    .tab-label-short,
+    .title-short {
+      display: inline;
+    }
+    .terminal-header {
+      padding: 10px 14px;
+    }
+    .terminal-title {
+      font-size: 0.68rem;
+      flex: 1;
+      min-width: 0;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    @media (max-width: 360px) {
+      .terminal-title {
+        font-size: 0.60rem;
+      }
+    }
+    .terminal-nav {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      width: 100%;
+    }
+    .sim-tab-btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      padding: 8px 4px;
+      font-size: 0.68rem;
+    }
+    .terminal-body {
+      padding: 16px 14px;
+    }
+    .simulation-banner {
+      padding: 8px 14px;
+      font-size: 0.68rem;
+    }
+    .terminal-footer {
+      padding: 8px 14px;
+      font-size: 0.68rem;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

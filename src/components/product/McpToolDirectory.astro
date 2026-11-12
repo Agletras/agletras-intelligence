@@ -1,0 +1,316 @@
+---
+/**
+ * Source-Verified MCP Tool Directory Component.
+ *
+ * Grounded 1:1 in D:\ctf\era6-agletras-mcp\agletras-mcp\src\agletras_mcp\server.py.
+ * Every tool listed here is registered in the server's TOOL_NAMES tuple and implemented
+ * across verified local modules.
+ */
+
+interface ToolEntry {
+  name: string
+  module: string
+  purpose: string
+  args: string
+}
+
+interface ToolSuite {
+  suiteNum: string
+  name: string
+  badge: string
+  tools: ToolEntry[]
+}
+
+const suites: ToolSuite[] = [
+  {
+    suiteNum: '01',
+    name: 'Source Ingestion & Retrieval',
+    badge: '13 Tools',
+    tools: [
+      { name: 'health_check', module: 'server.py', purpose: 'Liveness probe: verifies local server and storage connectivity.', args: 'no args' },
+      { name: 'fetch_url', module: 'webfetch.py', purpose: 'SSRF-guarded HTTP/HTTPS page retrieval with readable text extraction.', args: 'url, max_chars, save, title, notes' },
+      { name: 'search_web', module: 'search.py', purpose: 'Multi-provider web search (DuckDuckGo, Wikipedia) with normalized results.', args: 'query, max_results' },
+      { name: 'extract_pdf', module: 'pdf.py', purpose: 'Page-by-page PDF extraction using pypdf with character locator tracking.', args: 'source, max_pages, max_chars, save, title, notes' },
+      { name: 'collect_sources', module: 'collect.py', purpose: 'Parallel ingestion across URLs, local files, and search queries with deduplication.', args: 'sources, search, search_limit, max_chars, save, include_text, concurrency' },
+      { name: 'collect_local_folder', module: 'localfs.py', purpose: 'Recursive directory traversal with path-containment guards for approved folders.', args: 'folder, recursive, extensions, max_files, save, include_text' },
+      { name: 'extract_document', module: 'officedoc.py', purpose: 'Unified text extraction from DOCX, XLSX, CSV, and Markdown without external runtime deps.', args: 'source, max_chars, save, title, notes' },
+      { name: 'save_source', module: 'storage.py', purpose: 'Persists an extracted source record with SHA-256 fingerprint into SQLite.', args: 'kind, title, content, url, path, notes' },
+      { name: 'get_source', module: 'storage.py', purpose: 'Retrieves a stored source record by ID with metadata and passages.', args: 'source_id, include_content, include_passages' },
+      { name: 'list_sources', module: 'storage.py', purpose: 'Lists stored source records with pagination, ordered newest first.', args: 'limit, offset, kind, source_type' },
+      { name: 'search_sources', module: 'storage.py', purpose: 'Full-text keyword search across stored source titles and extracted content.', args: 'query, limit' },
+      { name: 'export_report', module: 'report.py', purpose: 'Compiles collected sources into a structured Markdown summary report.', args: 'title, source_ids, query, limit, include_excerpts' },
+      { name: 'stats', module: 'storage.py', purpose: 'Returns operational storage metrics: total sources, passages, runs, and DB size.', args: 'no args' },
+    ],
+  },
+  {
+    suiteNum: '02',
+    name: 'Content-Addressed Evidence Store (Phase 3)',
+    badge: '9 Tools',
+    tools: [
+      { name: 'start_research_run', module: 'evidence.py', purpose: 'Initializes a tracked research run with configuration presets and isolation.', args: 'query, config' },
+      { name: 'save_evidence', module: 'evidence.py', purpose: 'Persists source text into evidence library with SHA-256 passage segmentation.', args: 'source, source_id, text, title, url, path, notes, run_id, refresh, max_chars' },
+      { name: 'search_evidence', module: 'evidence.py', purpose: 'Full-text passage search via SQLite FTS5 for claim matching.', args: 'query, limit, run_id' },
+      { name: 'register_claim', module: 'evidence.py', purpose: 'Records an atomic factual proposition for epistemic evaluation.', args: 'run_id, claim_text' },
+      { name: 'attach_citation', module: 'evidence.py', purpose: 'Links a claim to an exact passage offset and derives verified epistemic status.', args: 'claim_id, passage_id, source_id, quote, locator, relation, metadata' },
+      { name: 'get_claim_citations', module: 'evidence.py', purpose: 'Retrieves all attached citations, source locators, and quotes for a claim.', args: 'claim_id' },
+      { name: 'get_research_history', module: 'evidence.py', purpose: 'Retrieves historical research run execution traces and evidence chains.', args: 'run_id, limit' },
+      { name: 'generate_report', module: 'evidence.py', purpose: 'Builds a validated claims and citations deliverable with stable reference IDs.', args: 'run_id, title' },
+      { name: 'validate_report', module: 'synthesis.py', purpose: 'Re-validates structural completeness, citation resolution, and epistemic consistency.', args: 'report_id' },
+    ],
+  },
+  {
+    suiteNum: '03',
+    name: 'Epistemic Engine & Verification (Phase 6)',
+    badge: '5 Tools',
+    tools: [
+      { name: 'extract_claims', module: 'verification.py', purpose: 'Deterministic sentence splitter extracting verifiable factual candidate statements.', args: 'run_id, text, source_ids, max_claims, register, claim_type' },
+      { name: 'verify_claims', module: 'verification.py', purpose: 'Evaluates claims against passage text into 6 unambiguous epistemic states.', args: 'run_id, claim_ids, apply_citations, method' },
+      { name: 'analyze_conflicts', module: 'verification.py', purpose: 'Surfaces evidential contradictions and conflicting claims across independent sources.', args: 'run_id, include_sources' },
+      { name: 'generate_markdown_report', module: 'synthesis.py', purpose: 'Generates comprehensive 10-section verified synthesis report with reference registry.', args: 'run_id, title, include_source_assessment' },
+      { name: 'get_report', module: 'synthesis.py', purpose: 'Retrieves stored Markdown or JSON synthesis report deliverables by ID.', args: 'report_id, include_content' },
+    ],
+  },
+  {
+    suiteNum: '04',
+    name: 'Autonomous Orchestration & Planning (Phase 4)',
+    badge: '7 Tools',
+    tools: [
+      { name: 'save_research_plan', module: 'planner.py', purpose: 'Persists execution bounds (max 8 subquestions, 2 rounds, 4 candidates, 20 sources).', args: 'run_id, objective, subquestions, scope, assumptions, limits' },
+      { name: 'update_subquestion', module: 'planner.py', purpose: 'Updates status of an inquiry subquestion (answered, partial, unanswered, conflicting).', args: 'run_id, subquestion_id, status, note' },
+      { name: 'log_run_event', module: 'planner.py', purpose: 'Appends an immutable audit event to the research_run_events log table.', args: 'run_id, kind, message, subquestion_id, source_id, payload' },
+      { name: 'start_followup_round', module: 'planner.py', purpose: 'Advances to a follow-up inquiry round while enforcing maximum round bounds.', args: 'run_id, reason, subquestion_id' },
+      { name: 'finish_research_run', module: 'planner.py', purpose: 'Records stopping rationale (completed, budget exhausted, error) and closes run.', args: 'run_id, status, reason, error' },
+      { name: 'get_engagement', module: 'engagement.py', purpose: 'Returns the frozen commercial engagement snapshot and deliverable record.', args: 'run_id, engagement_id' },
+      { name: 'generate_client_report', module: 'engagement.py', purpose: 'Executes full reporting pipeline to produce Markdown or validated Word DOCX.', args: 'run_id, force, format' },
+    ],
+  },
+  {
+    suiteNum: '05',
+    name: 'Continuous Monitoring & Project Memory (Phase 8)',
+    badge: '4 Tools',
+    tools: [
+      { name: 'search_memory', module: 'memory.py', purpose: 'Recalls verified evidence and findings across historical research runs.', args: 'query, project, limit, max_age_days' },
+      { name: 'monitor_add_target', module: 'monitor.py', purpose: 'Registers a web page or file target for continuous change detection monitoring.', args: 'target, name, project, kind' },
+      { name: 'monitor_check', module: 'monitor.py', purpose: 'Executes periodic change detection checks over registered targets with diff hashing.', args: 'target_ids, project, parallel' },
+      { name: 'monitor_changes', module: 'monitor.py', purpose: 'Returns detected content diffs, structural changes, and historical modification records.', args: 'target_id, project, meaningful_only, since_days, limit' },
+    ],
+  },
+  {
+    suiteNum: '06',
+    name: 'Visual Analysis & Image Research (Phase 5)',
+    badge: '2 Tools',
+    tools: [
+      { name: 'search_images', module: 'images.py', purpose: 'Queries visual source metadata and returns normalized discovery candidates.', args: 'query, provider, max_results' },
+      { name: 'analyze_image', module: 'images.py', purpose: 'Performs visual analysis and OCR extraction via optional external vision endpoint.', args: 'image_url, image_urls, local_path, source_id, save, prompt' },
+    ],
+  },
+]
+---
+
+<details class="mcp-directory-details panel-telemetry" id="mcp-tool-directory">
+  <summary class="mcp-directory-summary font-mono text-xs">
+    <div class="summary-left">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald font-bold">SOURCE-VERIFIED MCP TOOL DIRECTORY</span>
+      <span class="text-muted">// 40 REGISTERED TOOLS IN CODE</span>
+    </div>
+    <div class="summary-toggle text-emerald font-bold">
+      <span class="view-label">INSPECT ALL 40 TOOLS</span>
+      <span class="toggle-arrow" aria-hidden="true">&darr;</span>
+    </div>
+  </summary>
+
+  <div class="mcp-directory-content">
+    <p class="dir-intro text-secondary text-xs leading-relaxed">
+      Every tool listed below is registered in <code>src/agletras_mcp/server.py</code> and implemented across local modules. No invented, duplicate, or unverified tools exist. Public web retrieval requires internet access with outbound SSRF protections, while evidence indexing, SQLite WAL storage, and deterministic claim verification execute locally.
+    </p>
+
+    <div class="dir-suites-container">
+      {suites.map((s) => (
+        <div class="dir-suite-group">
+          <div class="dir-suite-header">
+            <span class="font-mono text-xs text-emerald font-bold">SUITE {s.suiteNum} // {s.name.toUpperCase()}</span>
+            <span class="suite-badge font-mono text-xs text-muted">{s.badge}</span>
+          </div>
+
+          <div class="dir-table-wrap">
+            <table class="dir-table font-mono text-xs">
+              <thead>
+                <tr>
+                  <th style="width: 25%;">Registered Tool</th>
+                  <th style="width: 25%;">Implementation File</th>
+                  <th style="width: 50%;">Verified Purpose &amp; Parameters</th>
+                </tr>
+              </thead>
+              <tbody>
+                {s.tools.map((t) => (
+                  <tr>
+                    <td class="tool-cell"><strong class="text-emerald">{t.name}</strong></td>
+                    <td class="mod-cell text-muted">src/agletras_mcp/{t.module}</td>
+                    <td class="desc-cell text-secondary">
+                      {t.purpose} <span class="args-text text-dim">({t.args})</span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</details>
+
+<style>
+  .mcp-directory-details {
+    grid-column: 1 / span 32;
+    margin-top: 24px;
+    padding: 0;
+    overflow: hidden;
+    background: rgba(6, 18, 12, 0.5);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 8px;
+    transition: border-color var(--transition-fast);
+  }
+
+  .mcp-directory-details:hover,
+  .mcp-directory-details[open] {
+    border-color: rgba(16, 185, 129, 0.45);
+  }
+
+  .mcp-directory-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 24px;
+    cursor: pointer;
+    user-select: none;
+    background: rgba(16, 185, 129, 0.05);
+    list-style: none;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .mcp-directory-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .summary-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .summary-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+  }
+
+  .toggle-arrow {
+    transition: transform var(--transition-fast);
+  }
+
+  .mcp-directory-details[open] .toggle-arrow {
+    transform: rotate(180deg);
+  }
+
+  .mcp-directory-content {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    border-top: 1px solid var(--border-hairline);
+    background: rgba(3, 7, 5, 0.4);
+  }
+
+  .dir-intro {
+    max-width: 900px;
+    margin: 0;
+  }
+
+  .dir-suites-container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .dir-suite-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .dir-suite-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+  }
+
+  .suite-badge {
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .dir-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dir-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .dir-table th {
+    text-align: left;
+    padding: 8px 12px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-subtle);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .dir-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    vertical-align: top;
+  }
+
+  .dir-table tr:hover td {
+    background: rgba(16, 185, 129, 0.04);
+  }
+
+  .dir-table .tool-cell {
+    white-space: nowrap;
+  }
+
+  .dir-table .mod-cell {
+    white-space: nowrap;
+    font-size: 0.7rem;
+  }
+
+  .dir-table .args-text {
+    font-size: 0.7rem;
+    opacity: 0.65;
+  }
+
+  @media (max-width: 640px) {
+    .mcp-directory-summary {
+      padding: 14px 16px;
+    }
+
+    .mcp-directory-content {
+      padding: 16px;
+    }
+  }
+</style>

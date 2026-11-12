@@ -1,0 +1,378 @@
+---
+// AgentSnippets.astro - Verified agent integration snippets (OpenCode, Claude Desktop, Cursor, CLI)
+// Includes functional copy button with client-side clipboard feedback
+---
+
+<div class="agent-snippets-card panel-telemetry" id="quickstart">
+  <!-- Integration Tabs -->
+  <div class="snippet-header">
+    <div class="snippet-tabs" role="tablist" aria-label="Agent Integration Configs">
+      <button 
+        type="button" 
+        class="agent-tab-btn is-active font-mono text-xs" 
+        data-target="agent-opencode"
+        role="tab"
+        aria-selected="true"
+        aria-controls="agent-opencode"
+        id="tab-btn-opencode"
+      >
+        <span class="agent-tab-full">OpenCode</span>
+        <span class="agent-tab-short">OpenCode</span>
+      </button>
+      <button 
+        type="button" 
+        class="agent-tab-btn font-mono text-xs" 
+        data-target="agent-claude"
+        role="tab"
+        aria-selected="false"
+        aria-controls="agent-claude"
+        id="tab-btn-claude"
+      >
+        <span class="agent-tab-full">Claude Desktop</span>
+        <span class="agent-tab-short">Claude</span>
+      </button>
+      <button 
+        type="button" 
+        class="agent-tab-btn font-mono text-xs" 
+        data-target="agent-cursor"
+        role="tab"
+        aria-selected="false"
+        aria-controls="agent-cursor"
+        id="tab-btn-cursor"
+      >
+        <span class="agent-tab-full">Cursor IDE</span>
+        <span class="agent-tab-short">Cursor</span>
+      </button>
+      <button 
+        type="button" 
+        class="agent-tab-btn font-mono text-xs" 
+        data-target="agent-cli"
+        role="tab"
+        aria-selected="false"
+        aria-controls="agent-cli"
+        id="tab-btn-cli"
+      >
+        <span class="agent-tab-full">Model-Free CLI</span>
+        <span class="agent-tab-short">CLI</span>
+      </button>
+    </div>
+
+    <!-- Active Copy Button -->
+    <button 
+      type="button" 
+      class="btn-copy-snippet font-mono text-xs" 
+      id="btn-copy-active-snippet"
+      aria-label="Copy active configuration snippet"
+    >
+      <span class="copy-label">Copy Snippet</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Snippet Code Panels -->
+  <div class="snippet-content">
+    <!-- Panel 1: OpenCode -->
+    <div class="agent-panel is-active" id="agent-opencode" role="tabpanel" aria-labelledby="tab-btn-opencode">
+      <div class="snippet-desc text-muted font-mono text-xs">
+        Save to <code class="text-emerald">opencode.json</code> in your project root. Enables native stdio tool exposure without Code Mode wrappers.
+      </div>
+      <pre class="code-pre font-mono text-xs"><code id="code-opencode">&#123;
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": &#123;
+    "servers": &#123;
+      "agletras": &#123;
+        "type": "local",
+        "command": [
+          "python",
+          "-m",
+          "agletras_mcp"
+        ],
+        "codemode": false
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+    </div>
+
+    <!-- Panel 2: Claude Desktop -->
+    <div class="agent-panel" id="agent-claude" role="tabpanel" aria-labelledby="tab-btn-claude" hidden>
+      <div class="snippet-desc text-muted font-mono text-xs">
+        Add to <code class="text-emerald">claude_desktop_config.json</code>. Direct local stdio connection with paced web-search pacing.
+      </div>
+      <pre class="code-pre font-mono text-xs"><code id="code-claude">&#123;
+  "mcpServers": &#123;
+    "agletras": &#123;
+      "command": "python",
+      "args": [
+        "-m",
+        "agletras_mcp"
+      ],
+      "env": &#123;
+        "AGLETRAS_SEARCH_PROVIDER": "duckduckgo",
+        "AGLETRAS_SEARCH_MIN_INTERVAL": "2.0"
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+    </div>
+
+    <!-- Panel 3: Cursor IDE -->
+    <div class="agent-panel" id="agent-cursor" role="tabpanel" aria-labelledby="tab-btn-cursor" hidden>
+      <div class="snippet-desc text-muted font-mono text-xs">
+        Configure under <code class="text-emerald">Settings &gt; Features &gt; MCP</code> or add to <code class="text-emerald">.cursor/mcp.json</code>.
+      </div>
+      <pre class="code-pre font-mono text-xs"><code id="code-cursor">&#123;
+  "mcpServers": &#123;
+    "agletras": &#123;
+      "command": "python",
+      "args": [
+        "-m",
+        "agletras_mcp"
+      ]
+    &#125;
+  &#125;
+&#125;</code></pre>
+    </div>
+
+    <!-- Panel 4: Model-Free CLI -->
+    <div class="agent-panel" id="agent-cli" role="tabpanel" aria-labelledby="tab-btn-cli" hidden>
+      <div class="snippet-desc text-muted font-mono text-xs">
+        Execute full autonomous research workflows from the terminal without an agent model or external API keys.
+      </div>
+      <pre class="code-pre font-mono text-xs"><code id="code-cli"># 1. Run local environment pre-flight check
+agletras doctor
+
+# 2. Execute end-to-end research with bounded depth
+agletras run "Analyze corporate lineage and beneficial ownership" --depth standard
+
+# 3. Export Mermaid evidence map & CSV tables
+agletras export 1 --format mermaid --out ./visuals</code></pre>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Client-side agent snippet switcher & copy handler
+  const agentTabs = document.querySelectorAll<HTMLButtonElement>('.agent-tab-btn')
+  const agentPanels = document.querySelectorAll<HTMLElement>('.agent-panel')
+  const copyBtn = document.getElementById('btn-copy-active-snippet') as HTMLButtonElement | null
+  const copyLabel = copyBtn ? copyBtn.querySelector<HTMLElement>('.copy-label') : null
+
+  agentTabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target')
+      if (!targetId) return
+
+      agentTabs.forEach(b => {
+        b.classList.remove('is-active')
+        b.setAttribute('aria-selected', 'false')
+      })
+      agentPanels.forEach(p => {
+        p.classList.remove('is-active')
+        p.hidden = true
+      })
+
+      btn.classList.add('is-active')
+      btn.setAttribute('aria-selected', 'true')
+      const targetPanel = document.getElementById(targetId)
+      if (targetPanel) {
+        targetPanel.classList.add('is-active')
+        targetPanel.hidden = false
+      }
+    })
+  })
+
+  async function copySnippetText(text: string): Promise<boolean> {
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(text)
+        return true
+      }
+    } catch {
+      // fallback below
+    }
+    try {
+      const textArea = document.createElement('textarea')
+      textArea.value = text
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      textArea.style.top = '-999999px'
+      textArea.setAttribute('readonly', '')
+      document.body.appendChild(textArea)
+      textArea.select()
+      const success = document.execCommand('copy')
+      document.body.removeChild(textArea)
+      return success
+    } catch {
+      return false
+    }
+  }
+
+  if (copyBtn && copyLabel) {
+    copyBtn.addEventListener('click', async () => {
+      const activePanel = document.querySelector<HTMLElement>('.agent-panel.is-active code')
+      if (activePanel) {
+        const text = activePanel.innerText || activePanel.textContent || ''
+        await copySnippetText(text)
+        const originalText = copyLabel.innerText || copyLabel.textContent || ''
+        copyLabel.innerText = 'Copied!'
+        copyBtn.classList.add('is-copied')
+        setTimeout(() => {
+          copyLabel.innerText = originalText
+          copyBtn.classList.remove('is-copied')
+        }, 2000)
+      }
+    })
+  }
+</script>
+
+<style>
+  .agent-snippets-card {
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .snippet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-hairline);
+    padding: 0 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .snippet-tabs {
+    display: flex;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .snippet-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .agent-tab-btn {
+    padding: 12px 18px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .agent-tab-btn:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  .agent-tab-btn.is-active {
+    color: var(--accent-emerald);
+    border-bottom-color: var(--accent-emerald);
+  }
+
+  .btn-copy-snippet {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 4px;
+    color: var(--accent-emerald);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-copy-snippet:hover {
+    background-color: rgba(16, 185, 129, 0.2);
+    border-color: var(--accent-emerald);
+  }
+
+  .btn-copy-snippet.is-copied {
+    background-color: var(--accent-emerald);
+    color: #030705;
+    font-weight: 700;
+  }
+
+  .snippet-content {
+    padding: 20px;
+    background-color: #030705;
+  }
+
+  .agent-panel {
+    display: none;
+  }
+
+  .agent-panel.is-active {
+    display: block;
+  }
+
+  .snippet-desc {
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+
+  .code-pre {
+    margin: 0;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    overflow-x: auto;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  .agent-tab-short {
+    display: none;
+  }
+
+  @media (max-width: 640px) {
+    .agent-tab-full {
+      display: none;
+    }
+    .agent-tab-short {
+      display: inline;
+    }
+    .snippet-header {
+      padding: 8px 12px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+    }
+    .snippet-tabs {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      width: 100%;
+    }
+    .agent-tab-btn {
+      width: 100%;
+      text-align: center;
+      justify-content: center;
+      padding: 8px 2px;
+      font-size: 0.68rem;
+    }
+    .btn-copy-snippet {
+      width: 100%;
+      justify-content: center;
+      padding: 8px 14px;
+    }
+    .snippet-content {
+      padding: 14px;
+    }
+    .code-pre {
+      padding: 12px;
+      font-size: 0.75rem;
+    }
+  }
+</style>

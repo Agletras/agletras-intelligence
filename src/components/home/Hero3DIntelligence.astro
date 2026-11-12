@@ -1,0 +1,841 @@
+---
+import { paths } from '@/lib/routes'
+import { companyData } from '@/lib/companyData'
+---
+
+<section class="hero-section" id="hero" data-section="01 // APERTURE">
+  {/* 3D Isometric WebGL/Canvas Intelligence Environment */}
+  <div class="hero-canvas-wrap" aria-hidden="true">
+    <canvas id="intelligence-3d-canvas" class="hero-canvas"></canvas>
+    <div class="hero-vignette"></div>
+  </div>
+
+  {/* Background Coordinate Line Guides & Crosshair Ticks */}
+  <div class="grid-lines-bg" aria-hidden="true">
+    {Array.from({ length: 32 }).map(() => (
+      <div class="grid-line-col">
+        <span class="grid-crosshair top">+</span>
+        <span class="grid-crosshair bottom">+</span>
+      </div>
+    ))}
+  </div>
+
+  {/* Hero Content Container */}
+  <div class="grid-container hero-container">
+    <div class="hero-editorial-col">
+      {/* Telemetry Eyebrow */}
+      <div class="hero-eyebrow">
+        <span class="beacon-dot"></span>
+        <span class="font-mono text-xs text-emerald font-bold">
+          EVIDENCE-FIRST RESEARCH INTELLIGENCE
+        </span>
+        <span class="eyebrow-divider text-muted">/</span>
+        <span class="font-mono text-xs text-muted">LAWFUL OSINT</span>
+      </div>
+
+      {/* Main Headline with High-Impact Typographic Contrast */}
+      <h1 class="hero-title font-display">
+        Evidence-Backed <br class="title-break" />
+        Intelligence For <br />
+        <span class="hero-highlight" data-scramble="High-Stakes Decisions.">
+          High-Stakes Decisions.
+        </span>
+      </h1>
+
+      {/* Supporting Copy Derived from Source Contracts */}
+      <p class="hero-subheading text-secondary">
+        {companyData.positioning.subheading}
+      </p>
+
+      {/* Action Buttons */}
+      <div class="hero-actions">
+        <a href={paths.contact()} class="btn-primary">
+          <span>Request Scoped Brief</span>
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+
+        <a href={paths.methodology()} class="btn-secondary">
+          <span>Explore 6-Stage Lifecycle</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      {/* Verification Standards Footnote Bar */}
+      <div class="hero-telemetry-bar font-mono text-xs">
+        <div class="telemetry-item">
+          <span class="text-muted">SOURCE DISCIPLINE:</span>
+          <span class="text-primary font-bold">100% PASSIVE OSINT</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="text-muted">EPISTEMIC TIERS:</span>
+          <span class="text-primary">FACT / IND / INF / ASM / UNR</span>
+        </div>
+        <div class="telemetry-item">
+          <span class="text-muted">ANALYTICAL RIGOR:</span>
+          <span class="text-emerald font-bold">HUMAN-REVIEWED</span>
+        </div>
+      </div>
+    </div>
+
+    {/* Right Column: Research Inquiry & Evidence Workstation */}
+    <div class="hero-hud-col panel-telemetry" id="hero-hud-panel">
+      <div class="hud-header font-mono text-xs">
+        <div class="hud-status">
+          <span class="beacon-dot"></span>
+          <span class="text-emerald font-bold">RESEARCH INQUIRY WORKSTATION</span>
+        </div>
+        <span class="text-muted">VERIFIED METHODOLOGY</span>
+      </div>
+
+      <div class="hud-inspector-title font-mono text-xs text-muted">
+        SAMPLE COMMERCIAL INQUIRIES // SELECT TO INSPECT:
+      </div>
+
+      <div class="hud-nodes-list font-mono text-xs" id="hud-nodes-container">
+        <button class="hud-node-btn active" data-node-label="INQUIRY_COUNTERPARTY" type="button">
+          <span class="node-tag text-emerald font-bold">CORP</span>
+          <span class="node-name">Counterparty Ownership Audit</span>
+          <span class="node-status text-emerald">FACT</span>
+        </button>
+        <button class="hud-node-btn" data-node-label="INQUIRY_EXECUTIVE" type="button">
+          <span class="node-tag text-emerald font-bold">VET</span>
+          <span class="node-name">Executive Background Verification</span>
+          <span class="node-status text-emerald">VERIFIED</span>
+        </button>
+        <button class="hud-node-btn" data-node-label="INQUIRY_BRAND" type="button">
+          <span class="node-tag text-amber font-bold">BRAND</span>
+          <span class="node-name">Brand Lookalike Infrastructure</span>
+          <span class="node-status text-amber">INDICATOR</span>
+        </button>
+        <button class="hud-node-btn" data-node-label="INQUIRY_ATTACK_SURFACE" type="button">
+          <span class="node-tag text-emerald font-bold">RECON</span>
+          <span class="node-name">Attack Surface Exposure</span>
+          <span class="node-status text-emerald">MAPPED</span>
+        </button>
+      </div>
+
+      <div class="hud-telemetry-detail font-mono text-xs" id="hud-active-detail">
+        <div class="detail-row">
+          <span class="text-muted">INQUIRY OBJECTIVE:</span>
+          <span class="text-primary font-bold" id="hud-focus-name">Counterparty Ownership Audit</span>
+        </div>
+        <div class="detail-row">
+          <span class="text-muted">EPISTEMIC CLASSIFICATION:</span>
+          <span class="text-emerald font-bold" id="hud-focus-tier">FACT // Primary Record Attributed</span>
+        </div>
+        <div class="detail-row">
+          <span class="text-muted">EVIDENTIARY METHOD:</span>
+          <span class="text-secondary" id="hud-focus-method">Multi-Jurisdiction Corporate Gazette & Beneficial Ownership Matching</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {/* Tactical Scroll Anchor Prompt */}
+  <div class="hero-scroll-cue font-mono text-xs text-muted" aria-hidden="true">
+    <span class="cue-label">SCROLL TO EXAMINE EVIDENCE</span>
+    <div class="cue-line"></div>
+    <span class="cue-coord">COORD: 01 // APERTURE</span>
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    min-height: min(100vh, 1080px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    padding-top: 110px;
+    padding-bottom: 60px;
+    overflow: hidden;
+    background-color: var(--bg-deep);
+  }
+
+  .hero-canvas-wrap {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .hero-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .hero-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+      circle at 68% 45%,
+      rgba(16, 185, 129, 0.08) 0%,
+      rgba(3, 7, 5, 0.8) 60%,
+      var(--bg-deep) 100%
+    );
+    pointer-events: none;
+  }
+
+  .grid-crosshair {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.12);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    line-height: 1;
+    transform: translateX(-50%);
+  }
+
+  .grid-crosshair.top {
+    top: 72px;
+  }
+
+  .grid-crosshair.bottom {
+    bottom: 24px;
+  }
+
+  .hero-container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+  }
+
+  .hero-editorial-col {
+    grid-column: span 18;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    z-index: 2;
+  }
+
+  .hero-hud-col {
+    grid-column: span 14;
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: rgba(6, 14, 10, 0.82);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--border-subtle);
+    border-radius: 2px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    align-self: center;
+  }
+
+  .hud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hud-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hud-inspector-title {
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+
+  .hud-nodes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .hud-node-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-hairline);
+    border-radius: 2px;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    flex-wrap: wrap;
+    gap: 6px;
+    transition: all var(--transition-fast);
+  }
+
+  .hud-node-btn:hover,
+  .hud-node-btn.active {
+    background: rgba(16, 185, 129, 0.12);
+    border-color: var(--accent-emerald);
+    transform: translateX(3px);
+  }
+
+  .node-tag {
+    padding: 2px 5px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 2px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .node-name {
+    font-weight: 600;
+  }
+
+  .hud-telemetry-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    font-size: 11px;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-radius: 2px;
+    align-self: flex-start;
+  }
+
+  .hero-title {
+    font-size: clamp(2.6rem, 5.2vw, 5.4rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+  }
+
+  .hero-highlight {
+    color: var(--accent-emerald-bright);
+    text-shadow: 0 0 28px rgba(16, 185, 129, 0.4);
+    display: inline-block;
+  }
+
+  .hero-subheading {
+    font-size: clamp(1.05rem, 1.35vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.65;
+    color: var(--text-secondary);
+    max-width: 60ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+
+  .hero-telemetry-bar {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+    padding-top: 24px;
+    margin-top: 12px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .telemetry-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .hero-scroll-cue {
+    position: absolute;
+    bottom: 24px;
+    left: var(--grid-margin);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .cue-line {
+    width: 44px;
+    height: 1px;
+    background-color: var(--border-subtle);
+  }
+
+  .cue-coord {
+    color: var(--brand-green-bright);
+    font-size: 0.68rem;
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1280px) {
+    .hero-editorial-col {
+      grid-column: span 18;
+    }
+    .hero-hud-col {
+      grid-column: span 14;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    .hero-editorial-col {
+      grid-column: span 32;
+    }
+    .hero-hud-col {
+      grid-column: span 32;
+      margin-top: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-editorial-col {
+      grid-column: span 8;
+      gap: 18px;
+    }
+    .hero-hud-col {
+      grid-column: span 8;
+      padding: 18px;
+    }
+    .hero-telemetry-bar {
+      gap: 16px;
+    }
+    .telemetry-fps-item {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-editorial-col {
+      grid-column: span 4;
+    }
+    .hero-hud-col {
+      grid-column: span 4;
+    }
+    .hero-scroll-cue {
+      display: none;
+    }
+    .title-break {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // High-End Cinematic 3D Isometric Voxel & Spatial Intelligence Engine
+  let heroAnimId: number | null = null
+
+  function initHeroCinematic3D() {
+    if (heroAnimId !== null) {
+      cancelAnimationFrame(heroAnimId)
+      heroAnimId = null
+    }
+
+    const canvas = document.getElementById('intelligence-3d-canvas') as HTMLCanvasElement
+    if (!canvas) return
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    // High-DPI Resolution Sizing
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2)
+      const w = canvas.parentElement ? canvas.parentElement.clientWidth : window.innerWidth
+      const h = canvas.parentElement ? canvas.parentElement.clientHeight : window.innerHeight
+      canvas.width = w * dpr
+      canvas.height = h * dpr
+    }
+    resize()
+    window.addEventListener('resize', resize)
+
+    // Spatial Voxel Entity Geometry
+    interface VoxelNode {
+      x: number
+      y: number
+      z: number
+      size: number
+      label: string
+      color: string
+      type: 'anchor' | 'signal' | 'recon'
+      pulsePhase: number
+    }
+
+    const VOXEL_LABELS = [
+      'CORP_SHELL_0x4F',
+      'IP:198.51.100.42',
+      'TLS_SAN:CORP.NET',
+      'GEO_COORD:422003',
+      'CT_LOG_STREAM',
+      'WHOIS_PRIVACY_PROXY',
+      'ACH_INFERENCE_NODE',
+      'BGP_ASN_13335',
+      'RECON_PERIMETER',
+    ]
+
+    const VOXEL_COLORS = ['#10b981', '#34d399', '#5eff88', '#059669', '#2a9b5c']
+
+    // Construct Volumetric 3D Scene Nodes
+    const NODE_COUNT = window.innerWidth < 768 ? 24 : 48
+    const nodes: VoxelNode[] = []
+
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: (Math.random() - 0.45) * 1100,
+        y: (Math.random() - 0.5) * 750,
+        z: Math.random() * 700 + 150,
+        size: Math.random() * 8 + 8,
+        label: VOXEL_LABELS[i % VOXEL_LABELS.length] || 'OSINT_NODE',
+        color: VOXEL_COLORS[i % VOXEL_COLORS.length] || '#10b981',
+        type: i % 4 === 0 ? 'anchor' : 'signal',
+        pulsePhase: Math.random() * Math.PI * 2,
+      })
+    }
+
+    // Active Data Stream Packets Traveling Along Pathways
+    interface DataPacket {
+      fromIndex: number
+      toIndex: number
+      progress: number
+      speed: number
+    }
+
+    const packets: DataPacket[] = []
+    for (let i = 0; i < 12; i++) {
+      packets.push({
+        fromIndex: Math.floor(Math.random() * nodes.length),
+        toIndex: Math.floor(Math.random() * nodes.length),
+        progress: Math.random(),
+        speed: 0.006 + Math.random() * 0.008,
+      })
+    }
+
+    // Interactive pointer coordinates with smooth spring damping
+    let mouseX = 0
+    let mouseY = 0
+    let targetMouseX = 0
+    let targetMouseY = 0
+
+    window.addEventListener('pointermove', (e) => {
+      targetMouseX = (e.clientX - window.innerWidth / 2) * 0.22
+      targetMouseY = (e.clientY - window.innerHeight / 2) * 0.22
+    })
+
+    // Scroll Coupling
+    let scrollY = 0
+    window.addEventListener('scroll', () => {
+      scrollY = window.scrollY
+    })
+
+    // Empirical Performance Measurement
+    let frameTimes: number[] = []
+    let lastTimestamp = performance.now()
+    let frameCount = 0
+
+    // Render 3D Isometric Voxel Cube
+    function drawIsometricVoxel(
+      cx: number,
+      cy: number,
+      size: number,
+      color: string,
+      scale: number,
+      opacity: number
+    ) {
+      if (!ctx) return
+      const s = size * scale
+      const h = s * 0.577 // Isometric ratio
+
+      // Top Face
+      ctx.fillStyle = color
+      ctx.globalAlpha = opacity * 0.85
+      ctx.beginPath()
+      ctx.moveTo(cx, cy - h)
+      ctx.lineTo(cx + s, cy - h * 0.5)
+      ctx.lineTo(cx, cy)
+      ctx.lineTo(cx - s, cy - h * 0.5)
+      ctx.closePath()
+      ctx.fill()
+
+      // Left Face (Shaded)
+      ctx.fillStyle = '#021820'
+      ctx.globalAlpha = opacity * 0.95
+      ctx.beginPath()
+      ctx.moveTo(cx - s, cy - h * 0.5)
+      ctx.lineTo(cx, cy)
+      ctx.lineTo(cx, cy + h)
+      ctx.lineTo(cx - s, cy + h * 0.5)
+      ctx.closePath()
+      ctx.fill()
+
+      // Right Face
+      ctx.fillStyle = color
+      ctx.globalAlpha = opacity * 0.4
+      ctx.beginPath()
+      ctx.moveTo(cx, cy)
+      ctx.lineTo(cx + s, cy - h * 0.5)
+      ctx.lineTo(cx + s, cy + h * 0.5)
+      ctx.lineTo(cx, cy + h)
+      ctx.closePath()
+      ctx.fill()
+
+      // Wireframe Outline
+      ctx.strokeStyle = '#ffffff'
+      ctx.globalAlpha = opacity * 0.3
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      ctx.moveTo(cx, cy - h)
+      ctx.lineTo(cx + s, cy - h * 0.5)
+      ctx.lineTo(cx + s, cy + h * 0.5)
+      ctx.lineTo(cx, cy + h)
+      ctx.lineTo(cx - s, cy + h * 0.5)
+      ctx.lineTo(cx - s, cy - h * 0.5)
+      ctx.closePath()
+      ctx.stroke()
+
+      ctx.globalAlpha = 1
+    }
+
+    // Main 3D Animation Loop
+    const focalLength = 600
+    // Inquiry Workstation Interaction
+    let focusedLabel: string | null = 'INQUIRY_COUNTERPARTY'
+    const hudButtons = document.querySelectorAll<HTMLButtonElement>('.hud-node-btn')
+    const focusNameEl = document.getElementById('hud-focus-name')
+    const focusTierEl = document.getElementById('hud-focus-tier')
+    const focusMethodEl = document.getElementById('hud-focus-method')
+
+    const nodeMetadata: Record<string, { label: string; tier: string; method: string }> = {
+      'INQUIRY_COUNTERPARTY': {
+        label: 'Counterparty Ownership Audit',
+        tier: 'FACT // Primary Record Attributed',
+        method: 'Multi-Jurisdiction Corporate Gazette & Beneficial Ownership Matching',
+      },
+      'INQUIRY_EXECUTIVE': {
+        label: 'Executive Background Verification',
+        tier: 'VERIFIED // Public Filing & Credential Audit',
+        method: 'Historical Registry Chronology & Public Contribution Verification',
+      },
+      'INQUIRY_BRAND': {
+        label: 'Brand Lookalike Infrastructure',
+        tier: 'INDICATOR // Empirical Signal Telemetry',
+        method: 'Passive DNS & Certificate Transparency Log Clustering',
+      },
+      'INQUIRY_ATTACK_SURFACE': {
+        label: 'Attack Surface Exposure',
+        tier: 'MAPPED // 100% Passive External Surface',
+        method: 'Dangling CNAME, Expiring TLS & Network Routing Reconnaissance',
+      },
+    }
+
+    hudButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.nodeLabel || null
+        focusedLabel = key
+        hudButtons.forEach((b) => b.classList.remove('active'))
+        btn.classList.add('active')
+
+        if (key && focusNameEl && focusTierEl && focusMethodEl) {
+          const meta = nodeMetadata[key] || {
+            label: 'Commercial Research Inquiry',
+            tier: 'VERIFIED // Evidence Classified',
+            method: 'Passive Multi-Source Extraction & Human Correlation',
+          }
+          focusNameEl.textContent = meta.label
+          focusTierEl.textContent = meta.tier
+          focusMethodEl.textContent = meta.method
+        }
+      })
+    })
+
+    let radarSweep = 0
+
+    function renderLoop(currentTimestamp: number) {
+      if (!ctx) return
+
+      // Measure Frame Timing
+      const delta = currentTimestamp - lastTimestamp
+      lastTimestamp = currentTimestamp
+      frameTimes.push(delta)
+      if (frameTimes.length > 60) frameTimes.shift()
+
+      frameCount++
+
+      // Smooth pointer damping
+      mouseX += (targetMouseX - mouseX) * 0.05
+      mouseY += (targetMouseY - mouseY) * 0.05
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      const originX = canvas.width * 0.55 + mouseX
+      const originY = canvas.height * 0.48 + mouseY + scrollY * 0.35
+
+      // Animate Radar Scanning Ring
+      radarSweep = (radarSweep + 0.008) % 1
+      const radarRadius = 260 * (1 + radarSweep)
+      ctx.strokeStyle = 'rgba(16, 185, 129, 0.15)'
+      ctx.lineWidth = 1
+      ctx.beginPath()
+      ctx.arc(originX, originY, radarRadius, 0, Math.PI * 2)
+      ctx.stroke()
+
+      // Project 3D Nodes
+      interface Projected {
+        node: VoxelNode
+        sx: number
+        sy: number
+        scale: number
+        opacity: number
+      }
+
+      const projected: Projected[] = []
+
+      for (const node of nodes) {
+        // Slow organic spatial drift
+        if (!prefersReducedMotion) {
+          node.pulsePhase += 0.02
+        }
+
+        const scale = focalLength / (focalLength + node.z)
+        const sx = originX + node.x * scale
+        const sy = originY + node.y * scale
+
+        // Depth opacity
+        const opacity = Math.min(Math.max((900 - node.z) / 750, 0.2), 1)
+
+        projected.push({
+          node,
+          sx,
+          sy,
+          scale,
+          opacity,
+        })
+      }
+
+      // Depth sort
+      projected.sort((a, b) => b.node.z - a.node.z)
+
+      // Draw Relationship Pathways Between Proximate Nodes
+      ctx.lineWidth = 1
+      for (let i = 0; i < projected.length; i++) {
+        const p1 = projected[i]
+        if (!p1) continue
+        for (let j = i + 1; j < projected.length; j++) {
+          const p2 = projected[j]
+          if (!p2) continue
+
+          const dx = p1.sx - p2.sx
+          const dy = p1.sy - p2.sy
+          const dist = Math.sqrt(dx * dx + dy * dy)
+
+          if (dist < 140) {
+            const alpha = (1 - dist / 140) * 0.22 * p1.opacity
+            ctx.strokeStyle = `rgba(16, 185, 129, ${alpha})`
+            ctx.beginPath()
+            ctx.moveTo(p1.sx, p1.sy)
+            ctx.lineTo(p2.sx, p2.sy)
+            ctx.stroke()
+          }
+        }
+      }
+
+      // Animate Moving Data Packets Along Pathways
+      if (!prefersReducedMotion) {
+        for (const pkt of packets) {
+          pkt.progress += pkt.speed
+          if (pkt.progress >= 1) {
+            pkt.progress = 0
+            pkt.fromIndex = Math.floor(Math.random() * nodes.length)
+            pkt.toIndex = Math.floor(Math.random() * nodes.length)
+          }
+
+          const fromP = projected[pkt.fromIndex]
+          const toP = projected[pkt.toIndex]
+
+          if (fromP && toP) {
+            const px = fromP.sx + (toP.sx - fromP.sx) * pkt.progress
+            const py = fromP.sy + (toP.sy - fromP.sy) * pkt.progress
+
+            ctx.fillStyle = '#ffffff'
+            ctx.beginPath()
+            ctx.arc(px, py, 2.5 * fromP.scale, 0, Math.PI * 2)
+            ctx.fill()
+          }
+        }
+      }
+
+      // Draw Voxel Nodes & Holographic Metadata
+      for (const p of projected) {
+      drawIsometricVoxel(p.sx, p.sy, p.node.size, p.node.color, p.scale, p.opacity)
+
+      // Target Focus Ring & Crosshair when selected via HUD
+      if (p.node.label === focusedLabel) {
+        ctx.strokeStyle = '#10b981'
+        ctx.lineWidth = 2
+        ctx.beginPath()
+        ctx.arc(p.sx, p.sy, p.node.size * p.scale + 14, 0, Math.PI * 2)
+        ctx.stroke()
+
+        ctx.strokeStyle = 'rgba(16, 185, 129, 0.7)'
+        ctx.lineWidth = 1
+        ctx.beginPath()
+        ctx.moveTo(p.sx - 22, p.sy)
+        ctx.lineTo(p.sx + 22, p.sy)
+        ctx.moveTo(p.sx, p.sy - 22)
+        ctx.lineTo(p.sx, p.sy + 22)
+        ctx.stroke()
+
+        ctx.font = `bold ${Math.floor(11 * Math.max(p.scale, 0.8))}px monospace`
+        ctx.fillStyle = '#34d399'
+        ctx.fillText(`TARGET >> [${p.node.label}]`, p.sx + 16 * p.scale, p.sy - 12)
+      } else if (p.scale > 0.65) {
+        // Telemetry Label on Foreground Nodes
+        ctx.font = `${Math.floor(10 * p.scale)}px monospace`
+        ctx.fillStyle = `rgba(148, 163, 184, ${0.7 * p.opacity})`
+        ctx.fillText(`[${p.node.label}]`, p.sx + 14 * p.scale, p.sy + 4)
+      }
+    }
+
+    if (!prefersReducedMotion) {
+      heroAnimId = requestAnimationFrame(renderLoop)
+    }
+  }
+
+  heroAnimId = requestAnimationFrame(renderLoop)
+
+  document.addEventListener('astro:before-swap', () => {
+    if (heroAnimId !== null) {
+      cancelAnimationFrame(heroAnimId)
+      heroAnimId = null
+    }
+    window.removeEventListener('resize', resize)
+  })
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initHeroCinematic3D)
+} else {
+  initHeroCinematic3D()
+}
+
+document.addEventListener('astro:page-load', initHeroCinematic3D)
+</script>

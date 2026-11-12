@@ -1,0 +1,679 @@
+---
+import { researchDomains } from '@/lib/companyData'
+import { paths } from '@/lib/routes'
+---
+
+<section class="research-preview-section" id="research" data-section="04 // RESEARCH">
+  <div class="grid-container">
+    {/* Section Header */}
+    <div class="research-header-col reveal-on-scroll">
+      <div class="eyebrow-badge">
+        <span class="beacon-dot"></span>
+        <span data-scramble="04 // RESEARCH CONSOLE">04 // RESEARCH CONSOLE</span>
+      </div>
+
+      <div class="research-header-row">
+        <div>
+          <h2 class="section-title">
+            The Applied Research <br />
+            <span class="text-emerald">Intelligence Domains.</span>
+          </h2>
+          <p class="section-subtitle">
+            Agletras conducts rigorous open-source investigations across four primary commercial domains supported by specialized technical and document intelligence capabilities.
+          </p>
+        </div>
+
+        <a href={paths.research()} class="btn-primary">
+          <span>Explore Research Portfolio</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    {/* Navigable Program Console */}
+    <div class="research-console-col reveal-on-scroll reveal-delay-1">
+      <div class="research-console-frame panel-telemetry">
+        {/* Console Header Bar */}
+        <div class="console-top-bar font-mono text-xs">
+          <div class="console-top-left">
+            <span class="term-prompt">AGL_RECON://</span>
+            <span class="text-emerald">RESEARCH_PROGRAM_INDEX</span>
+            <span class="text-muted">[ACTIVE_STREAMS: 07]</span>
+          </div>
+          <div class="console-top-right">
+            <span class="status-indicator">
+              <span class="beacon-dot"></span>
+              <span class="text-muted">OPERATIONAL PIPELINE READY</span>
+            </span>
+          </div>
+        </div>
+
+        {/* Console Body: Left Nav Wing + Right Spotlight Stage */}
+        <div class="console-body">
+          {/* Left Wing: Domain Directory List */}
+          <nav class="console-nav-wing" aria-label="Research Domains Directory">
+            <div class="nav-wing-header font-mono text-xs text-muted">
+              <span>DOMAIN INDEX</span>
+              <span>CLASSIFICATION</span>
+            </div>
+            <div class="domain-tab-list" role="tablist">
+              {researchDomains.map((domain, index) => (
+                <button
+                  type="button"
+                  class={`domain-tab-btn ${index === 0 ? 'active' : ''}`}
+                  id={`tab-${domain.id}`}
+                  data-target={domain.id}
+                  role="tab"
+                  aria-selected={index === 0 ? 'true' : 'false'}
+                  aria-controls={`panel-${domain.id}`}
+                  tabindex={index === 0 ? '0' : '-1'}
+                >
+                  <div class="tab-indicator-bar"></div>
+                  <div class="tab-content-wrap">
+                    <div class="tab-meta-row font-mono text-xs">
+                      <span class="tab-code">{domain.code}</span>
+                      <span class="tab-scope">{domain.scopeTag}</span>
+                    </div>
+                    <span class="tab-title font-display">{domain.title}</span>
+                  </div>
+                  <svg class="tab-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M5 2.5L9.5 7L5 11.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              ))}
+            </div>
+          </nav>
+
+          {/* Right Wing: Spotlight Dossier Stage */}
+          <div class="console-spotlight-wing">
+            {researchDomains.map((domain, index) => (
+              <article
+                class={`domain-spotlight-pane ${index === 0 ? 'active' : ''}`}
+                id={`panel-${domain.id}`}
+                role="tabpanel"
+                aria-labelledby={`tab-${domain.id}`}
+                hidden={index !== 0}
+              >
+                {/* Pane Status Header */}
+                <div class="pane-meta-header font-mono text-xs">
+                  <div class="pane-tag-wrap">
+                    <span class="pane-code text-emerald font-bold">{domain.code}</span>
+                    <span class="pane-slash">/</span>
+                    <span class="pane-scope-tag">{domain.scopeTag}</span>
+                  </div>
+                  <div class="pane-status-pill">
+                    <span class="live-dot"></span>
+                    <span>ACTIVE SPECIFICATION</span>
+                  </div>
+                </div>
+
+                {/* Main Domain Title */}
+                <h3 class="pane-title font-display">
+                  <a href={`${paths.research()}#${domain.id}`} class="pane-title-link">
+                    {domain.title}
+                  </a>
+                </h3>
+                {domain.secondaryTitle && (
+                  <p class="font-mono text-xs text-emerald/80 -mt-2 mb-3">{domain.secondaryTitle}</p>
+                )}
+
+                {/* Scope Target Specification */}
+                <div class="pane-scope-box font-mono text-xs">
+                  <span class="scope-label text-muted">TARGET SURFACES & SOURCES:</span>
+                  <p class="scope-value text-primary">{domain.scope}</p>
+                </div>
+
+                {/* Analytical Summary */}
+                <p class="pane-summary text-body">
+                  {domain.summary}
+                </p>
+
+                {/* Key Technical Capabilities */}
+                <div class="pane-features-section">
+                  <span class="features-header-label font-mono text-xs text-muted uppercase">
+                    Core Technical Capabilities & Extraction Methods:
+                  </span>
+                  <div class="pane-features-grid">
+                    {domain.technicalFeatures.map((feat) => (
+                      <div class="feature-item">
+                        <span class="feature-bullet text-emerald">›</span>
+                        <span class="feature-text text-body-sm font-mono">{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Epistemic Focus Callout */}
+                <div class="pane-epistemic-callout">
+                  <div class="epistemic-tag font-mono text-xs">
+                    <span class="epistemic-icon">◈</span>
+                    <span class="text-emerald font-bold">EPISTEMIC OBJECTIVE:</span>
+                  </div>
+                  <p class="epistemic-text text-body-sm">
+                    {domain.epistemicFocus}
+                  </p>
+                </div>
+
+                {/* Pane Action Footer */}
+                <div class="pane-action-bar">
+                  <a href={`${paths.research()}#${domain.id}`} class="btn-primary">
+                    <span>Inspect Full Specification</span>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                  <a href={paths.contact()} class="btn-secondary">
+                    <span>Inquire Regarding {domain.code}</span>
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function setupResearchConsole() {
+    const tabs = document.querySelectorAll<HTMLButtonElement>('.domain-tab-btn')
+    const panels = document.querySelectorAll<HTMLElement>('.domain-spotlight-pane')
+
+    if (!tabs.length || !panels.length) return
+
+    function activateDomain(targetId: string) {
+      tabs.forEach((tab) => {
+        const isActive = tab.getAttribute('data-target') === targetId
+        tab.classList.toggle('active', isActive)
+        tab.setAttribute('aria-selected', isActive ? 'true' : 'false')
+        tab.setAttribute('tabindex', isActive ? '0' : '-1')
+      })
+
+      panels.forEach((panel) => {
+        const isActive = panel.id === `panel-${targetId}`
+        panel.classList.toggle('active', isActive)
+        panel.hidden = !isActive
+      })
+    }
+
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const targetId = tab.getAttribute('data-target')
+        if (targetId) activateDomain(targetId)
+      })
+
+      tab.addEventListener('keydown', (e) => {
+        const currentIndex = Array.from(tabs).indexOf(tab)
+        let newIndex = currentIndex
+
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+          e.preventDefault()
+          newIndex = (currentIndex + 1) % tabs.length
+        } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+          e.preventDefault()
+          newIndex = (currentIndex - 1 + tabs.length) % tabs.length
+        }
+
+        if (newIndex !== currentIndex) {
+          const nextTab = tabs[newIndex]
+          if (nextTab) {
+            nextTab.focus()
+            const targetId = nextTab.getAttribute('data-target')
+            if (targetId) activateDomain(targetId)
+          }
+        }
+      })
+    })
+  }
+
+  // Initialize on page load and view transitions
+  setupResearchConsole()
+  document.addEventListener('astro:page-load', setupResearchConsole)
+</script>
+
+<style>
+  .research-preview-section {
+    padding-top: clamp(80px, 8vw, 130px);
+    padding-bottom: clamp(80px, 8vw, 130px);
+    position: relative;
+    background-color: var(--bg-surface);
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .research-header-col {
+    grid-column: span 32;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: clamp(40px, 4vw, 64px);
+  }
+
+  .research-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  .research-console-col {
+    grid-column: span 32;
+  }
+
+  .research-console-frame {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border-subtle);
+    background: rgba(3, 7, 10, 0.85);
+    backdrop-filter: blur(12px);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .console-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: rgba(10, 16, 24, 0.8);
+    border-bottom: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .console-top-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .term-prompt {
+    color: var(--accent-emerald-bright);
+    font-weight: 700;
+  }
+
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .console-body {
+    display: grid;
+    grid-template-columns: 360px 1fr;
+    min-height: 580px;
+  }
+
+  /* Left Wing: Domain Tab Navigation */
+  .console-nav-wing {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-hairline);
+    background: rgba(6, 14, 10, 0.65);
+  }
+
+  .nav-wing-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border-hairline);
+    letter-spacing: 0.08em;
+  }
+
+  .domain-tab-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    max-height: 620px;
+  }
+
+  .domain-tab-btn {
+    display: flex;
+    align-items: center;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-hairline);
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--transition-fast), border-color var(--transition-fast);
+    position: relative;
+    width: 100%;
+    color: inherit;
+  }
+
+  .domain-tab-btn:hover {
+    background: rgba(16, 185, 129, 0.04);
+  }
+
+  .domain-tab-btn.active {
+    background: rgba(16, 185, 129, 0.09);
+  }
+
+  .tab-indicator-bar {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: transparent;
+    transition: background var(--transition-fast);
+  }
+
+  .domain-tab-btn.active .tab-indicator-bar {
+    background: var(--accent-emerald);
+    box-shadow: 0 0 10px var(--accent-emerald);
+  }
+
+  .tab-content-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex-grow: 1;
+    min-width: 0;
+  }
+
+  .tab-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .tab-code {
+    color: var(--text-muted);
+    font-weight: 700;
+  }
+
+  .domain-tab-btn.active .tab-code {
+    color: var(--accent-emerald-bright);
+  }
+
+  .tab-scope {
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .tab-title {
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    line-height: 1.35;
+    transition: color var(--transition-fast);
+  }
+
+  .domain-tab-btn:hover .tab-title,
+  .domain-tab-btn.active .tab-title {
+    color: var(--text-primary);
+  }
+
+  .tab-arrow {
+    color: var(--text-muted);
+    opacity: 0.4;
+    transition: opacity var(--transition-fast), transform var(--transition-fast), color var(--transition-fast);
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+
+  .domain-tab-btn.active .tab-arrow {
+    opacity: 1;
+    color: var(--accent-emerald-bright);
+    transform: translateX(3px);
+  }
+
+  /* Right Wing: Spotlight Pane */
+  .console-spotlight-wing {
+    padding: clamp(24px, 3.5vw, 48px);
+    background: rgba(3, 7, 12, 0.5);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .domain-spotlight-pane {
+    display: none;
+    flex-direction: column;
+    gap: 24px;
+    flex-grow: 1;
+    animation: fadeInPane 0.25s ease-out;
+  }
+
+  .domain-spotlight-pane.active {
+    display: flex;
+  }
+
+  @keyframes fadeInPane {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .pane-meta-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pane-tag-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .pane-code {
+    font-weight: 800;
+    font-size: 0.875rem;
+  }
+
+  .pane-slash {
+    color: var(--border-subtle);
+  }
+
+  .pane-scope-tag {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .pane-status-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.28);
+    border-radius: 2px;
+    color: var(--accent-emerald-bright);
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--accent-emerald-bright);
+    box-shadow: 0 0 6px var(--accent-emerald-bright);
+    animation: pulseBeacon 2s infinite ease-in-out;
+  }
+
+  .pane-title {
+    font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.025em;
+    color: var(--text-primary);
+  }
+
+  .pane-title-link {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .pane-title-link:hover {
+    color: var(--accent-emerald-bright);
+  }
+
+  .pane-scope-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px 16px;
+    background: rgba(6, 16, 11, 0.7);
+    border-left: 2px solid var(--accent-emerald);
+    border-radius: 0 2px 2px 0;
+  }
+
+  .scope-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .scope-value {
+    line-height: 1.5;
+  }
+
+  .pane-summary {
+    max-width: 78ch;
+  }
+
+  .pane-features-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .pane-features-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px 20px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.45;
+  }
+
+  .feature-bullet {
+    font-size: 1rem;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  .feature-text {
+    color: var(--text-secondary);
+  }
+
+  .pane-epistemic-callout {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 18px;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.22);
+    border-radius: 2px;
+  }
+
+  .epistemic-tag {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.06em;
+  }
+
+  .epistemic-text {
+    color: var(--text-primary);
+  }
+
+  .pane-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1024px) {
+    .console-body {
+      grid-template-columns: 1fr;
+    }
+
+    .console-nav-wing {
+      border-right: none;
+      border-bottom: 1px solid var(--border-hairline);
+    }
+
+    .domain-tab-list {
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      max-height: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .domain-tab-btn {
+      flex: 0 0 280px;
+      border-bottom: none;
+      border-right: 1px solid var(--border-hairline);
+    }
+
+    .tab-indicator-bar {
+      top: auto;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: auto;
+      height: 3px;
+    }
+
+    .pane-features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .domain-tab-btn {
+      flex: 0 0 240px;
+      padding: 12px 14px;
+    }
+
+    .console-spotlight-wing {
+      padding: 20px 16px;
+    }
+
+    .pane-action-bar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .pane-action-bar a {
+      justify-content: center;
+    }
+  }
+</style>

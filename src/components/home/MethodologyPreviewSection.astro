@@ -1,0 +1,495 @@
+---
+import { methodologyStages, epistemicStandards } from '@/lib/companyData'
+import { paths } from '@/lib/routes'
+---
+
+<section class="methodology-preview-section" id="methodology" data-section="05 // EPISTEMICS">
+  <div class="grid-container">
+    {/* Section Header */}
+    <div class="methodology-header-col reveal-on-scroll">
+      <div class="eyebrow-badge">
+        <span class="beacon-dot"></span>
+        <span data-scramble="05 // EPISTEMIC PIPELINE & RIGOR">05 // EPISTEMIC PIPELINE & RIGOR</span>
+      </div>
+
+      <div class="methodology-header-row">
+        <div>
+          <h2 class="section-title">
+            The 6-Stage Lifecycle <br />
+            <span class="text-emerald">& Evidence Rigor.</span>
+          </h2>
+          <p class="section-subtitle">
+            Agletras maintains strict epistemic hygiene. We never disguise inferences as facts, 
+            and we explicitly disclose open investigative boundaries and analytical confidence tiers.
+          </p>
+        </div>
+
+        <a href={paths.methodology()} class="btn-secondary">
+          <span>Full Epistemic Methodology</span>
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    {/* Part 1: Visually Understandable Linear 6-Stage Pipeline */}
+    <div class="pipeline-flow-col reveal-on-scroll reveal-delay-1">
+      <div class="pipeline-header-bar font-mono text-xs">
+        <div class="pipeline-header-title">
+          <span class="text-emerald font-bold">INVESTIGATIVE LIFECYCLE</span>
+          <span class="text-muted">// 6 DETERMINISTIC MILESTONES</span>
+        </div>
+        <div class="pipeline-sequence-track" aria-hidden="true">
+          <span class="seq-step">01 DEFINE</span>
+          <span class="seq-arrow">→</span>
+          <span class="seq-step">02 COLLECT</span>
+          <span class="seq-arrow">→</span>
+          <span class="seq-step">03 VERIFY</span>
+          <span class="seq-arrow">→</span>
+          <span class="seq-step">04 CORRELATE</span>
+          <span class="seq-arrow">→</span>
+          <span class="seq-step">05 ANALYZE</span>
+          <span class="seq-arrow">→</span>
+          <span class="seq-step">06 DELIVER</span>
+        </div>
+      </div>
+
+      {/* 6 Connected Pipeline Stage Cards */}
+      <div class="pipeline-stages-grid">
+        {methodologyStages.map((stage, idx) => (
+          <div class="pipeline-stage-card panel-telemetry">
+            <div class="stage-card-top font-mono text-xs">
+              <div class="stage-num-badge">
+                <span class="stage-number font-display">{stage.step}</span>
+                <span class="stage-phase-tag">{stage.phase.toUpperCase()}</span>
+              </div>
+              <span class="stage-conduit-indicator">
+                {idx < 5 ? (
+                  <span class="conduit-arrow">STEP {stage.step} →</span>
+                ) : (
+                  <span class="conduit-done text-emerald">FINAL MILESTONE</span>
+                )}
+              </span>
+            </div>
+
+            <h3 class="stage-title font-display">{stage.title}</h3>
+
+            <p class="stage-summary text-body-sm">
+              {stage.summary}
+            </p>
+
+            <div class="stage-gates-container font-mono text-xs">
+              <div class="stage-gate-item">
+                <span class="gate-label text-muted">VERIFICATION GATE:</span>
+                <p class="gate-value text-secondary">{stage.verificationChecks}</p>
+              </div>
+
+              <div class="stage-gate-item deliverable-gate">
+                <span class="gate-label text-emerald font-bold">VERIFIED MILESTONE ARTIFACT:</span>
+                <p class="gate-value text-primary font-bold">{stage.expectedArtifact}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* Part 2: Epistemic Confidence Hierarchy (Without Unsupported Percentage Claims) */}
+    <div class="epistemic-hierarchy-col">
+      <div class="epistemic-header-bar font-mono text-xs">
+        <div>
+          <span class="text-emerald font-bold">EPISTEMIC CONFIDENCE HIERARCHY</span>
+          <span class="text-muted"> // 5-TIER ADMISSIBLE EVIDENCE SPECTRUM</span>
+        </div>
+        <span class="text-muted">QUALITATIVE ADMIRALTY / ICD-203 COMPLIANT · ZERO UNSUPPORTED PERCENTAGES</span>
+      </div>
+
+      <div class="epistemic-ladder">
+        {epistemicStandards.map((std, index) => (
+          <div class={`ladder-tier-row panel-telemetry tier-${std.type.toLowerCase()}`}>
+            {/* Column 1: Tier Level & Category Pill */}
+            <div class="tier-identity-col">
+              <span class="tier-level-num font-mono text-xs text-muted">TIER 0{index + 1}</span>
+              <div class={`tier-badge ${std.badgeClass} font-mono text-xs`}>
+                <span class="tier-dot"></span>
+                <span>{std.label}</span>
+              </div>
+              <span class="tier-code font-mono text-xs text-muted">{std.code}</span>
+            </div>
+
+            {/* Column 2: Definition & Methodological Standard */}
+            <div class="tier-definition-col">
+              <div class="tier-def-heading font-mono text-xs text-muted uppercase">Methodological Admissibility Standard:</div>
+              <p class="tier-def-body text-body-sm text-primary">
+                {std.definition}
+              </p>
+            </div>
+
+            {/* Column 3: Grounded Public Record Example */}
+            <div class="tier-example-col">
+              <div class="tier-ex-heading font-mono text-xs text-emerald uppercase">Grounded Illustrative Record:</div>
+              <p class="tier-ex-body font-mono text-xs text-secondary">
+                "{std.example}"
+              </p>
+            </div>
+
+            {/* Column 4: Epistemic Confidence Degree */}
+            <div class="tier-confidence-col font-mono text-xs">
+              <span class="conf-heading text-muted">CONFIDENCE DEGREE:</span>
+              <span class="conf-value font-bold">{std.confidenceRange}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .methodology-preview-section {
+    padding-top: clamp(80px, 8vw, 130px);
+    padding-bottom: clamp(80px, 8vw, 130px);
+    position: relative;
+    background-color: var(--bg-deep);
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .methodology-header-col {
+    grid-column: span 32;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: clamp(40px, 4vw, 64px);
+  }
+
+  .methodology-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+
+  /* Part 1: Linear Pipeline */
+  .pipeline-flow-col {
+    grid-column: span 32;
+    margin-bottom: clamp(48px, 6vw, 80px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pipeline-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(10, 16, 24, 0.6);
+    border: 1px solid var(--border-hairline);
+    border-radius: 4px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .pipeline-sequence-track {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+  }
+
+  .seq-step {
+    color: var(--text-secondary);
+    font-weight: 600;
+  }
+
+  .seq-arrow {
+    color: var(--brand-green-bright);
+    font-weight: 700;
+  }
+
+  .pipeline-stages-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .pipeline-stage-card {
+    padding: clamp(24px, 2.5vw, 36px);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(4, 8, 12, 0.7);
+    border-radius: 4px;
+    position: relative;
+    transition: transform var(--transition-medium), border-color var(--transition-medium), box-shadow var(--transition-medium);
+  }
+
+  .pipeline-stage-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(16, 185, 129, 0.4);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 20px rgba(16, 185, 129, 0.12);
+  }
+
+  .stage-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 12px;
+  }
+
+  .stage-num-badge {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .stage-number {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: var(--brand-green-bright);
+    line-height: 1;
+  }
+
+  .stage-phase-tag {
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--text-primary);
+  }
+
+  .conduit-arrow {
+    color: var(--text-muted);
+    font-size: 0.6875rem;
+    letter-spacing: 0.05em;
+  }
+
+  .conduit-done {
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .stage-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--text-primary);
+  }
+
+  .stage-summary {
+    flex-grow: 1;
+  }
+
+  .stage-gates-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .stage-gate-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .gate-label {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .gate-value {
+    line-height: 1.45;
+  }
+
+  .deliverable-gate {
+    padding: 10px 12px;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 2px;
+  }
+
+  /* Part 2: Epistemic Hierarchy Ladder */
+  .epistemic-hierarchy-col {
+    grid-column: span 32;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .epistemic-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background: rgba(10, 16, 24, 0.6);
+    border: 1px solid var(--border-hairline);
+    border-radius: 4px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .epistemic-ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .ladder-tier-row {
+    display: grid;
+    grid-template-columns: 180px 1.4fr 1.6fr 1.2fr;
+    gap: 24px;
+    align-items: center;
+    padding: 22px 28px;
+    border-radius: 4px;
+    border: 1px solid var(--border-subtle);
+    background: rgba(3, 7, 10, 0.7);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .ladder-tier-row:hover {
+    transform: translateX(4px);
+    border-color: var(--border-active);
+  }
+
+  .tier-identity-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .tier-level-num {
+    font-size: 0.6875rem;
+    letter-spacing: 0.08em;
+  }
+
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border: 1px solid;
+    border-radius: 2px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+  }
+
+  .tier-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  .tier-code {
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+  }
+
+  .tier-definition-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .tier-def-heading {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .tier-def-body {
+    line-height: 1.55;
+  }
+
+  .tier-example-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 10px 14px;
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 2px solid var(--border-subtle);
+  }
+
+  .tier-ex-heading {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .tier-ex-body {
+    line-height: 1.5;
+  }
+
+  .tier-confidence-col {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-left: 16px;
+    border-left: 1px solid var(--border-hairline);
+  }
+
+  .conf-heading {
+    font-size: 0.6875rem;
+    letter-spacing: 0.06em;
+  }
+
+  .conf-value {
+    color: var(--brand-green-bright);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1280px) {
+    .pipeline-stages-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .ladder-tier-row {
+      grid-template-columns: 160px 1fr 1fr;
+    }
+
+    .tier-confidence-col {
+      grid-column: span 3;
+      padding-left: 0;
+      border-left: none;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-hairline);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .ladder-tier-row {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .tier-confidence-col {
+      grid-column: auto;
+    }
+
+    .pipeline-sequence-track {
+      display: none;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .pipeline-stages-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .pipeline-stage-card {
+      padding: 20px 16px;
+    }
+
+    .ladder-tier-row {
+      padding: 18px 16px;
+    }
+  }
+</style>

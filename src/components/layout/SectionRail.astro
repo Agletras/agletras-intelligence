@@ -1,0 +1,76 @@
+---
+interface RailItem {
+  id: string
+  label: string
+}
+
+const railItems: RailItem[] = [
+  { id: 'hero', label: '01 // APERTURE' },
+  { id: 'narrative', label: '02 // STRATA' },
+  { id: 'topology', label: '03 // TOPOLOGY' },
+  { id: 'research', label: '04 // RESEARCH' },
+  { id: 'methodology', label: '05 // EPISTEMICS' },
+  { id: 'engagement', label: '06 // ENGAGE' },
+  { id: 'site-footer', label: '07 // TERMINUS' },
+]
+---
+
+<aside class="section-rail" aria-label="Page Section Navigation" data-component="anchors">
+  {railItems.map((item) => (
+    <a href={`#${item.id}`} class="rail-anchor font-mono" data-rail-target={item.id} aria-label={`Scroll to ${item.label}`}>
+      <span class="rail-line" aria-hidden="true"></span>
+      <span class="rail-text">{item.label}</span>
+    </a>
+  ))}
+</aside>
+
+<script>
+  let railObserver: IntersectionObserver | null = null
+
+  function initSectionRail() {
+    if (railObserver) {
+      railObserver.disconnect()
+      railObserver = null
+    }
+
+    const anchors = document.querySelectorAll<HTMLAnchorElement>('.rail-anchor')
+    const sections = document.querySelectorAll<HTMLElement>('section[id], footer[id]')
+    if (!anchors.length || !sections.length) return
+
+    railObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id
+            anchors.forEach((a) => {
+              if (a.dataset.railTarget === id) {
+                a.classList.add('is-active')
+                a.setAttribute('aria-current', 'true')
+              } else {
+                a.classList.remove('is-active')
+                a.removeAttribute('aria-current')
+              }
+            })
+          }
+        })
+      },
+      { threshold: 0.25 }
+    )
+
+    sections.forEach((s) => railObserver?.observe(s))
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSectionRail)
+  } else {
+    initSectionRail()
+  }
+
+  document.addEventListener('astro:page-load', initSectionRail)
+  document.addEventListener('astro:before-swap', () => {
+    if (railObserver) {
+      railObserver.disconnect()
+      railObserver = null
+    }
+  })
+</script>

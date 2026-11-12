@@ -1,0 +1,35 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*.ts", "**/*.astro", "**/*.d.ts"],
+  "exclude": ["dist", "node_modules"],
+  "compilerOptions": {
+    "noUncheckedIndexedAccess": true,
+    "verbatimModuleSyntax": true,
+    "strictNullChecks": true,
+    /**
+     * Allow imports that name the `.ts` extension explicitly.
+     *
+     * Enabled so modules under src/lib can be imported by the Node test runner.
+     * Astro's dev server and Vite resolve extensionless relative imports fine,
+     * but Node's ESM resolver does not — so `release-state.ts` importing
+     * `./routes` builds cleanly and then throws ERR_MODULE_NOT_FOUND the moment
+     * a test imports it. That makes the release gate untestable, which is the one
+     * module that most needs testing.
+     *
+     * This is a resolver capability, not a behaviour change: it adds no runtime
+     * code and does not alter how any existing import resolves. Requires noEmit,
+     * which astro/tsconfigs/strict already sets.
+     */
+    "allowImportingTsExtensions": true,
+    /**
+     * Path alias, matching vite.resolve.alias in astro.config.mjs. Kept in sync
+     * manually — if these two ever disagree, `@/` imports fail to resolve in
+     * the editor while still working in the build, which is the worst possible
+     * failure mode (mismatch that only shows up in one tool).
+     */
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  }
+}

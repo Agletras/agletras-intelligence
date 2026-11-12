@@ -1,0 +1,190 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro'
+import { companyData } from '@/lib/companyData'
+---
+
+<BaseLayout
+  title="Privacy Policy & Source Integrity — AGLETRAS"
+  description="Review Agletras's privacy policies, lawful data collection frameworks, and source integrity standards."
+  currentPath="/privacy"
+>
+  <div class="legal-page-wrap">
+    <section class="legal-hero">
+      <div class="grid-container">
+        <div class="legal-hero-col">
+          <div class="eyebrow-badge">
+            <span class="beacon-dot"></span>
+            <span>PRIVACY & SOURCE INTEGRITY</span>
+          </div>
+
+          <h1 class="page-title font-display">
+            Privacy Policy & <br />
+            <span class="text-emerald">Source Discipline.</span>
+          </h1>
+
+          <p class="page-intro text-secondary">
+            {companyData.legalName} is committed to responsible, lawful intelligence collection. 
+            We explain how data is processed, verified, and protected across all open-source research engagements.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="legal-body-section">
+      <div class="grid-container">
+        <div class="legal-prose-col panel-telemetry">
+          <div class="legal-header font-mono text-xs text-muted">
+            <span>POLICY REF: AGL-POL-PRIVACY-V1</span>
+            <span class="text-emerald font-bold">LAST UPDATED: OCTOBER 2026</span>
+          </div>
+
+          <article class="legal-content">
+            <h2 class="font-display">1. Information We Collect on This Website</h2>
+            <p>
+              When you visit this website, we collect only minimal, non-identifying technical telemetry necessary for security, performance monitoring, and DDOS mitigation. This website does not use invasive third-party tracking cookies, behavioral ad retargeting pixels, or unconsented fingerprinting scripts.
+            </p>
+
+            <h2 class="font-display">2. Scoping Communications & Inquiries</h2>
+            <p>
+              When you submit a scoping inquiry via email or our scoping brief interface, your communication is transmitted directly to our secure analytical team at <code class="text-emerald font-bold">{companyData.contacts.corporateEmail}</code>. We use this information solely to evaluate research feasibility, draft a Statement of Work, and establish mutual non-disclosure protections. We never sell, lease, or share inquiry data with marketing brokers.
+            </p>
+
+            <h2 class="font-display">3. Lawful Intelligence Collection Discipline</h2>
+            <p>
+              In our research operations, Agletras strictly accesses publicly available information (PAI), open corporate registries, gazettes, historical domain records, Certificate Transparency logs, and client-authorized repositories.
+            </p>
+            <p>
+              <strong>Consent Standards for Identity Verification:</strong> For executive screening and recruitment verification engagements, Agletras requires written verification from the client confirming that the candidate has granted explicit lawful consent for background inquiry.
+            </p>
+
+            <h2 class="font-display">4. Cryptographic Integrity & Evidence Storage</h2>
+            <p>
+              All raw research evidence artifacts collected during active client engagements are cryptographically hashed using SHA-256 upon first observation. Client project files, relationship graphs, and final Intelligence Briefs are stored in encrypted, access-restricted repositories. Upon engagement conclusion and expiration of client-agreed retention periods, confidential research files are securely expunged.
+            </p>
+
+            <h2 class="font-display">5. Compliance with Data Protection Principles</h2>
+            <p>
+              Agletras adheres to recognized international data protection principles, including purpose limitation, data minimization, accuracy, and storage limitation. We promptly review and process legitimate requests for correction regarding any verifiable public factual error identified in an intelligence brief.
+            </p>
+
+            <h2 class="font-display">6. Privacy & Source Integrity Contact</h2>
+            <p>
+              For privacy inquiries, data protection questions, or statutory compliance matters, contact our designated data compliance officer:
+            </p>
+            <div class="contact-box font-mono text-xs">
+              <p><strong>ATTN:</strong> Data Compliance & Source Integrity</p>
+              <p><strong>EMAIL:</strong> <a href={`mailto:${companyData.contacts.corporateEmail}`} class="text-emerald font-bold">{companyData.contacts.corporateEmail}</a></p>
+              <p><strong>SEAT:</strong> {companyData.registration.location}</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .legal-page-wrap {
+    padding-top: 100px;
+    padding-bottom: 120px;
+    background-color: var(--bg-deep);
+  }
+
+  .legal-hero {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border-hairline);
+    margin-bottom: 60px;
+  }
+
+  .legal-hero-col {
+    grid-column: span 26;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .page-intro {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+
+  .legal-prose-col {
+    grid-column: span 26;
+    padding: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .legal-header {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 16px;
+  }
+
+  .legal-content {
+    color: var(--text-secondary);
+    line-height: 1.8;
+    font-size: 0.95rem;
+  }
+
+  .legal-content h2 {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 6px;
+  }
+
+  .legal-content p {
+    margin-bottom: 1.25rem;
+  }
+
+  .contact-box {
+    padding: 16px 20px;
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 12px;
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  @media (max-width: 1280px) {
+    .legal-prose-col {
+      grid-column: span 32;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .legal-hero-col {
+      grid-column: span 8;
+    }
+    .legal-prose-col {
+      grid-column: span 8;
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .legal-hero-col, .legal-prose-col {
+      grid-column: span 4;
+    }
+  }
+</style>
