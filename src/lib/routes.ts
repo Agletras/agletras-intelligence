@@ -11,11 +11,11 @@
  *
  * Validates and normalizes SITE_URL build-time configuration. Fails safely
  * with a descriptive error when an invalid origin or protocol is provided.
- * Defaults to 'https://agletras.com' when genuinely unset.
+ * Defaults to 'https://hrudyanshkayastha.github.io' unless explicitly configured.
  */
 export function resolveSiteUrl(raw?: string): string {
   if (raw === undefined || raw === null || raw.trim() === '') {
-    return 'https://agletras.com'
+    return 'https://hrudyanshkayastha.github.io'
   }
   const trimmed = raw.trim()
   let parsed: URL
@@ -23,7 +23,7 @@ export function resolveSiteUrl(raw?: string): string {
     parsed = new URL(trimmed)
   } catch {
     throw new Error(
-      `Invalid SITE_URL: "${trimmed}". Must be a valid absolute HTTP or HTTPS URL (e.g. "https://agletras.pages.dev" or "https://agletras.com").`
+      `Invalid SITE_URL: "${trimmed}". Must be a valid absolute HTTP or HTTPS URL (e.g. "https://hrudyanshkayastha.github.io" or "https://agletras.pages.dev").`
     )
   }
 
@@ -40,6 +40,24 @@ export function resolveSiteUrl(raw?: string): string {
   return parsed.origin
 }
 
+/**
+ * Project base path resolution.
+ * Returns '' for root hosting (Cloudflare / custom domain) or '/Newwe-agle' for GitHub Pages.
+ */
+export function resolveBasePath(raw?: string): string {
+  if (raw !== undefined && raw !== null && raw.trim() !== '') {
+    const trimmed = raw.trim()
+    if (trimmed === '/' || trimmed === '') return ''
+    return trimmed.startsWith('/') ? trimmed.replace(/\/+$/, '') : `/${trimmed.replace(/\/+$/, '')}`
+  }
+  if (typeof import.meta !== 'undefined' && import.meta.env && typeof import.meta.env.BASE_URL === 'string') {
+    const vBase = import.meta.env.BASE_URL.replace(/\/+$/, '')
+    if (vBase) return vBase.startsWith('/') ? vBase : `/${vBase}`
+    return ''
+  }
+  return '/Newwe-agle'
+}
+
 const nodeEnv =
   typeof globalThis !== 'undefined'
     ? (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.SITE_URL
@@ -49,27 +67,49 @@ const viteEnv =
     ? (import.meta.env.SITE_URL as string | undefined)
     : undefined
 
+const nodeBase =
+  typeof globalThis !== 'undefined'
+    ? (globalThis as { process?: { env?: Record<string, string | undefined> } }).process?.env?.BASE_PATH
+    : undefined
+const viteBase =
+  typeof import.meta !== 'undefined' && import.meta.env
+    ? (import.meta.env.BASE_PATH as string | undefined)
+    : undefined
+
 export const SITE_URL = resolveSiteUrl(nodeEnv || viteEnv)
+export const BASE_PATH = resolveBasePath(nodeBase || viteBase)
 
 /** True when a real origin is available, so canonical/sitemap can be emitted. */
 export const hasSiteUrl = true
 
 /**
- * Path builders. Returned paths always begin with `/` and never end with a
- * trailing slash, which is the site-wide convention.
+ * Helper to prepend project base path to internal assets, routes, or hash anchors.
+ */
+export function withBase(path: string): string {
+  const base = BASE_PATH // e.g. '/Newwe-agle' or ''
+  if (!base) return path
+  if (path === '/') return `${base}/`
+  if (path.startsWith('/#')) return `${base}/${path.slice(1)}`
+  if (path.startsWith('#')) return path
+  const cleanPath = path.startsWith('/') ? path : `/${path}`
+  return `${base}${cleanPath}`
+}
+
+/**
+ * Path builders. Returned paths always begin with the configured base path.
  */
 export const paths = {
-  home: (): string => '/',
-  intelligence: (): string => '/intelligence',
-  about: (): string => '/about',
-  contact: (): string => '/contact',
-  privacy: (): string => '/privacy',
-  terms: (): string => '/terms',
-  // Legacy / anchor helpers preserving compatibility without broken links:
-  research: (): string => '/intelligence#services',
-  methodology: (): string => '/#workflow',
-  mcp: (): string => '/intelligence#technology',
-  approach: (): string => '/intelligence#capabilities',
+  home: (): string => withBase('/'),
+  intelligence: (): string => withBase('/intelligence'),
+  about: (): string => withBase('/about'),
+  contact: (): string => withBase('/contact'),
+  privacy: (): string => withBase('/privacy'),
+  terms: (): string => withBase('/terms'),
+  // Legacy / anchor helpers:
+  research: (): string => withBase('/intelligence#services'),
+  methodology: (): string => withBase('/#workflow'),
+  mcp: (): string => withBase('/intelligence#technology'),
+  approach: (): string => withBase('/intelligence#capabilities'),
 } as const
 
 /**
@@ -88,7 +128,6 @@ export function allRoutes(): string[] {
 
 /**
  * Normalise a path to this project's canonical form.
- * Every path this project produces is trailing-slash free, except root `/`.
  */
 export function normalizePath(path: string): string {
   if (typeof path !== 'string' || path.length === 0) return '/'
@@ -97,9 +136,11 @@ export function normalizePath(path: string): string {
 }
 
 /**
- * Build an absolute URL, or return null when the domain is unknown.
+ * Build an absolute URL for a given path.
  */
 export function absoluteUrl(path: string): string | null {
   if (!hasSiteUrl || !SITE_URL) return null
-  return new URL(normalizePath(path), SITE_URL).href
+  const fullBase = `${SITE_URL}${BASE_PATH}`
+  const target = normalizePath(path)
+  return target === '/' ? fullBase : `${fullBase}${target}`
 }

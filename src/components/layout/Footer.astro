@@ -1,5 +1,5 @@
 ---
-import { paths } from '@/lib/routes'
+import { paths, withBase } from '@/lib/routes'
 import { companyData } from '@/lib/companyData'
 ---
 
@@ -9,7 +9,7 @@ import { companyData } from '@/lib/companyData'
     <div class="footer-col-brand">
       <div class="footer-brand-header">
         <img 
-          src="/logo.png" 
+          src={withBase('/logo.png')} 
           alt="Agletras" 
           width="36" 
           height="36" 

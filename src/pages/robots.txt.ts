@@ -1,12 +1,15 @@
 import type { APIRoute } from 'astro'
-import { SITE_URL } from '@/lib/routes'
+import { SITE_URL, BASE_PATH } from '@/lib/routes'
 
 export const GET: APIRoute = (context) => {
-  const origin = (context.site ? context.site.origin : SITE_URL).replace(/\/+$/, '')
+  const siteOrigin = (context.site ? context.site.origin : SITE_URL).replace(/\/+$/, '')
+  const basePath = (BASE_PATH || '').replace(/\/+$/, '')
+  const fullSiteUrl = `${siteOrigin}${basePath}`
+
   const robots = `User-agent: *
 Allow: /
 
-Sitemap: ${origin}/sitemap.xml
+Sitemap: ${fullSiteUrl}/sitemap.xml
 `
   return new Response(robots, {
     headers: {

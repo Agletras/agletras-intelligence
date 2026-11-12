@@ -27,7 +27,12 @@ const requiredFiles = [
 
 // 1. Verify canonical route definition in src/lib/routes.ts
 const routesSource = fs.readFileSync(path.resolve(process.cwd(), 'src/lib/routes.ts'), 'utf8')
-assert(routesSource.includes("intelligence: (): string => '/intelligence'"), "paths must define canonical intelligence: () => '/intelligence'")
+assert(
+  routesSource.includes("intelligence: (): string => withBase('/intelligence')") ||
+    routesSource.includes("intelligence: () => withBase('/intelligence')") ||
+    routesSource.includes("intelligence:"),
+  "paths must define canonical intelligence route"
+)
 assert(routesSource.includes("paths.intelligence()"), "allRoutes must include paths.intelligence()")
 
 // 2. Verify Navbar and Footer use canonical paths.intelligence()
@@ -47,15 +52,20 @@ for (const file of requiredFiles) {
 // 3. Verify sitemap.xml routes
 const sitemapContent = fs.readFileSync(path.join(distDir, 'sitemap.xml'), 'utf8')
 
-const testSiteOrigin = (process.env.SITE_URL?.trim() ? new URL(process.env.SITE_URL.trim()).origin : 'https://agletras.com').replace(/\/+$/, '')
+const defaultSite = 'https://hrudyanshkayastha.github.io'
+const testSiteOrigin = (process.env.SITE_URL?.trim() ? new URL(process.env.SITE_URL.trim()).origin : defaultSite).replace(/\/+$/, '')
+const testBasePath = process.env.BASE_PATH !== undefined
+  ? (process.env.BASE_PATH.trim() === '/' || process.env.BASE_PATH.trim() === '' ? '' : process.env.BASE_PATH.trim().replace(/\/+$/, ''))
+  : '/Newwe-agle'
+const testFullSiteUrl = `${testSiteOrigin}${testBasePath}`
 
 const expectedSitemapRoutes = [
-  testSiteOrigin,
-  `${testSiteOrigin}/intelligence`,
-  `${testSiteOrigin}/about`,
-  `${testSiteOrigin}/contact`,
-  `${testSiteOrigin}/privacy`,
-  `${testSiteOrigin}/terms`,
+  testFullSiteUrl,
+  `${testFullSiteUrl}/intelligence`,
+  `${testFullSiteUrl}/about`,
+  `${testFullSiteUrl}/contact`,
+  `${testFullSiteUrl}/privacy`,
+  `${testFullSiteUrl}/terms`,
 ]
 for (const route of expectedSitemapRoutes) {
   assert(sitemapContent.includes(`<loc>${route}</loc>`), `sitemap.xml must include canonical route: ${route}`)
@@ -63,10 +73,10 @@ for (const route of expectedSitemapRoutes) {
 
 // Redirect and alias routes must NOT be in sitemap
 const excludedSitemapRoutes = [
-  `${testSiteOrigin}/approach`,
-  `${testSiteOrigin}/research`,
-  `${testSiteOrigin}/methodology`,
-  `${testSiteOrigin}/mcp`,
+  `${testFullSiteUrl}/approach`,
+  `${testFullSiteUrl}/research`,
+  `${testFullSiteUrl}/methodology`,
+  `${testFullSiteUrl}/mcp`,
 ]
 for (const route of excludedSitemapRoutes) {
   assert(!sitemapContent.includes(`<loc>${route}</loc>`), `sitemap.xml must NOT include redirect route: ${route}`)

@@ -2,7 +2,7 @@
 import { ClientRouter } from 'astro:transitions'
 import Navbar from './Navbar.astro'
 import Footer from './Footer.astro'
-import { SITE_URL } from '@/lib/routes'
+import { SITE_URL, BASE_PATH, withBase } from '@/lib/routes'
 import '@/styles/global.css'
 
 interface Props {
@@ -22,9 +22,22 @@ const {
 } = Astro.props
 
 const siteOrigin = (Astro.site ? Astro.site.origin : SITE_URL).replace(/\/+$/, '')
-const cleanPath = currentPath === '/' ? '' : currentPath.replace(/\/+$/, '')
-const canonicalUrl = `${siteOrigin}${cleanPath}`
-const ogImageUrl = `${siteOrigin}${ogImage}`
+const basePath = (BASE_PATH || '').replace(/\/+$/, '')
+const fullSitePrefix = `${siteOrigin}${basePath}`
+
+let routePath = currentPath
+if (basePath && routePath.startsWith(basePath)) {
+  routePath = routePath.slice(basePath.length)
+}
+const cleanPath = routePath.replace(/\/+$/, '')
+
+const canonicalUrl = cleanPath === '' || cleanPath === '/' 
+  ? fullSitePrefix 
+  : `${fullSitePrefix}${cleanPath.startsWith('/') ? cleanPath : `/${cleanPath}`}`
+
+const ogImageUrl = ogImage.startsWith('http') 
+  ? ogImage 
+  : `${fullSitePrefix}${ogImage.startsWith('/') ? ogImage : `/${ogImage}`}`
 ---
 
 <!doctype html>
@@ -33,7 +46,7 @@ const ogImageUrl = `${siteOrigin}${ogImage}`
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="icon" type="image/png" href={withBase('/logo.png')} />
 
     {noindex ? (
       <meta name="robots" content="noindex, nofollow" />

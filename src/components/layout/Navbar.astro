@@ -1,5 +1,5 @@
 ---
-import { paths } from '@/lib/routes'
+import { paths, withBase } from '@/lib/routes'
 
 interface Props {
   currentPath?: string
@@ -10,8 +10,8 @@ const { currentPath = '/' } = Astro.props
 const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
   { label: 'Home', href: paths.home() },
   { label: 'Agletras Intelligence', href: paths.intelligence() },
-  { label: 'Human-Led Research', href: '/#human-led' },
-  { label: 'Capabilities', href: '/#capabilities' },
+  { label: 'Human-Led Research', href: withBase('/#human-led') },
+  { label: 'Capabilities', href: withBase('/#capabilities') },
   { label: 'Methodology', href: paths.methodology() },
   { label: 'About', href: paths.about() },
   { label: 'Contact', href: paths.contact() },
@@ -24,7 +24,7 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
     <div class="brand-col">
       <a href={paths.home()} class="brand-link" aria-label="Agletras Home">
         <img 
-          src="/logo.png" 
+          src={withBase('/logo.png')} 
           alt="Agletras Logo" 
           width="36" 
           height="36" 

@@ -23,14 +23,15 @@ import { fileURLToPath } from 'node:url'
  *
  * Validates and normalizes SITE_URL build-time configuration. Fails safely
  * with a descriptive error when an invalid origin or protocol is provided.
- * Defaults to 'https://agletras.com' when genuinely unset.
+ * Defaults to the repository's GitHub Pages origin 'https://hrudyanshkayastha.github.io'
+ * unless explicitly configured by the owner (e.g. via SITE_URL=https://agletras.com).
  *
  * @param {string | undefined} raw
  * @returns {string}
  */
 function resolveSiteOrigin(raw) {
   if (raw === undefined || raw === null || raw.trim() === '') {
-    return 'https://agletras.com'
+    return 'https://hrudyanshkayastha.github.io'
   }
   const trimmed = raw.trim()
   let parsed
@@ -38,7 +39,7 @@ function resolveSiteOrigin(raw) {
     parsed = new URL(trimmed)
   } catch {
     throw new Error(
-      `Invalid SITE_URL: "${trimmed}". Must be a valid absolute HTTP or HTTPS URL (e.g. "https://agletras.pages.dev" or "https://agletras.com").`
+      `Invalid SITE_URL: "${trimmed}". Must be a valid absolute HTTP or HTTPS URL (e.g. "https://hrudyanshkayastha.github.io" or "https://agletras.pages.dev").`
     )
   }
 
@@ -55,19 +56,39 @@ function resolveSiteOrigin(raw) {
   return parsed.origin
 }
 
+/**
+ * Base path resolution for dual hosting support:
+ * 1. GitHub Pages project subpath: '/Newwe-agle' (default)
+ * 2. Root-path hosting (Cloudflare Pages, custom domain): '/' via BASE_PATH="" or BASE_PATH="/"
+ *
+ * @param {string | undefined} raw
+ * @returns {string}
+ */
+function resolveBasePath(raw) {
+  if (raw !== undefined && raw !== null && raw.trim() !== '') {
+    const trimmed = raw.trim()
+    if (trimmed === '/' || trimmed === '') return '/'
+    return trimmed.startsWith('/') ? trimmed.replace(/\/+$/, '') : `/${trimmed.replace(/\/+$/, '')}`
+  }
+  // Default to repository project subpath for hrudyanshkayastha/Newwe-agle
+  return '/Newwe-agle'
+}
+
 const site = resolveSiteOrigin(process.env.SITE_URL)
+const base = resolveBasePath(process.env.BASE_PATH)
 
 export default defineConfig({
-  // Static output. No server runtime, no backend, no database — consistent with
-  // docs/00-project-charter.md "Out of scope unless separately approved".
+  // Static output. No server runtime, no backend, no database
   output: 'static',
 
-  // Documented output directory for docs/16-release-runbook.md. Must match what
-  // the chosen host is configured to publish.
+  // Documented output directory. Must match what the chosen host is configured to publish.
   outDir: './dist',
 
   // Canonical site origin for absolute metadata, canonical links and sitemaps.
   site,
+
+  // Project base path for GitHub Pages subpath deployment.
+  base,
 
   // Canonical platform-appropriate redirects from legacy routes to unified /intelligence
   redirects: {

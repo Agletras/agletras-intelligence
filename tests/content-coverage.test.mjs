@@ -14,8 +14,8 @@ assert(indexHtml.includes('Agletras Intelligence'), 'Homepage must introduce Agl
 assert(indexHtml.includes('Human-Led Research') || indexHtml.includes('human-led corporate intelligence'), 'Homepage must introduce human-led corporate intelligence')
 assert(indexHtml.includes('well-supported findings'), 'Homepage must use approved phrasing: well-supported findings')
 assert(!indexHtml.includes('defensible findings'), 'Homepage must NOT contain jargon: defensible findings')
-assert(indexHtml.includes('href="/contact"'), 'Homepage must link to Contact page')
-assert(indexHtml.includes('href="/intelligence"'), 'Homepage must link to Intelligence page')
+assert(indexHtml.includes('href="/contact"') || indexHtml.includes('href="/Newwe-agle/contact"'), 'Homepage must link to Contact page')
+assert(indexHtml.includes('href="/intelligence"') || indexHtml.includes('href="/Newwe-agle/intelligence"'), 'Homepage must link to Intelligence page')
 console.log('✓ Homepage clean, focused structure verified.')
 
 // 2. Unified Intelligence page verification (dist/intelligence/index.html)
@@ -54,7 +54,10 @@ for (const r of researchServices) {
 console.log('✓ All 4 research services verified present on /intelligence.')
 
 // 2d. Section 4: Contact CTA
-assert(intelHtml.includes('href="/contact"'), 'Intelligence page must have a clear contact CTA')
+assert(
+  intelHtml.includes('href="/contact"') || intelHtml.includes('href="/Newwe-agle/contact"'),
+  'Intelligence page must have a clear contact CTA'
+)
 
 // 2e. Clean, minimal presentation: absence of technical clutter and removed diagrams
 assert(!intelHtml.includes('40 registered tools'), 'Intelligence page must NOT display 40 registered tools clutter')
