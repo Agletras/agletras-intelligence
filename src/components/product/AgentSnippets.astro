@@ -155,32 +155,56 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
 </div>
 
 <script>
-  // Client-side agent snippet switcher & copy handler
-  const agentTabs = document.querySelectorAll<HTMLButtonElement>('.agent-tab-btn')
+  // Client-side agent snippet switcher & copy handler with WAI-ARIA keyboard navigation
+  const agentTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.agent-tab-btn'))
   const agentPanels = document.querySelectorAll<HTMLElement>('.agent-panel')
   const copyBtn = document.getElementById('btn-copy-active-snippet') as HTMLButtonElement | null
   const copyLabel = copyBtn ? copyBtn.querySelector<HTMLElement>('.copy-label') : null
 
-  agentTabs.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-target')
-      if (!targetId) return
+  function activateAgentTab(btn: HTMLButtonElement) {
+    const targetId = btn.getAttribute('data-target')
+    if (!targetId) return
 
-      agentTabs.forEach(b => {
-        b.classList.remove('is-active')
-        b.setAttribute('aria-selected', 'false')
-      })
-      agentPanels.forEach(p => {
-        p.classList.remove('is-active')
-        p.hidden = true
-      })
+    agentTabs.forEach(b => {
+      b.classList.remove('is-active')
+      b.setAttribute('aria-selected', 'false')
+      b.tabIndex = -1
+    })
+    agentPanels.forEach(p => {
+      p.classList.remove('is-active')
+      p.hidden = true
+    })
 
-      btn.classList.add('is-active')
-      btn.setAttribute('aria-selected', 'true')
-      const targetPanel = document.getElementById(targetId)
-      if (targetPanel) {
-        targetPanel.classList.add('is-active')
-        targetPanel.hidden = false
+    btn.classList.add('is-active')
+    btn.setAttribute('aria-selected', 'true')
+    btn.tabIndex = 0
+    btn.focus()
+    const targetPanel = document.getElementById(targetId)
+    if (targetPanel) {
+      targetPanel.classList.add('is-active')
+      targetPanel.hidden = false
+    }
+  }
+
+  agentTabs.forEach((btn, index) => {
+    btn.addEventListener('click', () => activateAgentTab(btn))
+    btn.addEventListener('keydown', (e) => {
+      let targetIndex: number | null = null
+      if (e.key === 'ArrowRight') {
+        targetIndex = (index + 1) % agentTabs.length
+      } else if (e.key === 'ArrowLeft') {
+        targetIndex = (index - 1 + agentTabs.length) % agentTabs.length
+      } else if (e.key === 'Home') {
+        targetIndex = 0
+      } else if (e.key === 'End') {
+        targetIndex = agentTabs.length - 1
+      }
+      if (targetIndex !== null) {
+        const nextBtn = agentTabs[targetIndex]
+        if (nextBtn) {
+          e.preventDefault()
+          activateAgentTab(nextBtn)
+        }
       }
     })
   })

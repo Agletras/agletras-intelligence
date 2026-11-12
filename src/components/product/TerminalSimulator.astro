@@ -197,30 +197,54 @@
 </div>
 
 <script>
-  // Simple client-side tab switcher for terminal simulator
-  const tabButtons = document.querySelectorAll<HTMLButtonElement>('.sim-tab-btn')
+  // Client-side tab switcher for terminal simulator with WAI-ARIA keyboard navigation
+  const tabButtons = Array.from(document.querySelectorAll<HTMLButtonElement>('.sim-tab-btn'))
   const tabPanels = document.querySelectorAll<HTMLElement>('.sim-panel')
 
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetId = btn.getAttribute('data-target')
-      if (!targetId) return
+  function activateTab(btn: HTMLButtonElement) {
+    const targetId = btn.getAttribute('data-target')
+    if (!targetId) return
 
-      tabButtons.forEach(b => {
-        b.classList.remove('is-active')
-        b.setAttribute('aria-selected', 'false')
-      })
-      tabPanels.forEach(p => {
-        p.classList.remove('is-active')
-        p.hidden = true
-      })
+    tabButtons.forEach(b => {
+      b.classList.remove('is-active')
+      b.setAttribute('aria-selected', 'false')
+      b.tabIndex = -1
+    })
+    tabPanels.forEach(p => {
+      p.classList.remove('is-active')
+      p.hidden = true
+    })
 
-      btn.classList.add('is-active')
-      btn.setAttribute('aria-selected', 'true')
-      const targetPanel = document.getElementById(targetId)
-      if (targetPanel) {
-        targetPanel.classList.add('is-active')
-        targetPanel.hidden = false
+    btn.classList.add('is-active')
+    btn.setAttribute('aria-selected', 'true')
+    btn.tabIndex = 0
+    btn.focus()
+    const targetPanel = document.getElementById(targetId)
+    if (targetPanel) {
+      targetPanel.classList.add('is-active')
+      targetPanel.hidden = false
+    }
+  }
+
+  tabButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => activateTab(btn))
+    btn.addEventListener('keydown', (e) => {
+      let targetIndex: number | null = null
+      if (e.key === 'ArrowRight') {
+        targetIndex = (index + 1) % tabButtons.length
+      } else if (e.key === 'ArrowLeft') {
+        targetIndex = (index - 1 + tabButtons.length) % tabButtons.length
+      } else if (e.key === 'Home') {
+        targetIndex = 0
+      } else if (e.key === 'End') {
+        targetIndex = tabButtons.length - 1
+      }
+      if (targetIndex !== null) {
+        const nextBtn = tabButtons[targetIndex]
+        if (nextBtn) {
+          e.preventDefault()
+          activateTab(nextBtn)
+        }
       }
     })
   })
