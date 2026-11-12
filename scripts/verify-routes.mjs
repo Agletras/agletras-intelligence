@@ -50,7 +50,7 @@ function startStaticServer() {
       let reqPath = req.url.split('?')[0].split('#')[0]
 
       // Strip subpath if testing under project subpath
-      const subpath = '/Newwe-agle'
+      const subpath = '/agletras-intelligence'
       if (reqPath.startsWith(subpath)) {
         reqPath = reqPath.slice(subpath.length) || '/'
       }

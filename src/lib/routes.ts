@@ -42,7 +42,7 @@ export function resolveSiteUrl(raw?: string): string {
 
 /**
  * Project base path resolution.
- * Returns '' for root hosting (Cloudflare / custom domain) or '/Newwe-agle' for GitHub Pages.
+ * Returns '' for root hosting (Cloudflare / custom domain) or '/agletras-intelligence' for GitHub Pages.
  */
 export function resolveBasePath(raw?: string): string {
   if (raw !== undefined && raw !== null && raw.trim() !== '') {
@@ -55,7 +55,7 @@ export function resolveBasePath(raw?: string): string {
     if (vBase) return vBase.startsWith('/') ? vBase : `/${vBase}`
     return ''
   }
-  return '/Newwe-agle'
+  return '/agletras-intelligence'
 }
 
 const nodeEnv =
@@ -86,7 +86,7 @@ export const hasSiteUrl = true
  * Helper to prepend project base path to internal assets, routes, or hash anchors.
  */
 export function withBase(path: string): string {
-  const base = BASE_PATH // e.g. '/Newwe-agle' or ''
+  const base = BASE_PATH // e.g. '/agletras-intelligence' or ''
   if (!base) return path
   if (path === '/') return `${base}/`
   if (path.startsWith('/#')) return `${base}/${path.slice(1)}`

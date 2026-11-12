@@ -58,7 +58,7 @@ function resolveSiteOrigin(raw) {
 
 /**
  * Base path resolution for dual hosting support:
- * 1. GitHub Pages project subpath: '/Newwe-agle' (default)
+ * 1. GitHub Pages project subpath: '/agletras-intelligence' (default)
  * 2. Root-path hosting (Cloudflare Pages, custom domain): '/' via BASE_PATH="" or BASE_PATH="/"
  *
  * @param {string | undefined} raw
@@ -70,8 +70,8 @@ function resolveBasePath(raw) {
     if (trimmed === '/' || trimmed === '') return '/'
     return trimmed.startsWith('/') ? trimmed.replace(/\/+$/, '') : `/${trimmed.replace(/\/+$/, '')}`
   }
-  // Default to repository project subpath for hrudyanshkayastha/Newwe-agle
-  return '/Newwe-agle'
+  // Default to repository project subpath for hrudyanshkayastha/agletras-intelligence
+  return '/agletras-intelligence'
 }
 
 const site = resolveSiteOrigin(process.env.SITE_URL)

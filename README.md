@@ -78,7 +78,7 @@ The static distribution outputs to `./dist` via `npm run build`.
 ## Inquiry & Contact
 
 - **Inquiries:** [info.agletras@gmail.com](mailto:info.agletras@gmail.com)
-- **Official Repository:** [https://github.com/hrudyanshkayastha/Newwe-agle.git](https://github.com/hrudyanshkayastha/Newwe-agle.git)
+- **Official Repository:** [https://github.com/hrudyanshkayastha/agletras-intelligence.git](https://github.com/hrudyanshkayastha/agletras-intelligence.git)
 
 ---
 

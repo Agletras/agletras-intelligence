@@ -56,7 +56,7 @@ const defaultSite = 'https://hrudyanshkayastha.github.io'
 const testSiteOrigin = (process.env.SITE_URL?.trim() ? new URL(process.env.SITE_URL.trim()).origin : defaultSite).replace(/\/+$/, '')
 const testBasePath = process.env.BASE_PATH !== undefined
   ? (process.env.BASE_PATH.trim() === '/' || process.env.BASE_PATH.trim() === '' ? '' : process.env.BASE_PATH.trim().replace(/\/+$/, ''))
-  : '/Newwe-agle'
+  : '/agletras-intelligence'
 const testFullSiteUrl = `${testSiteOrigin}${testBasePath}`
 
 const expectedSitemapRoutes = [
