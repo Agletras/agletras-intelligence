@@ -1,8 +1,10 @@
+
 name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,13 +13,14 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -36,14 +39,16 @@ jobs:
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Build static site
         run: npm run build
         env:
-          SITE_URL: ${{ vars.SITE_URL || 'https://hrudyanshkayastha.github.io' }}
+          SITE_URL: ${{ vars.SITE_URL || 'https://agletras.github.io' }}
           BASE_PATH: ${{ vars.BASE_PATH || '/agletras-intelligence' }}
 
-      - name: Verify build artifacts & routes
+      - name: Verify build artifacts and routes
         run: npm test
 
       - name: Upload artifact
@@ -52,15 +57,18 @@ jobs:
           path: ./dist
 
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+    name: Deploy
     needs: build
     runs-on: ubuntu-latest
-    name: Deploy
+
     permissions:
       pages: write
       id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
