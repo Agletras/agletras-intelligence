@@ -1,0 +1,383 @@
+---
+/**
+ * IntegrationShowcase.astro
+ *
+ * Grounded Model Context Protocol (MCP) integration showcase.
+ * Displays verified configurations for Claude Desktop, Cursor IDE, OpenCode, and Standard Stdio,
+ * plus verifiable JSON-RPC 2.0 wire protocol payloads.
+ */
+---
+
+<div class="integration-showcase-card panel-telemetry" id="integrations">
+  <div class="showcase-header">
+    <div class="eyebrow-badge font-mono text-xs">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald font-bold">CLIENT INTEGRATION SHOWCASE // MODEL CONTEXT PROTOCOL</span>
+    </div>
+    <h3 class="showcase-title font-display">Verified Harness Configurations &amp; Wire Protocols</h3>
+    <p class="showcase-desc text-secondary text-sm leading-relaxed">
+      Agletras operates strictly over standard input/output (stdio) with JSON-RPC 2.0 envelopes. Below are verified configuration files for tested agent environments and exact wire protocol messages.
+    </p>
+  </div>
+
+  <!-- Client Config Switcher -->
+  <div class="showcase-nav-tabs" role="tablist" aria-label="MCP Client Configurations">
+    <button type="button" class="client-tab-btn is-active text-xs" data-target="cfg-claude" role="tab" aria-selected="true" id="tab-claude">
+      <span class="tab-dot"></span>
+      <span>Claude Desktop</span>
+    </button>
+    <button type="button" class="client-tab-btn text-xs" data-target="cfg-cursor" role="tab" aria-selected="false" id="tab-cursor">
+      <span class="tab-dot"></span>
+      <span>Cursor IDE</span>
+    </button>
+    <button type="button" class="client-tab-btn text-xs" data-target="cfg-opencode" role="tab" aria-selected="false" id="tab-opencode">
+      <span class="tab-dot"></span>
+      <span>OpenCode</span>
+    </button>
+    <button type="button" class="client-tab-btn text-xs" data-target="cfg-stdio" role="tab" aria-selected="false" id="tab-stdio">
+      <span class="tab-dot"></span>
+      <span>Standard Stdio</span>
+    </button>
+    <button type="button" class="client-tab-btn text-xs" data-target="cfg-jsonrpc" role="tab" aria-selected="false" id="tab-jsonrpc">
+      <span class="tab-dot"></span>
+      <span>JSON-RPC Wire Payloads</span>
+    </button>
+  </div>
+
+  <!-- Client Config Panels -->
+  <div class="showcase-panels">
+    <!-- PANEL 1: CLAUDE DESKTOP -->
+    <div class="config-panel is-active" id="cfg-claude" role="tabpanel" aria-labelledby="tab-claude">
+      <div class="config-meta-row font-mono text-xs">
+        <span class="text-muted">FILE PATH: <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (macOS)</span>
+        <span class="text-emerald">VERIFIED COMPATIBLE</span>
+      </div>
+      <div class="config-code-box">
+        <div class="code-box-header font-mono text-xs">
+          <span>claude_desktop_config.json</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="code-claude">Copy Config</button>
+        </div>
+        <pre class="code-pre font-mono text-xs" id="code-claude"><code>&#123;
+  "mcpServers": &#123;
+    "agletras": &#123;
+      "command": "/absolute/path/to/Agletras-mcp/.venv/bin/python",
+      "args": ["-m", "agletras_mcp"],
+      "env": &#123;
+        "AGLETRAS_STORAGE_DIR": "/absolute/path/to/Agletras-mcp/data",
+        "AGLETRAS_ALLOWED_DOMAINS": "sec.gov,companieshouse.gov.uk,wikipedia.org"
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+      </div>
+      <div class="platform-path-hint font-mono text-xs text-muted">
+        <div><strong>Windows:</strong> <code>%APPDATA%\Claude\claude_desktop_config.json</code> (use <code>Scripts\\python.exe</code>)</div>
+        <div><strong>Linux:</strong> <code>~/.config/Claude/claude_desktop_config.json</code></div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: CURSOR IDE -->
+    <div class="config-panel" id="cfg-cursor" role="tabpanel" aria-labelledby="tab-cursor" hidden>
+      <div class="config-meta-row font-mono text-xs">
+        <span class="text-muted">FILE PATH: <code>.cursor/mcp.json</code> (Workspace Root)</span>
+        <span class="text-emerald">VERIFIED COMPATIBLE</span>
+      </div>
+      <div class="config-code-box">
+        <div class="code-box-header font-mono text-xs">
+          <span>.cursor/mcp.json</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="code-cursor">Copy Config</button>
+        </div>
+        <pre class="code-pre font-mono text-xs" id="code-cursor"><code>&#123;
+  "mcpServers": &#123;
+    "agletras": &#123;
+      "command": "&#36;&#123;workspaceFolder&#125;/.venv/bin/python",
+      "args": ["-m", "agletras_mcp"],
+      "env": &#123;
+        "AGLETRAS_STORAGE_DIR": "&#36;&#123;workspaceFolder&#125;/data"
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+      </div>
+      <div class="platform-path-hint font-mono text-xs text-muted">
+        <div><strong>Windows Cursor:</strong> Replace <code>&#36;&#123;workspaceFolder&#125;/.venv/bin/python</code> with <code>&#36;&#123;workspaceFolder&#125;\\.venv\\Scripts\\python.exe</code></div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: OPENCODE -->
+    <div class="config-panel" id="cfg-opencode" role="tabpanel" aria-labelledby="tab-opencode" hidden>
+      <div class="config-meta-row font-mono text-xs">
+        <span class="text-muted">FILE PATH: <code>opencode.json</code> (Repository Root)</span>
+        <span class="text-emerald">VERIFIED COMPATIBLE</span>
+      </div>
+      <div class="config-code-box">
+        <div class="code-box-header font-mono text-xs">
+          <span>opencode.json</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="code-opencode">Copy Config</button>
+        </div>
+        <pre class="code-pre font-mono text-xs" id="code-opencode"><code>&#123;
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": &#123;
+    "servers": &#123;
+      "agletras": &#123;
+        "type": "local",
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "agletras_mcp"
+        ],
+        "codemode": false
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+      </div>
+    </div>
+
+    <!-- PANEL 4: STANDARD STDIO -->
+    <div class="config-panel" id="cfg-stdio" role="tabpanel" aria-labelledby="tab-stdio" hidden>
+      <div class="config-meta-row font-mono text-xs">
+        <span class="text-muted">COMMAND LINE TRANSPORT: Generic MCP STDIO Server</span>
+        <span class="text-emerald">STANDARDS COMPLIANT (MCP 2024-11-05)</span>
+      </div>
+      <div class="config-code-box">
+        <div class="code-box-header font-mono text-xs">
+          <span>BASH CLI</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="code-stdio">Copy Command</button>
+        </div>
+        <pre class="code-pre font-mono text-xs" id="code-stdio"><code># Spawn MCP server process directly over standard input/output:
+python -m agletras_mcp
+
+# Or via package entry point:
+agletras-mcp
+
+# Invariant: Nothing ever writes to stdout except valid JSON-RPC 2.0 frames.
+# All logging, diagnostics, and errors are emitted strictly to stderr.</code></pre>
+      </div>
+    </div>
+
+    <!-- PANEL 5: JSON-RPC WIRE PAYLOADS -->
+    <div class="config-panel" id="cfg-jsonrpc" role="tabpanel" aria-labelledby="tab-jsonrpc" hidden>
+      <div class="config-meta-row font-mono text-xs">
+        <span class="text-muted">PROTOCOL: JSON-RPC 2.0 STDIN / STDOUT EXCHANGES</span>
+        <span class="text-emerald">DETERMINISTIC &amp; AUDITED</span>
+      </div>
+      <div class="config-code-box">
+        <div class="code-box-header font-mono text-xs">
+          <span>SAMPLE TOOLS/CALL WIRE EXCHANGE</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="code-wire">Copy Exchange</button>
+        </div>
+        <pre class="code-pre font-mono text-xs" id="code-wire"><code>// 1. INCOMING REQUEST (STDIN):
+&#123;
+  "jsonrpc": "2.0",
+  "id": 42,
+  "method": "tools/call",
+  "params": &#123;
+    "name": "verify_claims",
+    "arguments": &#123;
+      "run_id": 1,
+      "claims": ["Entity incorporated in UK under registry number 0984219."]
+    &#125;
+  &#125;
+&#125;
+
+// 2. OUTGOING RESPONSE (STDOUT):
+&#123;
+  "jsonrpc": "2.0",
+  "id": 42,
+  "result": &#123;
+    "content": [
+      &#123;
+        "type": "text",
+        "text": "&#123;&quot;ok&quot;: true, &quot;evaluated_claims&quot;: [&#123;&quot;claim&quot;: &quot;Entity incorporated in UK under registry number 0984219.&quot;, &quot;status&quot;: &quot;SUPPORTED&quot;, &quot;corroborating_sources&quot;: [&#123;&quot;source_id&quot;: 1, &quot;passage_id&quot;: 4, &quot;locator&quot;: &quot;page 1, sec: Incorporation&quot;&#125;]&#125;]&#125;"
+      &#125;
+    ]
+  &#125;
+&#125;</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.client-tab-btn')
+    const panels = document.querySelectorAll<HTMLElement>('.config-panel')
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-target')
+        if (!targetId) return
+
+        tabBtns.forEach((b) => {
+          b.classList.remove('is-active')
+          b.setAttribute('aria-selected', 'false')
+        })
+        panels.forEach((p) => {
+          p.classList.remove('is-active')
+          p.hidden = true
+        })
+
+        btn.classList.add('is-active')
+        btn.setAttribute('aria-selected', 'true')
+
+        const targetPanel = document.getElementById(targetId)
+        if (targetPanel) {
+          targetPanel.classList.add('is-active')
+          targetPanel.hidden = false
+        }
+      })
+    })
+  })()
+</script>
+
+<style>
+  .integration-showcase-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .showcase-header {
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .showcase-title {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .showcase-nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .client-tab-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .client-tab-btn:hover {
+    border-color: rgba(46, 186, 135, 0.4);
+    color: var(--text-primary);
+  }
+
+  .client-tab-btn.is-active {
+    background-color: rgba(46, 186, 135, 0.12);
+    border-color: var(--brand-green);
+    color: var(--brand-green-bright);
+    box-shadow: 0 0 10px rgba(46, 186, 135, 0.2);
+  }
+
+  .tab-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: currentColor;
+  }
+
+  .showcase-panels {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .config-panel {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .config-meta-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    gap: 8px;
+    word-break: break-word;
+  }
+
+  .config-meta-row code,
+  .platform-path-hint code {
+    word-break: break-all;
+  }
+
+  .config-code-box {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #030705;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    margin-bottom: 14px;
+  }
+
+  .code-box-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background-color: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-hairline);
+    color: var(--text-dim);
+  }
+
+  .code-pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+    color: #a7f3d0;
+    line-height: 1.6;
+  }
+
+  .platform-path-hint {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 0.72rem;
+    padding: 10px 14px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 640px) {
+    .integration-showcase-card {
+      padding: 20px 14px;
+    }
+    .config-panel {
+      padding: 16px 14px;
+    }
+  }
+</style>

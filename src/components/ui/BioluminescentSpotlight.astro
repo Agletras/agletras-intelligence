@@ -1,0 +1,261 @@
+---
+/**
+ * BioluminescentSpotlight.astro
+ *
+ * Agletras Premium Mouse-Following Bioluminescent Spotlight Reveal System.
+ * Creates the organic illusion of exploring a dark underwater algae ecosystem
+ * with a moving bioluminescent light source.
+ *
+ * Inside the spotlight: Underwater algae video and textures become brighter and more vivid.
+ * Outside the spotlight: Background remains tranquil dark emerald.
+ *
+ * Strictly limited to fine-pointer devices (desktop mouse/trackpad).
+ * Zero interference with the custom cursor, clicking, text selection, or accessibility.
+ */
+---
+
+{/* Global Ambient Bioluminescent Spotlight Beam (Cursor Companion) */}
+<div id="bio-spotlight-beam" class="bio-spotlight-beam" aria-hidden="true"></div>
+
+<script>
+  (() => {
+    // Only initialize on desktop devices with fine hover pointer and when reduced motion is not requested
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const isMobileWidth = window.innerWidth <= 1024
+
+    if (!isFinePointer || isCoarsePointer || prefersReducedMotion || isMobileWidth) return
+
+    const beam = document.getElementById('bio-spotlight-beam')
+    
+    // Major sections with underwater algae reveal backdrops
+    const majorSectionIds = ['hero', 'cockpit', 'capabilities', 'workflow', 'docs']
+    const majorSections = majorSectionIds
+      .map(id => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null)
+
+    let mouseX = window.innerWidth / 2
+    let mouseY = window.innerHeight * 0.35
+    let currentX = mouseX
+    let currentY = mouseY
+    let isVisible = false
+    let isMoving = false
+    let rafId: number | null = null
+
+    // Target tracking coordinates per section
+    interface SectionCoord {
+      el: HTMLElement
+      currentX: number
+      currentY: number
+      targetX: number
+      targetY: number
+      isHovered: boolean
+      opacity: number
+    }
+
+    const sectionStates: Map<HTMLElement, SectionCoord> = new Map()
+
+    majorSections.forEach(sec => {
+      const rect = sec.getBoundingClientRect()
+      sectionStates.set(sec, {
+        el: sec,
+        currentX: rect.width / 2,
+        currentY: rect.height * 0.35,
+        targetX: rect.width / 2,
+        targetY: rect.height * 0.35,
+        isHovered: false,
+        opacity: sec.id === 'hero' ? 0.9 : 0
+      })
+    })
+
+    const updateSpotlight = () => {
+      // 1. Organic Lerp for the global ambient beam (slight buoyancy damping)
+      const ease = 0.14
+      const beamDx = mouseX - currentX
+      const beamDy = mouseY - currentY
+      let beamMoving = false
+
+      if (Math.abs(beamDx) < 0.25 && Math.abs(beamDy) < 0.25) {
+        currentX = mouseX
+        currentY = mouseY
+      } else {
+        currentX += beamDx * ease
+        currentY += beamDy * ease
+        beamMoving = true
+      }
+
+      if (beam) {
+        beam.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`
+      }
+
+      // 2. Update each active section's spotlight coordinates
+      let anySectionMoving = false
+
+      sectionStates.forEach(state => {
+        const sec = state.el
+        const rect = sec.getBoundingClientRect()
+
+        // Check if mouse is within or near the section bounds (with 80px vertical bleed for seamless transitions)
+        const isNear = 
+          mouseX >= rect.left - 40 &&
+          mouseX <= rect.right + 40 &&
+          mouseY >= rect.top - 80 &&
+          mouseY <= rect.bottom + 80
+
+        state.isHovered = isNear
+        const targetOpacity = isNear ? 1 : (sec.id === 'hero' ? 0.5 : 0)
+
+        if (isNear) {
+          state.targetX = Math.max(0, Math.min(rect.width, mouseX - rect.left))
+          state.targetY = Math.max(0, Math.min(rect.height, mouseY - rect.top))
+        }
+
+        // Interpolate section-local spotlight coordinates
+        const secEase = 0.15
+        const dx = state.targetX - state.currentX
+        const dy = state.targetY - state.currentY
+
+        if (Math.abs(dx) < 0.25) {
+          state.currentX = state.targetX
+        } else {
+          state.currentX += dx * secEase
+          anySectionMoving = true
+        }
+
+        if (Math.abs(dy) < 0.25) {
+          state.currentY = state.targetY
+        } else {
+          state.currentY += dy * secEase
+          anySectionMoving = true
+        }
+
+        if (Math.abs(state.opacity - targetOpacity) < 0.01) {
+          state.opacity = targetOpacity
+        } else {
+          state.opacity += (targetOpacity - state.opacity) * (isNear ? 0.18 : 0.10)
+          anySectionMoving = true
+        }
+
+        // Set CSS custom properties on the section
+        const xPercent = ((state.currentX / rect.width) * 100).toFixed(2)
+        const yPercent = ((state.currentY / rect.height) * 100).toFixed(2)
+
+        sec.style.setProperty('--spot-x', `${state.currentX.toFixed(1)}px`)
+        sec.style.setProperty('--spot-y', `${state.currentY.toFixed(1)}px`)
+        sec.style.setProperty('--spot-x-pct', `${xPercent}%`)
+        sec.style.setProperty('--spot-y-pct', `${yPercent}%`)
+        sec.style.setProperty('--spot-opacity', state.opacity.toFixed(3))
+
+        // Specifically for hero
+        if (sec.id === 'hero') {
+          sec.style.setProperty('--hero-spot-x', `${state.currentX.toFixed(1)}px`)
+          sec.style.setProperty('--hero-spot-y', `${state.currentY.toFixed(1)}px`)
+          sec.style.setProperty('--hero-spot-glow-opacity', state.opacity.toFixed(3))
+        }
+      })
+
+      // Keep running rAF loop only while pointer is moving or interpolating
+      if (beamMoving || anySectionMoving || isMoving) {
+        rafId = requestAnimationFrame(updateSpotlight)
+      } else {
+        rafId = null
+      }
+    }
+
+    const startAnimation = () => {
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateSpotlight)
+      }
+    }
+
+    const onPointerMove = (e: MouseEvent) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+
+      if (!isVisible) {
+        isVisible = true
+        if (beam) beam.classList.add('is-active')
+      }
+
+      isMoving = true
+      startAnimation()
+
+      // Reset moving flag shortly after movement ceases to allow loop sleep
+      clearTimeout((onPointerMove as any).moveTimeout)
+      ;(onPointerMove as any).moveTimeout = setTimeout(() => {
+        isMoving = false
+      }, 100)
+    }
+
+    const onMouseLeaveWindow = () => {
+      isVisible = false
+      if (beam) beam.classList.remove('is-active')
+      sectionStates.forEach(state => {
+        state.isHovered = false
+      })
+      startAnimation()
+    }
+
+    // Passive pointer listeners
+    window.addEventListener('mousemove', onPointerMove, { passive: true })
+    document.addEventListener('mouseleave', onMouseLeaveWindow, { passive: true })
+
+    // Initialize initial frame
+    updateSpotlight()
+  })()
+</script>
+
+<style>
+  /* Global Ambient Bioluminescent Spotlight Beam (Cursor Companion) */
+  .bio-spotlight-beam {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 640px;
+    height: 640px;
+    margin-top: -320px;
+    margin-left: -320px;
+    border-radius: 50%;
+    pointer-events: none !important;
+    user-select: none !important;
+    z-index: 1;
+    background: radial-gradient(
+      circle at 50% 50%,
+      rgba(52, 211, 153, 0.08) 0%,
+      rgba(46, 186, 135, 0.04) 40%,
+      rgba(16, 185, 129, 0.015) 65%,
+      transparent 80%
+    );
+    mix-blend-mode: screen;
+    opacity: 0;
+    will-change: transform, opacity;
+    transition: opacity 0.4s ease-out;
+  }
+
+  /* Only active on fine-pointer desktop devices */
+  @media (hover: hover) and (pointer: fine) {
+    .bio-spotlight-beam {
+      display: block;
+    }
+
+    .bio-spotlight-beam.is-active {
+      opacity: 1;
+    }
+  }
+
+  /* Completely disable on coarse pointers and mobile viewports */
+  @media (pointer: coarse), (hover: none), (max-width: 1024px) {
+    .bio-spotlight-beam {
+      display: none !important;
+    }
+  }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .bio-spotlight-beam {
+      display: none !important;
+    }
+  }
+</style>

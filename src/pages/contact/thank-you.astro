@@ -1,0 +1,334 @@
+---
+import BaseLayout from '@/components/layout/BaseLayout.astro'
+import { paths } from '@/lib/routes'
+import { companyData } from '@/lib/companyData'
+---
+
+<BaseLayout
+  title="Inquiry Received — AGLETRAS Research Scoping"
+  description="Your research scoping brief has been successfully received by Agletras Intelligence. Our analytical team will review parameters and respond within 1-2 business days."
+  currentPath="/contact/thank-you"
+  noindex={true}
+>
+  <div class="thank-you-page-wrap">
+    <section class="thank-you-hero">
+      <div class="grid-container">
+        <div class="thank-you-col">
+          <div class="eyebrow-badge font-mono text-xs">
+            <span class="beacon-dot"></span>
+            <span class="text-emerald font-bold">INTAKE // DIRECT EMAIL DISPATCH</span>
+          </div>
+
+          <h1 class="page-title font-display">
+            Research Brief <br />
+            <span class="text-emerald">Formatted for Dispatch.</span>
+          </h1>
+
+          <p class="page-intro text-secondary">
+            Thank you for initiating contact with Agletras. Your scoping parameters have been formatted for direct email transmission to <code class="text-primary font-bold">{companyData.contacts.corporateEmail}</code>. Please confirm that you pressed <strong>Send</strong> in your email client to complete transmission.
+          </p>
+
+          <div class="telemetry-rules font-mono text-xs text-muted">
+            <span>TRANSPORT: DIRECT CLIENT MAILTO (RFC 6068)</span>
+            <span class="separator">/</span>
+            <span>STATUS: AWAITING CLIENT DISPATCH</span>
+            <span class="separator">/</span>
+            <span>RESPONSE TIME: 1–2 BUSINESS DAYS</span>
+            <span class="separator">/</span>
+            <span>CONFIDENTIALITY: STRICT NDA PROTOCOL</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* What Happens Next Section */}
+    <section class="next-steps-section">
+      <div class="grid-container">
+        <div class="next-steps-col">
+          <div class="eyebrow-badge font-mono text-xs">
+            <span class="beacon-dot"></span>
+            <span class="text-emerald font-bold">ENGAGEMENT PROTOCOL</span>
+          </div>
+          <h2 class="section-title font-display">What Happens Next</h2>
+          <p class="section-lead text-secondary text-sm">
+            Every engagement progresses through structured verification and confidentiality stages prior to active evidence collection.
+          </p>
+
+          <div class="steps-grid">
+            <div class="step-card panel-telemetry">
+              <span class="step-num font-mono text-xs text-emerald font-bold">PHASE 01 // INTAKE & FEASIBILITY</span>
+              <h3 class="step-card-title font-display">Scoping Assessment</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Our analytical team reviews the counterparty names, jurisdictional boundaries, and research anchors provided to evaluate registry accessibility and public source depth.
+              </p>
+            </div>
+
+            <div class="step-card panel-telemetry">
+              <span class="step-num font-mono text-xs text-emerald font-bold">PHASE 02 // CONFLICT & TERMS</span>
+              <h3 class="step-card-title font-display">Conflict Check</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                We perform an internal conflict check to confirm independence and ensure research compliance with legal and ethical operating boundaries.
+              </p>
+            </div>
+
+            <div class="step-card panel-telemetry">
+              <span class="step-num font-mono text-xs text-emerald font-bold">PHASE 03 // CONFIDENTIALITY</span>
+              <h3 class="step-card-title font-display">Mutual Non-Disclosure</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Before sensitive business identifiers or proprietary data are exchanged, we execute a bilateral Mutual NDA ensuring complete legal protection for all correspondence.
+              </p>
+            </div>
+
+            <div class="step-card panel-telemetry">
+              <span class="step-num font-mono text-xs text-emerald font-bold">PHASE 04 // INVESTIGATION</span>
+              <h3 class="step-card-title font-display">Attributed Dossier</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Deliverables include complete character offset attribution, verified public evidence records, and formal executive summary reports.
+              </p>
+            </div>
+          </div>
+
+          {/* Action CTAs */}
+          <div class="actions-panel panel-telemetry mt-8">
+            <div class="actions-header font-mono text-xs">
+              <span class="text-emerald font-bold">NEXT ACTIONS & EXPLORATION</span>
+              <span class="text-muted">SESSION_STATE: COMPLETED</span>
+            </div>
+            <div class="actions-body">
+              <p class="font-mono text-xs text-secondary leading-relaxed mb-4">
+                Need urgent assistance or have supplementary documentation? You can reply directly to the confirmation email or contact our desk directly at <a href={`mailto:${companyData.contacts.corporateEmail}`} class="text-emerald font-bold">{companyData.contacts.corporateEmail}</a>.
+              </p>
+              <div class="actions-buttons">
+                <a href={paths.home()} class="btn-primary">
+                  <span>Return to Homepage</span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M1 7H13M1 7L7 1M1 7L7 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+                <a href={paths.intelligence()} class="btn-secondary">
+                  <span>Explore Intelligence MCP</span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .thank-you-page-wrap {
+    padding-top: 100px;
+    padding-bottom: 120px;
+    background-color: var(--bg-deep);
+  }
+
+  .thank-you-hero {
+    padding-bottom: 60px;
+    border-bottom: 1px solid var(--border-hairline);
+    margin-bottom: 60px;
+  }
+
+  .thank-you-col {
+    grid-column: span 26;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .page-title {
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.035em;
+  }
+
+  .page-intro {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 68ch;
+  }
+
+  .telemetry-rules {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .separator {
+    color: var(--border-subtle);
+  }
+
+  .text-emerald {
+    color: var(--brand-green-bright);
+  }
+
+  .next-steps-section {
+    padding-top: 20px;
+  }
+
+  .next-steps-col {
+    grid-column: span 32;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .section-lead {
+    max-width: 65ch;
+    line-height: 1.6;
+  }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .step-card {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(4, 10, 8, 0.6);
+    border: 1px solid var(--border-subtle);
+    border-radius: 2px;
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .step-card:hover {
+    border-color: rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .step-num {
+    letter-spacing: 0.08em;
+  }
+
+  .step-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .step-card-desc {
+    color: var(--text-secondary);
+    line-height: 1.55;
+  }
+
+  .actions-panel {
+    padding: 32px;
+    background: rgba(4, 12, 10, 0.7);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .actions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 12px;
+  }
+
+  .actions-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .actions-buttons .btn-primary,
+  .actions-buttons .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+  }
+
+  .actions-buttons .btn-primary {
+    background: var(--brand-green-bright);
+    color: #030608;
+    border: 1px solid var(--brand-green-bright);
+  }
+
+  .actions-buttons .btn-primary:hover {
+    background: #14b8a6;
+    border-color: #14b8a6;
+    box-shadow: 0 0 15px rgba(20, 184, 166, 0.3);
+  }
+
+  .actions-buttons .btn-secondary {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border-subtle);
+  }
+
+  .actions-buttons .btn-secondary:hover {
+    border-color: var(--brand-green-bright);
+    color: var(--brand-green-bright);
+    background: rgba(16, 185, 129, 0.05);
+  }
+
+  @media (max-width: 1024px) {
+    .steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .thank-you-col {
+      grid-column: span 8;
+    }
+    .next-steps-col {
+      grid-column: span 8;
+    }
+    .steps-grid {
+      grid-template-columns: 1fr;
+    }
+    .actions-panel {
+      padding: 24px 20px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .thank-you-col {
+      grid-column: span 4;
+    }
+    .next-steps-col {
+      grid-column: span 4;
+    }
+    .actions-buttons {
+      flex-direction: column;
+    }
+    .actions-buttons .btn-primary,
+    .actions-buttons .btn-secondary {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>

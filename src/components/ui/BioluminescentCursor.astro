@@ -1,0 +1,341 @@
+---
+/**
+ * BioluminescentCursor.astro
+ *
+ * Agletras Premium Custom Bioluminescent Cursor System.
+ * Inspired by deep aquatic bioluminescence and algae ripples.
+ * Strictly limited to fine-pointer devices (mouse/trackpad).
+ * Zero interference with native clicking, text selection, scrolling,
+ * keyboard focus, touchscreens, or reduced-motion preferences.
+ */
+---
+
+<div id="bio-cursor-root" aria-hidden="true" class="bio-cursor-container">
+  <div class="bio-cursor-ring" id="bio-cursor-ring"></div>
+  <div class="bio-cursor-dot" id="bio-cursor-dot"></div>
+  <div class="bio-cursor-ripple" id="bio-cursor-ripple"></div>
+</div>
+
+<script>
+  // Self-contained, lightweight cursor tracking script
+  (() => {
+    // Only initialize if device supports fine hover pointer and user has not requested reduced motion
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+    if (!isFinePointer || isCoarsePointer || prefersReducedMotion) return
+
+    const root = document.getElementById('bio-cursor-root')
+    const dot = document.getElementById('bio-cursor-dot')
+    const ring = document.getElementById('bio-cursor-ring')
+    const ripple = document.getElementById('bio-cursor-ripple')
+
+    if (!root || !dot || !ring || !ripple) return
+
+    let mouseX = -100
+    let mouseY = -100
+    let ringX = -100
+    let ringY = -100
+    let isVisible = false
+    let isHoveringInteractive = false
+    let isHoveringCard = false
+    let isTextTarget = false
+    let rafId: number | null = null
+
+    // Activate custom cursor styling on body
+    document.body.classList.add('has-bio-cursor')
+
+    const updateCursorState = () => {
+      // Lerp ring towards mouse position for fluid aquatic buoyancy
+      const ease = 0.22
+      ringX += (mouseX - ringX) * ease
+      ringY += (mouseY - ringY) * ease
+
+      // Transform dot immediately, ring smoothly
+      dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`
+      ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+      ripple.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+
+      // Keep animation loop running only while ring is catching up with pointer
+      const dx = Math.abs(mouseX - ringX)
+      const dy = Math.abs(mouseY - ringY)
+      if (dx > 0.1 || dy > 0.1) {
+        rafId = requestAnimationFrame(updateCursorState)
+      } else {
+        // Snap to exact coordinates and let rAF loop sleep completely
+        ringX = mouseX
+        ringY = mouseY
+        ring.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+        ripple.style.transform = `translate3d(${ringX}px, ${ringY}px, 0)`
+        rafId = null
+      }
+    }
+
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+
+      if (!isVisible) {
+        isVisible = true
+        root.classList.add('is-visible')
+        ringX = mouseX
+        ringY = mouseY
+      }
+
+      // Check target type under cursor
+      const target = e.target as HTMLElement | null
+      if (target) {
+        // Text/input targets: fade custom cursor to allow native text selection
+        const isTextInput = target.closest('input, textarea, select, [contenteditable="true"], pre, code') !== null
+        if (isTextInput !== isTextTarget) {
+          isTextTarget = isTextInput
+          root.classList.toggle('is-text', isTextTarget)
+        }
+
+        // Interactive links and buttons
+        const isAction = target.closest('a, button, [role="button"], summary, .mobile-toggle, .sim-tab-btn, .arch-tier-btn, .copy-btn, .btn-primary, .btn-secondary') !== null
+        if (isAction !== isHoveringInteractive) {
+          isHoveringInteractive = isAction
+          root.classList.toggle('is-interactive', isHoveringInteractive)
+        }
+
+        // Interactive cards for subtle aquatic ripples
+        const isCard = target.closest('.pillar-card, .cap-card, .phase-card, .roadmap-card, .panel-telemetry, .stat-card, .matrix-card, .tool-item, .category-card') !== null
+        if (isCard !== isHoveringCard && !isHoveringInteractive) {
+          isHoveringCard = isCard
+          root.classList.toggle('is-card-hover', isHoveringCard)
+        } else if (isHoveringInteractive && isHoveringCard) {
+          isHoveringCard = false
+          root.classList.remove('is-card-hover')
+        }
+      }
+
+      if (!rafId) {
+        rafId = requestAnimationFrame(updateCursorState)
+      }
+    }
+
+    const onMouseDown = () => {
+      root.classList.add('is-clicking')
+    }
+
+    const onMouseUp = () => {
+      root.classList.remove('is-clicking')
+    }
+
+    const onMouseLeave = () => {
+      isVisible = false
+      root.classList.remove('is-visible', 'is-interactive', 'is-card-hover', 'is-clicking')
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+    }
+
+    const onBlur = () => {
+      isVisible = false
+      root.classList.remove('is-visible', 'is-interactive', 'is-card-hover', 'is-clicking')
+      if (rafId) {
+        cancelAnimationFrame(rafId)
+        rafId = null
+      }
+    }
+
+    // Attach passive listeners
+    window.addEventListener('mousemove', onMouseMove, { passive: true })
+    window.addEventListener('mousedown', onMouseDown, { passive: true })
+    window.addEventListener('mouseup', onMouseUp, { passive: true })
+    document.addEventListener('mouseleave', onMouseLeave)
+    window.addEventListener('blur', onBlur)
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) onBlur()
+    })
+  })()
+</script>
+
+<style>
+  /* Hidden by default on touchscreens, coarse pointers, and zero-JS */
+  .bio-cursor-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none !important;
+    user-select: none !important;
+    z-index: 999999;
+    opacity: 0;
+    transition: opacity 0.22s ease-out;
+  }
+
+  /* Fine-pointer devices only (mouse, trackpad) */
+  @media (hover: hover) and (pointer: fine) {
+    .bio-cursor-container {
+      display: block;
+    }
+
+    .bio-cursor-container.is-visible {
+      opacity: 1;
+    }
+
+    /* Fade custom cursor on text inputs to ensure native I-beam cursor clarity */
+    .bio-cursor-container.is-text {
+      opacity: 0.15;
+    }
+
+    /* Central bioluminescent emerald dot */
+    .bio-cursor-dot {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 5px;
+      margin-top: -2.5px;
+      margin-left: -2.5px;
+      border-radius: 50%;
+      background: #34D399; /* Bright Emerald */
+      box-shadow: 
+        0 0 6px rgba(94, 255, 136, 0.8),
+        0 0 12px rgba(46, 186, 135, 0.5),
+        0 0 2px #ffffff;
+      pointer-events: none !important;
+      will-change: transform;
+      transition: transform 0.04s cubic-bezier(0.1, 1, 0.1, 1), background-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* Outer jade ring with soft aquatic glow */
+    .bio-cursor-ring {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 26px;
+      height: 26px;
+      margin-top: -13px;
+      margin-left: -13px;
+      border-radius: 50%;
+      border: 1px solid rgba(52, 211, 153, 0.45);
+      background-color: rgba(46, 186, 135, 0.03);
+      box-shadow: 
+        0 0 10px rgba(46, 186, 135, 0.2),
+        inset 0 0 6px rgba(46, 186, 135, 0.12);
+      pointer-events: none !important;
+      will-change: transform, width, height, border-color, background-color;
+      transition: 
+        width 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+        height 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+        margin 0.24s cubic-bezier(0.16, 1, 0.3, 1),
+        border-color 0.2s ease,
+        background-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    /* Aquatic bioluminescent ripple element */
+    .bio-cursor-ripple {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 26px;
+      height: 26px;
+      margin-top: -13px;
+      margin-left: -13px;
+      border-radius: 50%;
+      border: 1px solid rgba(94, 255, 136, 0);
+      background-color: rgba(94, 255, 136, 0);
+      pointer-events: none !important;
+      will-change: transform, opacity;
+      opacity: 0;
+      transition: 
+        opacity 0.3s ease-out,
+        transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* State 1: Hover over buttons and links (gentle expansion) */
+    .bio-cursor-container.is-interactive .bio-cursor-ring {
+      width: 42px;
+      height: 42px;
+      margin-top: -21px;
+      margin-left: -21px;
+      border-color: rgba(52, 211, 153, 0.85);
+      background-color: rgba(46, 186, 135, 0.08);
+      box-shadow: 
+        0 0 14px rgba(52, 211, 153, 0.35),
+        inset 0 0 8px rgba(46, 186, 135, 0.18);
+    }
+
+    .bio-cursor-container.is-interactive .bio-cursor-dot {
+      background: #5EFF88;
+      box-shadow: 
+        0 0 10px rgba(94, 255, 136, 1),
+        0 0 4px #ffffff;
+      transform: scale(1.3);
+    }
+
+    /* State 2: Hover over interactive cards (subtle aquatic ripple) */
+    .bio-cursor-container.is-card-hover .bio-cursor-ring {
+      width: 38px;
+      height: 38px;
+      margin-top: -19px;
+      margin-left: -19px;
+      border-color: rgba(46, 186, 135, 0.6);
+      background-color: rgba(46, 186, 135, 0.05);
+      box-shadow: 
+        0 0 12px rgba(46, 186, 135, 0.28),
+        inset 0 0 10px rgba(46, 186, 135, 0.15);
+    }
+
+    .bio-cursor-container.is-card-hover .bio-cursor-ripple {
+      opacity: 0.35;
+      width: 50px;
+      height: 50px;
+      margin-top: -25px;
+      margin-left: -25px;
+      border: 1px dashed rgba(52, 211, 153, 0.4);
+      background: radial-gradient(circle, rgba(46, 186, 135, 0.12) 0%, transparent 70%);
+      animation: bio-ripple-pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes bio-ripple-pulse {
+      0%, 100% {
+        transform: scale(0.95);
+        opacity: 0.25;
+      }
+      50% {
+        transform: scale(1.08);
+        opacity: 0.45;
+      }
+    }
+
+    /* State 3: Click pulse animation */
+    .bio-cursor-container.is-clicking .bio-cursor-ring {
+      width: 20px;
+      height: 20px;
+      margin-top: -10px;
+      margin-left: -10px;
+      border-color: #5EFF88;
+      background-color: rgba(94, 255, 136, 0.2);
+      box-shadow: 0 0 16px rgba(94, 255, 136, 0.7);
+    }
+
+    .bio-cursor-container.is-clicking .bio-cursor-dot {
+      transform: scale(1.6);
+      background: #ffffff;
+      box-shadow: 0 0 14px #5EFF88;
+    }
+  }
+
+  /* Accessibility: Prefers Reduced Motion strictly disables custom cursor */
+  @media (prefers-reduced-motion: reduce) {
+    .bio-cursor-container {
+      display: none !important;
+    }
+  }
+
+  /* Touchscreens and mobile devices: always suppress custom cursor */
+  @media (pointer: coarse), (hover: none) {
+    .bio-cursor-container {
+      display: none !important;
+    }
+  }
+</style>

@@ -108,14 +108,14 @@ const suites: ToolSuite[] = [
 ---
 
 <details class="mcp-directory-details panel-telemetry" id="mcp-tool-directory">
-  <summary class="mcp-directory-summary font-mono text-xs">
+  <summary class="mcp-directory-summary text-xs">
     <div class="summary-left">
       <span class="beacon-dot"></span>
-      <span class="text-emerald font-bold">SOURCE-VERIFIED MCP TOOL DIRECTORY</span>
-      <span class="text-muted">// 40 REGISTERED TOOLS IN CODE</span>
+      <span class="text-emerald font-bold font-mono">SOURCE-VERIFIED MCP TOOL DIRECTORY</span>
+      <span class="text-muted font-mono">// 40 REGISTERED TOOLS IN CODE</span>
     </div>
     <div class="summary-toggle text-emerald font-bold">
-      <span class="view-label">INSPECT ALL 40 TOOLS</span>
+      <span class="view-label">Inspect All 40 Tools</span>
       <span class="toggle-arrow" aria-hidden="true">&darr;</span>
     </div>
   </summary>
@@ -163,7 +163,9 @@ const suites: ToolSuite[] = [
 
 <style>
   .mcp-directory-details {
-    grid-column: 1 / span 32;
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
     margin-top: 24px;
     padding: 0;
     overflow: hidden;
@@ -211,12 +213,14 @@ const suites: ToolSuite[] = [
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.72rem;
-    letter-spacing: 0.08em;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .toggle-arrow {
-    transition: transform var(--transition-fast);
+    transition: transform var(--transition-base);
   }
 
   .mcp-directory-details[open] .toggle-arrow {
@@ -233,6 +237,8 @@ const suites: ToolSuite[] = [
   }
 
   .dir-intro {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
     max-width: 900px;
     margin: 0;
   }
@@ -289,6 +295,12 @@ const suites: ToolSuite[] = [
     padding: 9px 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.04);
     vertical-align: top;
+  }
+
+  .dir-table td.desc-cell {
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    line-height: 1.55;
   }
 
   .dir-table tr:hover td {

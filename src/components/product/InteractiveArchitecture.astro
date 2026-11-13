@@ -1,0 +1,610 @@
+---
+/**
+ * InteractiveArchitecture.astro
+ *
+ * Source-verified interactive architecture component grounded 1:1 in
+ * D:\ctf\era6-agletras-mcp\agletras-mcp\src\agletras_mcp\ (server.py, netpolicy.py,
+ * evidence.py, verification.py, storage.py, planner.py).
+ *
+ * Features accessible WAI-ARIA tab navigation, responsive touch support,
+ * and strict prefers-reduced-motion compliance.
+ */
+
+interface ArchTier {
+  id: string
+  num: string
+  name: string
+  subtitle: string
+  badge: string
+  modules: string[]
+  toolsCount: number
+  keyInvariant: string
+  securityGuard: string
+  dataContract: string
+  samplePayload: string
+}
+
+const tiers: ArchTier[] = [
+  {
+    id: 'tier-client',
+    num: '01',
+    name: 'Agent Runtimes & Client Layer',
+    subtitle: 'Standard Model Context Protocol Integration',
+    badge: 'Stdio Transport',
+    modules: ['opencode.json', 'claude_desktop_config.json', '.cursor/mcp.json', 'cli.py'],
+    toolsCount: 40,
+    keyInvariant: 'Bidirectional JSON-RPC 2.0 message framing over standard input/output (stdio). Zero Code Mode wrappers required.',
+    securityGuard: 'Subprocess boundary isolation: agent runtime executes server in a sandboxed child process with inherited stdio streams.',
+    dataContract: 'JSON-RPC 2.0 Request: {"jsonrpc": "2.0", "method": "tools/call", "params": {"name": "...", "arguments": {...}}, "id": 1}',
+    samplePayload: `{
+  "jsonrpc": "2.0",
+  "method": "tools/call",
+  "params": {
+    "name": "start_research_run",
+    "arguments": {
+      "query": "Target Entity Corporate Ownership & Directorships"
+    }
+  },
+  "id": 101
+}`,
+  },
+  {
+    id: 'tier-gateway',
+    num: '02',
+    name: 'Protocol Gateway & Dispatcher',
+    subtitle: 'Server Core & Registered Tool Suites',
+    badge: 'server.py // 40 Tools',
+    modules: ['src/agletras_mcp/server.py', 'src/agletras_mcp/config.py', 'src/agletras_mcp/errors.py'],
+    toolsCount: 40,
+    keyInvariant: '40 registered @mcp.tool entrypoints across 6 suites. Deterministic argument type validation and structured ToolError handling.',
+    securityGuard: 'Input sanitization: string limits, integer ranges, and mandatory argument verification prevent malformed payloads.',
+    dataContract: 'mcp.run(transport="stdio") initializes FastMCP gateway exposing tools/list and tools/call protocol handlers.',
+    samplePayload: `# FastMCP Server Gateway Registration (src/agletras_mcp/server.py)
+mcp = FastMCP("agletras_mcp", dependencies=["pypdf"])
+
+@mcp.tool()
+def verify_claims(run_id: int, claim_ids: list[int] | None = None, method: str = "deterministic") -> dict:
+    """Evaluates claims against passage text into 6 unambiguous epistemic states."""
+    ...`,
+  },
+  {
+    id: 'tier-netpolicy',
+    num: '03',
+    name: 'Outbound NetPolicy & Ingestion',
+    subtitle: 'SSRF-Guarded Multi-Format Fetchers',
+    badge: 'netpolicy.py // SSRF Guard',
+    modules: ['src/agletras_mcp/netpolicy.py', 'src/agletras_mcp/webfetch.py', 'src/agletras_mcp/pdf.py', 'src/agletras_mcp/localfs.py'],
+    toolsCount: 13,
+    keyInvariant: 'All outbound HTTP(S) fetches pass through SafeRedirectHandler. Local reads bounded to AGLETRAS_LOCAL_ROOTS.',
+    securityGuard: 'SSRF Guard: Resolves DNS and blocks loopback (127.0.0.1), RFC1918 private IPs, CGNAT (100.64.0.0/10), and cloud metadata (169.254.169.254).',
+    dataContract: 'Safe response envelopes with content-type inspection, max-character truncation, and redirect chain limits.',
+    samplePayload: `# Outbound SSRF Protection (src/agletras_mcp/netpolicy.py)
+_EXTRA_BLOCKED_NETS = (
+    "0.0.0.0/8", "100.64.0.0/10", "192.0.0.0/24",
+    "192.0.2.0/24", "198.18.0.0/15", "198.51.100.0/24",
+    "203.0.113.0/24", "2001:db8::/32"
+)
+# Normalizes IPv4-mapped IPv6 (::ffff:10.0.0.1) and rejects private ranges`,
+  },
+  {
+    id: 'tier-storage',
+    num: '04',
+    name: 'Local Evidence Store & SQLite WAL',
+    subtitle: 'Content-Addressed Passage Indexing',
+    badge: 'storage.py // SQLite WAL',
+    modules: ['src/agletras_mcp/storage.py', 'src/agletras_mcp/evidence.py', 'src/agletras_mcp/memory.py'],
+    toolsCount: 9,
+    keyInvariant: 'Zero cloud database dependencies. Single-file SQLite WAL store (research.db) with FTS5 passage index and schema migrations.',
+    securityGuard: 'Deduplication by SHA-256 fingerprinting. Passage character boundaries (start_offset, end_offset) prevent hallucinated citations.',
+    dataContract: 'Foreign key enforced relational schema: research_runs -> sources -> passages -> claims -> citations -> reports.',
+    samplePayload: `-- Content-Addressed Passage Record in SQLite (research.db)
+CREATE TABLE passages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    source_id INTEGER NOT NULL REFERENCES sources(id),
+    sha256 TEXT NOT NULL,
+    start_offset INTEGER NOT NULL,
+    end_offset INTEGER NOT NULL,
+    locator TEXT NOT NULL DEFAULT '',
+    verbatim_text TEXT NOT NULL
+);
+CREATE VIRTUAL TABLE passages_fts USING fts5(verbatim_text, content=passages);`,
+  },
+  {
+    id: 'tier-verification',
+    num: '05',
+    name: 'Epistemic Engine & Synthesis',
+    subtitle: 'Six-State Verification & Word DOCX',
+    badge: 'verification.py // 6 States',
+    modules: ['src/agletras_mcp/verification.py', 'src/agletras_mcp/synthesis.py', 'src/agletras_mcp/docx_report.py', 'src/agletras_mcp/planner.py'],
+    toolsCount: 14,
+    keyInvariant: 'Deterministic claim evaluation against exact passage text. Bounded budgets: max 8 subquestions, 2 rounds, 20 unique sources.',
+    securityGuard: 'Validation gatekeeper: validate_report() enforces zero dangling citations and ensures structural completeness before release.',
+    dataContract: 'Statuses: SUPPORTED, PARTIALLY_SUPPORTED, CONTRADICTED, CONFLICTING_EVIDENCE, UNSUPPORTED, UNVERIFIABLE.',
+    samplePayload: `{
+  "claim_id": 42,
+  "claim_text": "Registered corporate office located in Nashik, Maharashtra, PIN 422003",
+  "epistemic_status": "SUPPORTED",
+  "term_coverage": 0.94,
+  "exact_quote_match": true,
+  "attached_citations": [
+    { "source_id": 1, "passage_id": 12, "locator": "page 3, sec: Statutory Registration" }
+  ],
+  "structural_integrity": "PASSED (0 dangling citations)"
+}`,
+  },
+]
+---
+
+<div class="interactive-arch-wrapper panel-telemetry" id="interactive-architecture">
+  <div class="arch-top-bar font-mono text-xs">
+    <div class="arch-status-left">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald font-bold">SYSTEM ARCHITECTURE // VERIFIED SOURCE IMPLEMENTATION</span>
+    </div>
+    <div class="arch-status-right text-muted">
+      <span>GROUNDED 1:1 IN PYTHON SOURCE</span>
+      <span class="divider">/</span>
+      <span class="text-emerald">STDIO // SQLITE WAL</span>
+    </div>
+  </div>
+
+  <div class="arch-container">
+    {/* Tier Selection Navigation (Tablist) */}
+    <div class="arch-nav-column" role="tablist" aria-label="Agletras System Architecture Tiers">
+      {tiers.map((t, index) => (
+        <button
+          type="button"
+          class={`arch-tier-btn ${index === 0 ? 'is-active' : ''}`}
+          id={`arch-tab-${t.id}`}
+          data-tier-target={t.id}
+          role="tab"
+          aria-selected={index === 0 ? 'true' : 'false'}
+          aria-controls={`arch-panel-${t.id}`}
+          tabindex={index === 0 ? 0 : -1}
+        >
+          <div class="tier-btn-indicator" aria-hidden="true"></div>
+          <div class="tier-btn-header">
+            <span class="tier-num font-mono text-xs text-emerald font-bold">{t.num}</span>
+            <span class="tier-badge font-mono text-xs">{t.badge}</span>
+          </div>
+          <div class="tier-btn-title font-display">{t.name}</div>
+          <div class="tier-btn-sub text-secondary text-xs">{t.subtitle}</div>
+        </button>
+      ))}
+    </div>
+
+    {/* Tier Detail Stage (Tabpanels) */}
+    <div class="arch-detail-column">
+      {tiers.map((t, index) => (
+        <div
+          class={`arch-detail-panel ${index === 0 ? 'is-active' : ''}`}
+          id={`arch-panel-${t.id}`}
+          role="tabpanel"
+          aria-labelledby={`arch-tab-${t.id}`}
+          hidden={index !== 0}
+        >
+          <div class="detail-header">
+            <div class="detail-title-wrap">
+              <span class="detail-kicker font-mono text-xs text-emerald font-bold">
+                TIER {t.num} // {t.badge}
+              </span>
+              <h3 class="detail-h3 font-display">{t.name}</h3>
+              <p class="detail-lead text-secondary text-sm">{t.subtitle}</p>
+            </div>
+          </div>
+
+          <div class="detail-grid">
+            {/* Key Invariant Card */}
+            <div class="spec-card">
+              <div class="spec-header font-mono text-xs text-emerald font-bold">
+                <span class="spec-icon" aria-hidden="true">⚙</span>
+                <span>ARCHITECTURAL INVARIANT</span>
+              </div>
+              <p class="spec-desc text-secondary text-xs leading-relaxed">
+                {t.keyInvariant}
+              </p>
+            </div>
+
+            {/* Security Guard Card */}
+            <div class="spec-card">
+              <div class="spec-header font-mono text-xs text-amber font-bold">
+                <span class="spec-icon" aria-hidden="true">🛡</span>
+                <span>SECURITY &amp; BOUNDARY CONTROL</span>
+              </div>
+              <p class="spec-desc text-secondary text-xs leading-relaxed">
+                {t.securityGuard}
+              </p>
+            </div>
+          </div>
+
+          {/* Module Mapping Strip */}
+          <div class="modules-strip font-mono text-xs">
+            <span class="text-dim">IMPLEMENTED IN:</span>
+            <div class="modules-tags">
+              {t.modules.map((m) => (
+                <code class="module-tag">{m}</code>
+              ))}
+            </div>
+          </div>
+
+          {/* Code Payload / Data Contract View */}
+          <div class="payload-box">
+            <div class="payload-header font-mono text-xs">
+              <span class="text-emerald font-bold">DATA CONTRACT &amp; CODE IMPLEMENTATION</span>
+              <span class="text-muted">JSON-RPC / SQLITE / PYTHON</span>
+            </div>
+            <pre class="payload-pre font-mono text-xs"><code>{t.samplePayload}</code></pre>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <div class="arch-footer font-mono text-xs text-muted">
+    <div class="footer-note">
+      <span class="text-emerald font-bold">100% AUDITABLE:</span> Every tier maps directly to tested Python modules in <code>agletras_mcp</code>. Zero simulated APIs or unverified external services.
+    </div>
+  </div>
+</div>
+
+<script>
+  // Interactive Tier Switcher with full WAI-ARIA keyboard navigation
+  const tierTabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.arch-tier-btn'))
+  const tierPanels = Array.from(document.querySelectorAll<HTMLElement>('.arch-detail-panel'))
+
+  function activateTierTab(targetBtn: HTMLButtonElement) {
+    const targetId = targetBtn.getAttribute('data-tier-target')
+    if (!targetId) return
+
+    tierTabs.forEach((btn) => {
+      btn.classList.remove('is-active')
+      btn.setAttribute('aria-selected', 'false')
+      btn.tabIndex = -1
+    })
+
+    tierPanels.forEach((panel) => {
+      panel.classList.remove('is-active')
+      panel.hidden = true
+    })
+
+    targetBtn.classList.add('is-active')
+    targetBtn.setAttribute('aria-selected', 'true')
+    targetBtn.tabIndex = 0
+    targetBtn.focus()
+
+    const activePanel = document.getElementById(`arch-panel-${targetId}`)
+    if (activePanel) {
+      activePanel.classList.add('is-active')
+      activePanel.hidden = false
+    }
+  }
+
+  tierTabs.forEach((btn, index) => {
+    btn.addEventListener('click', () => activateTierTab(btn))
+
+    btn.addEventListener('keydown', (e) => {
+      let targetIndex: number | null = null
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        targetIndex = (index + 1) % tierTabs.length
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        targetIndex = (index - 1 + tierTabs.length) % tierTabs.length
+      } else if (e.key === 'Home') {
+        targetIndex = 0
+      } else if (e.key === 'End') {
+        targetIndex = tierTabs.length - 1
+      }
+
+      if (targetIndex !== null) {
+        e.preventDefault()
+        const nextBtn = tierTabs[targetIndex]
+        if (nextBtn) activateTierTab(nextBtn)
+      }
+    })
+  })
+</script>
+
+<style>
+  .interactive-arch-wrapper {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  .arch-top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background-color: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .arch-status-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .arch-status-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .divider {
+    color: var(--border-subtle);
+  }
+
+  .arch-container {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    min-height: 480px;
+    background-color: #030705;
+  }
+
+  /* Left Navigation Column */
+  .arch-nav-column {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-hairline);
+    background-color: rgba(0, 0, 0, 0.25);
+  }
+
+  .arch-tier-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border-hairline);
+    text-align: left;
+    cursor: pointer;
+    position: relative;
+    transition: all var(--transition-fast);
+  }
+
+  .tier-btn-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background-color: transparent;
+    transition: background-color var(--transition-fast);
+  }
+
+  .arch-tier-btn:hover {
+    background-color: rgba(46, 186, 135, 0.04);
+  }
+
+  .arch-tier-btn:hover .tier-btn-title {
+    color: var(--text-primary);
+  }
+
+  .arch-tier-btn.is-active {
+    background-color: rgba(46, 186, 135, 0.08);
+  }
+
+  .arch-tier-btn.is-active .tier-btn-indicator {
+    background-color: var(--brand-green-bright);
+  }
+
+  .arch-tier-btn.is-active .tier-btn-title {
+    color: var(--brand-green-bright);
+  }
+
+  .tier-btn-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2px;
+  }
+
+  .tier-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-muted);
+    font-size: 0.68rem;
+  }
+
+  .arch-tier-btn.is-active .tier-badge {
+    background-color: rgba(46, 186, 135, 0.12);
+    border-color: rgba(46, 186, 135, 0.3);
+    color: var(--brand-green-bright);
+  }
+
+  .tier-btn-title {
+    font-size: 0.925rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+
+  .tier-btn-sub {
+    line-height: 1.4;
+  }
+
+  /* Right Detail Column */
+  .arch-detail-column {
+    padding: 28px 32px;
+    background-color: #030705;
+  }
+
+  .arch-detail-panel {
+    display: none;
+  }
+
+  .arch-detail-panel.is-active {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: archFadeSlide 0.24s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes archFadeSlide {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .detail-header {
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 16px;
+  }
+
+  .detail-kicker {
+    letter-spacing: 0.05em;
+  }
+
+  .detail-h3 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 6px;
+  }
+
+  .detail-lead {
+    font-size: 0.95rem;
+  }
+
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .spec-card {
+    padding: 16px 18px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .spec-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .spec-icon {
+    font-size: 0.85rem;
+  }
+
+  .modules-strip {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    flex-wrap: wrap;
+  }
+
+  .modules-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .module-tag {
+    padding: 2px 8px;
+    background-color: rgba(46, 186, 135, 0.08);
+    border: 1px solid rgba(46, 186, 135, 0.2);
+    border-radius: 3px;
+    color: var(--brand-green-bright);
+    font-size: 0.72rem;
+  }
+
+  .payload-box {
+    background-color: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .payload-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .payload-pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+    color: #a7f3d0;
+    line-height: 1.6;
+    background-color: transparent;
+  }
+
+  .arch-footer {
+    padding: 12px 20px;
+    background-color: var(--bg-surface-elevated);
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arch-detail-panel.is-active {
+      animation: none !important;
+    }
+    .arch-tier-btn {
+      transition: none !important;
+    }
+  }
+
+  @media (max-width: 900px) {
+    .arch-container {
+      grid-template-columns: 1fr;
+    }
+    .arch-nav-column {
+      border-right: none;
+      border-bottom: 1px solid var(--border-hairline);
+      max-height: 280px;
+      overflow-y: auto;
+    }
+    .detail-grid {
+      grid-template-columns: 1fr;
+    }
+    .arch-detail-column {
+      padding: 20px 16px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .arch-top-bar {
+      padding: 10px 14px;
+    }
+    .arch-tier-btn {
+      padding: 12px 14px;
+    }
+    .arch-detail-column {
+      padding: 16px 12px;
+    }
+    .arch-footer {
+      padding: 10px 14px;
+    }
+  }
+</style>

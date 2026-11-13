@@ -1,0 +1,359 @@
+---
+/**
+ * ProductRoadmap.astro
+ *
+ * Transparent product roadmap clearly distinguishing implemented,
+ * in-development, and planned capabilities.
+ * Grounded in actual repository state (v0.2.0) and development priorities.
+ */
+
+interface RoadmapPhase {
+  version: string
+  timeline: string
+  status: string
+  statusClass: string
+  title: string
+  description: string
+  deliverables: string[]
+  architectureScope: string
+}
+
+const phases: RoadmapPhase[] = [
+  {
+    version: 'v0.2.0',
+    timeline: 'CURRENT RELEASE',
+    status: 'IMPLEMENTED & VERIFIED',
+    statusClass: 'status-implemented',
+    title: 'Local-First Evidence Store & MCP Protocol Reference',
+    description: 'The foundation of the Agletras platform. Connects autonomous AI agents directly to local-first evidence pipelines and verification logic via standard Model Context Protocol.',
+    deliverables: [
+      '40 registered @mcp.tool entrypoints across 6 suites',
+      'Local SQLite 3 storage with Write-Ahead Logging (WAL)',
+      'Outbound NetPolicy SSRF guard blocking RFC 1918 & cloud metadata',
+      'Deterministic 6-state epistemic claim verification engine',
+      'Content-addressed passage indexing with SHA-256 and FTS5 search',
+      '10-section Markdown synthesis and validated Word (.docx) generation',
+    ],
+    architectureScope: 'Python stdlib + pypdf · SQLite WAL · Native Stdio JSON-RPC 2.0',
+  },
+  {
+    version: 'v0.3.0',
+    timeline: 'NEAR-TERM // IN DEVELOPMENT',
+    status: 'ACTIVE DEVELOPMENT',
+    statusClass: 'status-dev',
+    title: 'Streaming Telemetry & Multi-Format Extractors',
+    description: 'Extending protocol observability and ingestion format support for high-throughput enterprise research engagements.',
+    deliverables: [
+      'Standardized JSON-RPC progress streaming (notifications/progress)',
+      'Multi-format extractors for ePub, structured XML, and multi-sheet XLSX',
+      'Automated content diff notifications for registered monitor targets',
+      'Pre-flight environment doctor enhancements (SQLite FTS5 versioning check)',
+      'Extended client snippets for Zed IDE and Claude Code CLI',
+    ],
+    architectureScope: 'Stdio notification streaming · Enhanced document parsers',
+  },
+  {
+    version: 'v0.4.0',
+    timeline: 'MID-TERM // PLANNED',
+    status: 'PLANNED ARCHITECTURE',
+    statusClass: 'status-planned',
+    title: 'Batch Worker Pools & Hybrid Passage Retrieval',
+    description: 'Scaling research capacity across large-scale corporate document archives while preserving strict local privacy guarantees.',
+    deliverables: [
+      'Parallel worker pooling for bulk PDF and registry archive ingestion',
+      'Hybrid semantic vector search extension layered over SQLite FTS5',
+      'Automated entity resolution across multiple contradictory registry filings',
+      'Configurable rate-limiting policies for custom search provider plugins',
+    ],
+    architectureScope: 'Local parallel worker queues · SQLite vector hybrid search',
+  },
+  {
+    version: 'v1.0.0',
+    timeline: 'PRODUCTION TARGET',
+    status: 'EVALUATION TARGET',
+    statusClass: 'status-eval',
+    title: 'Enterprise Air-Gapped Intelligence Distribution',
+    description: 'Hardened distributions for regulated institutions, defense evaluators, corporate legal counsel, and sovereign research environments.',
+    deliverables: [
+      'Air-gapped containerized distributions (OCI compliant)',
+      'Multi-tenant workspace isolation profiles with RBAC policies',
+      'Cryptographically signed audit chains for courtroom-admissible evidence',
+      'Formal SOC 2 Type II compliance audit and external penetration test review',
+    ],
+    architectureScope: 'Air-gapped OCI images · Signed audit trails · Multi-tenant SQLite',
+  },
+]
+---
+
+<div class="roadmap-card panel-telemetry" id="roadmap">
+  <div class="roadmap-header">
+    <div class="eyebrow-badge font-mono text-xs">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald font-bold">PRODUCT ROADMAP &amp; PROTOCOL EVOLUTION</span>
+    </div>
+    <h3 class="roadmap-h3 font-display">Transparent Platform Trajectory</h3>
+    <p class="roadmap-lead text-secondary text-sm leading-relaxed">
+      We believe in technical transparency. Below is our verified status distinguishing current implemented capabilities from active development and future architectural targets.
+    </p>
+  </div>
+
+  <div class="roadmap-grid">
+    {phases.map((phase) => (
+      <div class="phase-card">
+        <div class="phase-top">
+          <div class="version-group">
+            <span class="phase-version font-display">{phase.version}</span>
+            <span class="phase-timeline font-mono text-xs text-dim">{phase.timeline}</span>
+          </div>
+          <span class={`status-pill font-mono text-xs ${phase.statusClass}`}>
+            {phase.status}
+          </span>
+        </div>
+
+        <h4 class="phase-title font-display">{phase.title}</h4>
+        <p class="phase-desc text-secondary text-xs leading-relaxed">{phase.description}</p>
+
+        <div class="deliverables-wrap">
+          <span class="deliv-hdr font-mono text-xs text-muted">KEY CAPABILITIES &amp; DELIVERABLES:</span>
+          <ul class="deliv-list font-mono text-xs text-secondary">
+            {phase.deliverables.map((item) => (
+              <li class="deliv-item">
+                <span class="item-bullet text-emerald" aria-hidden="true">&#x25B8;</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="phase-footer font-mono text-xs">
+          <span class="text-dim">SCOPE:</span>
+          <span class="text-muted">{phase.architectureScope}</span>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .roadmap-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 32px;
+    margin-top: 32px;
+  }
+
+  .roadmap-header {
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 20px;
+  }
+
+  .eyebrow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .roadmap-h3 {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .roadmap-lead {
+    max-width: 820px;
+  }
+
+  .roadmap-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .phase-card {
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .phase-card:hover {
+    border-color: rgba(46, 186, 135, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .phase-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+  }
+
+  .version-group {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+  }
+
+  .phase-version {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+  }
+
+  .phase-timeline {
+    letter-spacing: 0.05em;
+  }
+
+  .status-pill {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .status-implemented {
+    background-color: rgba(46, 186, 135, 0.15);
+    border: 1px solid rgba(46, 186, 135, 0.4);
+    color: var(--brand-green-bright);
+    box-shadow: 0 0 10px rgba(46, 186, 135, 0.15);
+  }
+
+  .status-dev {
+    background-color: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+  }
+
+  .status-planned {
+    background-color: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #fbbf24;
+  }
+
+  .status-eval {
+    background-color: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-muted);
+  }
+
+  .phase-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .deliverables-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .deliv-hdr {
+    letter-spacing: 0.05em;
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+
+  .deliv-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .deliv-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    line-height: 1.5;
+  }
+
+  .item-bullet {
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .phase-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 12px;
+    border-top: 1px dashed var(--border-hairline);
+    margin-top: auto;
+  }
+
+  @media (max-width: 860px) {
+    .roadmap-grid {
+      grid-template-columns: 1fr;
+    }
+    .roadmap-card {
+      padding: 24px 18px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .roadmap-card {
+      padding: 20px 14px;
+    }
+    .roadmap-header {
+      margin-bottom: 24px;
+    }
+    .roadmap-h3 {
+      font-size: 1.5rem;
+    }
+    .phase-card {
+      padding: 18px 14px;
+      gap: 12px;
+      min-width: 0;
+      word-break: break-word;
+    }
+    .phase-version {
+      font-size: 1.15rem;
+    }
+    .phase-timeline {
+      font-size: 0.65rem;
+    }
+    .status-pill {
+      font-size: 0.64rem;
+      padding: 2px 6px;
+    }
+    .phase-title {
+      font-size: 0.98rem;
+    }
+    .phase-desc {
+      font-size: 0.72rem;
+      line-height: 1.5;
+    }
+    .deliv-list {
+      gap: 5px;
+    }
+    .deliv-item {
+      font-size: 0.70rem;
+      line-height: 1.4;
+    }
+    .phase-footer {
+      font-size: 0.68rem;
+      padding-top: 10px;
+    }
+  }
+</style>

@@ -1,0 +1,395 @@
+---
+/**
+ * TechnicalDocumentation.astro
+ *
+ * Exhaustive Technical Documentation Hub for Agletras Intelligence v0.2.0.
+ * Covers: Installation, Prerequisites, Environment, Architecture, Storage/Evidence Model,
+ * Security/Privacy, and Troubleshooting.
+ */
+---
+
+<div class="tech-docs-hub-card panel-telemetry" id="technical-docs">
+  <div class="docs-hub-header">
+    <div class="eyebrow-badge font-mono text-xs">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald font-bold">CORE TECHNICAL DOCUMENTATION // REFERENCE SPECIFICATION</span>
+    </div>
+    <h3 class="docs-hub-title font-display">System Architecture, Configuration &amp; Storage Specification</h3>
+    <p class="docs-hub-desc text-secondary text-sm leading-relaxed">
+      Comprehensive technical manual grounded directly in the tested Python implementation of the Agletras research MCP server.
+    </p>
+  </div>
+
+  <!-- Document Sections Navigation Tabs -->
+  <div class="docs-section-tabs" role="tablist" aria-label="Technical Documentation Sections">
+    <button type="button" class="doc-tab-btn is-active text-xs" data-doc-target="doc-prereqs" role="tab" aria-selected="true" id="tab-prereqs">Prerequisites &amp; Install</button>
+    <button type="button" class="doc-tab-btn text-xs" data-doc-target="doc-env" role="tab" aria-selected="false" id="tab-env">Environment &amp; Config</button>
+    <button type="button" class="doc-tab-btn text-xs" data-doc-target="doc-arch" role="tab" aria-selected="false" id="tab-arch">System Architecture</button>
+    <button type="button" class="doc-tab-btn text-xs" data-doc-target="doc-storage" role="tab" aria-selected="false" id="tab-storage">Storage &amp; Evidence Model</button>
+    <button type="button" class="doc-tab-btn text-xs" data-doc-target="doc-security" role="tab" aria-selected="false" id="tab-security">Security &amp; NetPolicy</button>
+    <button type="button" class="doc-tab-btn text-xs" data-doc-target="doc-troubleshooting" role="tab" aria-selected="false" id="tab-troubleshooting">Troubleshooting &amp; Doctor</button>
+  </div>
+
+  <!-- Documentation Content Bodies -->
+  <div class="docs-content-container">
+    <!-- 1. PREREQUISITES & INSTALLATION -->
+    <div class="doc-panel is-active" id="doc-prereqs" role="tabpanel" aria-labelledby="tab-prereqs">
+      <h4 class="doc-h4 font-display">Prerequisites &amp; Runtime Boundaries</h4>
+      <p class="text-secondary text-sm leading-relaxed">
+        Agletras is engineered with strict supply chain hygiene. It requires zero cloud subscriptions, zero external databases, and zero external container runtimes.
+      </p>
+      <div class="req-table-wrap">
+        <table class="doc-table font-mono text-xs">
+          <thead>
+            <tr><th>Component</th><th>Minimum Requirement</th><th>Purpose / Verification</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Python Runtime</td><td>3.10, 3.11, 3.12, 3.13</td><td>Core MCP server, standard library HTTP and SQLite bindings</td></tr>
+            <tr><td>SQLite Database</td><td>3.35.0+ (FTS5 enabled)</td><td>Atomic transactions, Write-Ahead Logging (WAL), passage search</td></tr>
+            <tr><td>mcp SDK</td><td>>= 2.3</td><td>Model Context Protocol standard stdio transport implementation</td></tr>
+            <tr><td>pypdf</td><td>>= 6.21</td><td>Pure-Python PDF text and metadata extraction with page locators</td></tr>
+            <tr><td>python-docx</td><td>>= 1.1.0</td><td>Client report generation into official branded template</td></tr>
+            <tr><td>rich</td><td>>= 13.0</td><td>Interactive two-terminal monitoring CLI and progress dashboard</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 2. ENVIRONMENT & CONFIGURATION -->
+    <div class="doc-panel" id="doc-env" role="tabpanel" aria-labelledby="tab-env" hidden>
+      <h4 class="doc-h4 font-display">Environment Variables &amp; Configuration Precedence</h4>
+      <p class="text-secondary text-sm leading-relaxed">
+        Configuration resolution follows strict precedence: <strong>CLI flags &gt; Environment variables &gt; agletras.toml &gt; Built-in defaults</strong>. Secrets are never saved in config files and are redacted from all diagnostic logs.
+      </p>
+      <div class="req-table-wrap">
+        <table class="doc-table font-mono text-xs">
+          <thead>
+            <tr><th>Environment Variable</th><th>Default Value</th><th>Operational Function</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>AGLETRAS_STORAGE_DIR</code></td><td><code>./data</code></td><td>Directory where SQLite <code>research.db</code> and run databases reside</td></tr>
+            <tr><td><code>AGLETRAS_ALLOWED_DOMAINS</code></td><td><code>""</code> (Unrestricted)</td><td>Comma-separated list of domain suffixes allowed for outbound HTTP</td></tr>
+            <tr><td><code>AGLETRAS_ALLOW_PRIVATE_HOSTS</code></td><td><code>0</code> (False)</td><td>Set to <code>1</code> only for trusted local dev; blocks private RFC 1918 by default</td></tr>
+            <tr><td><code>AGLETRAS_LOCAL_ROOTS</code></td><td><code>./samples</code></td><td>Approved directory roots for local document and folder scanning</td></tr>
+            <tr><td><code>AGLETRAS_MAX_BYTES</code></td><td><code>10485760</code> (10 MiB)</td><td>Maximum byte ceiling for single HTTP web fetches</td></tr>
+            <tr><td><code>AGLETRAS_CACHE_TTL</code></td><td><code>86400</code> (24h)</td><td>Time-to-live for cached content blobs before forced re-validation</td></tr>
+            <tr><td><code>AGLETRAS_FTS</code></td><td><code>auto</code></td><td>Full-text search engine mode (<code>auto</code> selects FTS5 with LIKE fallback)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 3. SYSTEM ARCHITECTURE -->
+    <div class="doc-panel" id="doc-arch" role="tabpanel" aria-labelledby="tab-arch" hidden>
+      <h4 class="doc-h4 font-display">Five-Tier Layered Architecture</h4>
+      <p class="text-secondary text-sm leading-relaxed">
+        The system cleanly decouples external agent client reasoning from local deterministic execution:
+      </p>
+      <div class="arch-layer-list">
+        <div class="arch-layer-item">
+          <div class="layer-tag font-mono text-xs text-emerald">TIER 1 // TRANSPORT LAYER</div>
+          <div class="layer-title font-display">Standard I/O JSON-RPC 2.0 Engine (server.py)</div>
+          <p class="text-secondary text-xs leading-relaxed">Listens on stdin, emits exclusively valid JSON-RPC 2.0 frames on stdout. All diagnostic logs, error backtraces, and progress bars are routed to stderr.</p>
+        </div>
+        <div class="arch-layer-item">
+          <div class="layer-tag font-mono text-xs text-emerald">TIER 2 // SECURITY GATEWAY</div>
+          <div class="layer-title font-display">Socket-Level SSRF NetPolicy &amp; LocalFS (netpolicy.py, localfs.py)</div>
+          <p class="text-secondary text-xs leading-relaxed">Enforces DNS resolution inspection before socket open, blocking RFC 1918, CGNAT, loopback, and cloud metadata. Re-validates every redirect hop.</p>
+        </div>
+        <div class="arch-layer-item">
+          <div class="layer-tag font-mono text-xs text-emerald">TIER 3 // INGESTION &amp; PARSERS</div>
+          <div class="layer-title font-display">Pure-Python Unified Parsers (collect.py, pdf.py, officedoc.py)</div>
+          <p class="text-secondary text-xs leading-relaxed">Converts PDFs, DOCX, XLSX, CSV, and HTML into normalized SourceRecords with provenance, timestamps, and de-duplication hashes.</p>
+        </div>
+        <div class="arch-layer-item">
+          <div class="layer-tag font-mono text-xs text-emerald">TIER 4 // EVIDENCE LIBRARY</div>
+          <div class="layer-title font-display">Passage Indexer &amp; Epistemic Evaluator (evidence.py, verification.py)</div>
+          <p class="text-secondary text-xs leading-relaxed">Splits sources into character-offset passages with SHA-256 fingerprints. Evaluates factual claims into 6 deterministic truth states.</p>
+        </div>
+        <div class="arch-layer-item">
+          <div class="layer-tag font-mono text-xs text-emerald">TIER 5 // PERSISTENCE &amp; REPORTING</div>
+          <div class="layer-title font-display">SQLite WAL Store &amp; Synthesis Generator (storage.py, synthesis.py)</div>
+          <p class="text-secondary text-xs leading-relaxed">Persists relational entities with foreign keys and WAL crash safety. Generates verified 10-section Markdown and DOCX client deliverables.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. STORAGE & EVIDENCE MODEL -->
+    <div class="doc-panel" id="doc-storage" role="tabpanel" aria-labelledby="tab-storage" hidden>
+      <h4 class="doc-h4 font-display">Relational Evidence Schema &amp; Cryptographic Integrity</h4>
+      <p class="text-secondary text-sm leading-relaxed">
+        All state is maintained in a single SQLite 3 database (<code>research.db</code>) governed by strict relational constraints (<code>PRAGMA foreign_keys = ON;</code>).
+      </p>
+      <div class="entity-cards-grid">
+        <div class="entity-card">
+          <div class="entity-header font-mono text-xs text-emerald">TABLE: research_runs</div>
+          <p class="text-secondary text-xs">Tracks execution sessions, target entity queries, execution logs, and stopping conditions.</p>
+        </div>
+        <div class="entity-card">
+          <div class="entity-header font-mono text-xs text-emerald">TABLE: sources</div>
+          <p class="text-secondary text-xs">Canonical record of web URLs, local paths, retrieval timestamps, and extraction statuses.</p>
+        </div>
+        <div class="entity-card">
+          <div class="entity-header font-mono text-xs text-emerald">TABLE: contents</div>
+          <p class="text-secondary text-xs">Reusable raw text cache keyed by SHA-256 content hash, preventing redundant remote fetches.</p>
+        </div>
+        <div class="entity-card">
+          <div class="entity-header font-mono text-xs text-emerald">TABLE: passages</div>
+          <p class="text-secondary text-xs">Content-addressed passages with exact character start/end offsets, page markers, and FTS5 indices.</p>
+        </div>
+        <div class="entity-card">
+          <div class="entity-header font-mono text-xs text-emerald">TABLE: claims</div>
+          <p class="text-secondary text-xs">Discrete factual propositions evaluated against evidence into 6 deterministic epistemic states.</p>
+        </div>
+        <div class="entity-card">
+          <div class="entity-header font-mono text-xs text-emerald">TABLE: citations</div>
+          <p class="text-secondary text-xs">Cryptographic link linking a claim to an exact passage offset. Fabricated quotes are rejected.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. SECURITY & NETPOLICY -->
+    <div class="doc-panel" id="doc-security" role="tabpanel" aria-labelledby="tab-security" hidden>
+      <h4 class="doc-h4 font-display">Security Architecture &amp; Non-Intrusion Guarantees</h4>
+      <p class="text-secondary text-sm leading-relaxed">
+        Agletras is built for sensitive corporate investigations where internal network pivoting and confidential data leakage are unacceptable risks:
+      </p>
+      <ul class="sec-points-list text-secondary text-sm leading-relaxed">
+        <li><strong>Socket-Level SSRF Blocking:</strong> Resolves DNS before initiating any HTTP connection. Drops requests resolving to <code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>, <code>127.0.0.0/8</code>, or AWS/GCP cloud metadata <code>169.254.169.254</code>.</li>
+        <li><strong>Redirect Hop Re-validation:</strong> Custom <code>SafeRedirectHandler</code> inspects every intermediate HTTP redirect destination before following, capping chains at 10 hops.</li>
+        <li><strong>Local Filesystem Confinement:</strong> Folder scanning is restricted to explicitly configured local directory roots. Symlinks pointing outside permitted boundaries are aborted.</li>
+        <li><strong>Passive OSINT Boundary:</strong> The server contains zero functionality for port scanning, brute-force authentication, or vulnerability exploitation. All research is passive and lawful.</li>
+      </ul>
+    </div>
+
+    <!-- 6. TROUBLESHOOTING & DOCTOR -->
+    <div class="doc-panel" id="doc-troubleshooting" role="tabpanel" aria-labelledby="tab-troubleshooting" hidden>
+      <h4 class="doc-h4 font-display">Troubleshooting &amp; Environment Diagnostics</h4>
+      <p class="text-secondary text-sm leading-relaxed">
+        When an error occurs, run <code>agletras doctor</code> to execute bounded, non-destructive health checks across your runtime, dependencies, and storage paths:
+      </p>
+      <div class="code-terminal-block">
+        <div class="code-terminal-header font-mono text-xs">
+          <span>CLI DIAGNOSTICS</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="doctor-trouble-code">Copy</button>
+        </div>
+        <pre class="terminal-pre font-mono text-xs" id="doctor-trouble-code"><code># Run built-in doctor command
+python -m agletras_mcp.cli doctor
+
+# Common issues & resolutions:
+# 1. "SQLite FTS5 not available" -> Re-install Python with SQLite FTS5 extension enabled.
+# 2. "SSRF guard blocked host" -> Host resolves to a private IP. Check AGLETRAS_ALLOW_PRIVATE_HOSTS.
+# 3. "Permission denied data/research.db" -> Ensure user write permissions on the data directory.
+# 4. "tools/call internal error" -> Inspect stderr stream for structured backtrace logs.</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const docBtns = document.querySelectorAll<HTMLButtonElement>('.doc-tab-btn')
+    const docPanels = document.querySelectorAll<HTMLElement>('.doc-panel')
+
+    docBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-doc-target')
+        if (!targetId) return
+
+        docBtns.forEach((b) => {
+          b.classList.remove('is-active')
+          b.setAttribute('aria-selected', 'false')
+        })
+        docPanels.forEach((p) => {
+          p.classList.remove('is-active')
+          p.hidden = true
+        })
+
+        btn.classList.add('is-active')
+        btn.setAttribute('aria-selected', 'true')
+
+        const targetPanel = document.getElementById(targetId)
+        if (targetPanel) {
+          targetPanel.classList.add('is-active')
+          targetPanel.hidden = false
+        }
+      })
+    })
+  })()
+</script>
+
+<style>
+  .tech-docs-hub-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .docs-hub-header {
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .docs-hub-title {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .docs-section-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .doc-tab-btn {
+    padding: 8px 14px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .doc-tab-btn:hover {
+    border-color: rgba(46, 186, 135, 0.4);
+    color: var(--text-primary);
+  }
+
+  .doc-tab-btn.is-active {
+    background-color: rgba(46, 186, 135, 0.12);
+    border-color: var(--brand-green);
+    color: var(--brand-green-bright);
+    box-shadow: 0 0 10px rgba(46, 186, 135, 0.2);
+  }
+
+  .docs-content-container {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .doc-panel {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .doc-h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 10px;
+  }
+
+  .req-table-wrap {
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+    margin-top: 16px;
+  }
+
+  .doc-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .doc-table td code {
+    word-break: break-all;
+  }
+
+  .doc-table th, .doc-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .doc-table th {
+    color: var(--brand-green-bright);
+    background-color: rgba(46, 186, 135, 0.05);
+  }
+
+  .doc-table td {
+    color: var(--text-secondary);
+  }
+
+  .arch-layer-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .arch-layer-item {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 14px 18px;
+  }
+
+  .layer-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 4px 0 6px;
+  }
+
+  .entity-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .entity-card {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+
+  .entity-header {
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .sec-points-list {
+    margin: 16px 0 0;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  @media (max-width: 640px) {
+    .tech-docs-hub-card {
+      padding: 20px 14px;
+    }
+    .doc-panel {
+      padding: 16px 14px;
+    }
+    .entity-cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

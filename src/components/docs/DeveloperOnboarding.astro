@@ -1,0 +1,467 @@
+---
+/**
+ * DeveloperOnboarding.astro
+ *
+ * Beginner-friendly 5-stage onboarding journey for Agletras Intelligence v0.2.0:
+ * Discover → Install → Configure → Connect → Execute.
+ * Grounded 1:1 in the actual Python MCP server implementation.
+ */
+---
+
+<div class="onboarding-journey-card panel-telemetry" id="onboarding">
+  <div class="onboarding-header">
+    <div class="eyebrow-badge font-mono text-xs">
+      <span class="beacon-dot"></span>
+      <span class="text-emerald font-bold">DEVELOPER ONBOARDING JOURNEY // v0.2.0</span>
+    </div>
+    <h3 class="onboarding-title font-display">From Zero to First Verified Research Run in 5 Steps</h3>
+    <p class="onboarding-desc text-secondary text-sm leading-relaxed">
+      Agletras Intelligence is designed for rapid local developer setup. Zero cloud accounts, zero API keys required, and zero network telemetry. Follow the path below to stand up your local research node.
+    </p>
+  </div>
+
+  <!-- Interactive 5-Step Pipeline Rail -->
+  <div class="journey-stepper" role="tablist" aria-label="Developer Onboarding Stages">
+    <button type="button" class="step-nav-btn is-active" data-step="1" role="tab" aria-selected="true" id="step-btn-1">
+      <span class="step-num font-mono">01</span>
+      <span class="step-label font-display">Discover</span>
+    </button>
+    <div class="step-connector" aria-hidden="true"></div>
+
+    <button type="button" class="step-nav-btn" data-step="2" role="tab" aria-selected="false" id="step-btn-2">
+      <span class="step-num font-mono">02</span>
+      <span class="step-label font-display">Install</span>
+    </button>
+    <div class="step-connector" aria-hidden="true"></div>
+
+    <button type="button" class="step-nav-btn" data-step="3" role="tab" aria-selected="false" id="step-btn-3">
+      <span class="step-num font-mono">03</span>
+      <span class="step-label font-display">Configure</span>
+    </button>
+    <div class="step-connector" aria-hidden="true"></div>
+
+    <button type="button" class="step-nav-btn" data-step="4" role="tab" aria-selected="false" id="step-btn-4">
+      <span class="step-num font-mono">04</span>
+      <span class="step-label font-display">Connect</span>
+    </button>
+    <div class="step-connector" aria-hidden="true"></div>
+
+    <button type="button" class="step-nav-btn" data-step="5" role="tab" aria-selected="false" id="step-btn-5">
+      <span class="step-num font-mono">05</span>
+      <span class="step-label font-display">Execute</span>
+    </button>
+  </div>
+
+  <!-- Step Content Containers -->
+  <div class="journey-stage-body">
+    <!-- STAGE 1: DISCOVER -->
+    <div class="stage-panel is-active" id="stage-panel-1" role="tabpanel" aria-labelledby="step-btn-1">
+      <div class="stage-badge-row font-mono text-xs">
+        <span class="badge-tag">STAGE 01 // ARCHITECTURAL ORIENTATION</span>
+        <span class="text-emerald">ZERO-COST · NO OLLAMA · LOCAL STDIO</span>
+      </div>
+      <h4 class="stage-h4 font-display">What is Agletras Intelligence?</h4>
+      <p class="stage-p text-secondary text-sm leading-relaxed">
+        Agletras is a production-grade <strong>Model Context Protocol (MCP)</strong> server written in pure Python. It equips autonomous AI agents with tools to discover open-web sources, extract documents with SSRF security guardrails, index discrete passages with SHA-256 offsets into local SQLite WAL storage, and verify factual assertions without hallucinations.
+      </p>
+      <div class="stage-spec-grid font-mono text-xs">
+        <div class="spec-item"><span class="text-dim">VERSION:</span> <span class="text-emerald font-bold">v0.2.0 Specification</span></div>
+        <div class="spec-item"><span class="text-dim">RUNTIME:</span> <span class="text-primary">Python 3.10+ (Standard Library)</span></div>
+        <div class="spec-item"><span class="text-dim">STORAGE:</span> <span class="text-primary">SQLite 3.35+ (WAL + FTS5 Search)</span></div>
+        <div class="spec-item"><span class="text-dim">TRANSPORT:</span> <span class="text-primary">Standard Input/Output (stdio) JSON-RPC 2.0</span></div>
+      </div>
+    </div>
+
+    <!-- STAGE 2: INSTALL -->
+    <div class="stage-panel" id="stage-panel-2" role="tabpanel" aria-labelledby="step-btn-2" hidden>
+      <div class="stage-badge-row font-mono text-xs">
+        <span class="badge-tag">STAGE 02 // ENVIRONMENT SETUP</span>
+        <span class="text-emerald">ISOLATED VIRTUALENV · 4 PURE-PYTHON DEPS</span>
+      </div>
+      <h4 class="stage-h4 font-display">Clone Repository &amp; Install Dependencies</h4>
+      <p class="stage-p text-secondary text-sm leading-relaxed">
+        Create an isolated Python virtual environment and perform an editable package install. The project intentionally has only four runtime dependencies (<code>mcp</code>, <code>pypdf</code>, <code>python-docx</code>, <code>rich</code>) — all pure Python.
+      </p>
+      <div class="code-terminal-block">
+        <div class="code-terminal-header font-mono text-xs">
+          <span>BASH // TERMINAL INSTALLATION</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="install-cmd-code">Copy</button>
+        </div>
+        <pre class="terminal-pre font-mono text-xs" id="install-cmd-code"><code># 1. Clone repository
+git clone https://github.com/Agletras/Agletras-mcp.git
+cd Agletras-mcp
+
+# 2. Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# 3. Install tested pinned dependencies and editable package
+pip install -r requirements.txt
+pip install -e .
+
+# 4. Generate sample verification fixtures
+python scripts/make_sample_pdf.py</code></pre>
+      </div>
+    </div>
+
+    <!-- STAGE 3: CONFIGURE -->
+    <div class="stage-panel" id="stage-panel-3" role="tabpanel" aria-labelledby="step-btn-3" hidden>
+      <div class="stage-badge-row font-mono text-xs">
+        <span class="badge-tag">STAGE 03 // SECURITY &amp; STORAGE POLICIES</span>
+        <span class="text-emerald">DEFAULTS RUN OUT-OF-THE-BOX</span>
+      </div>
+      <h4 class="stage-h4 font-display">Configure Security Boundaries and Storage Paths</h4>
+      <p class="stage-p text-secondary text-sm leading-relaxed">
+        Agletras works immediately with zero configuration. To customize storage directories or enforce domain whitelisting, copy the annotated configuration template:
+      </p>
+      <div class="code-terminal-block">
+        <div class="code-terminal-header font-mono text-xs">
+          <span>TOML // AGLETRAS.TOML CONFIGURATION</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="config-toml-code">Copy</button>
+        </div>
+        <pre class="terminal-pre font-mono text-xs" id="config-toml-code"><code># Optional: Copy config.example.toml to your project home
+cp config.example.toml agletras.toml
+
+# Example custom settings:
+[paths]
+data_dir = "data"            # SQLite research.db storage directory
+reports_dir = "reports"      # Exported Markdown & DOCX dossiers
+
+[security]
+allow_private_hosts = false  # Strict SSRF guard: blocks RFC 1918 & 169.254.169.254
+allowed_domains = []         # Optional: Restrict fetches to explicit suffixes (e.g. ["sec.gov"])
+
+[fetch]
+timeout = 20.0               # Socket timeout ceiling (seconds)
+max_bytes = 10485760         # 10 MiB raw fetch size ceiling</code></pre>
+      </div>
+    </div>
+
+    <!-- STAGE 4: CONNECT -->
+    <div class="stage-panel" id="stage-panel-4" role="tabpanel" aria-labelledby="step-btn-4" hidden>
+      <div class="stage-badge-row font-mono text-xs">
+        <span class="badge-tag">STAGE 04 // AGENT HARNESS WIRING</span>
+        <span class="text-emerald">CLAUDE DESKTOP · CURSOR · OPENCODE · CLI</span>
+      </div>
+      <h4 class="stage-h4 font-display">Register Agletras in Your Preferred MCP Client</h4>
+      <p class="stage-p text-secondary text-sm leading-relaxed">
+        The Agletras server speaks standard JSON-RPC 2.0 over standard input/output. Point your agent client to the Python executable executing module <code>agletras_mcp</code>.
+      </p>
+      <div class="code-terminal-block">
+        <div class="code-terminal-header font-mono text-xs">
+          <span>JSON // CLAUDE DESKTOP CONFIG (claude_desktop_config.json)</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="claude-config-code">Copy</button>
+        </div>
+        <pre class="terminal-pre font-mono text-xs" id="claude-config-code"><code>&#123;
+  "mcpServers": &#123;
+    "agletras": &#123;
+      "command": "/absolute/path/to/Agletras-mcp/.venv/bin/python",
+      "args": ["-m", "agletras_mcp"],
+      "env": &#123;
+        "AGLETRAS_STORAGE_DIR": "/absolute/path/to/Agletras-mcp/data"
+      &#125;
+    &#125;
+  &#125;
+&#125;</code></pre>
+      </div>
+    </div>
+
+    <!-- STAGE 5: EXECUTE -->
+    <div class="stage-panel" id="stage-panel-5" role="tabpanel" aria-labelledby="step-btn-5" hidden>
+      <div class="stage-badge-row font-mono text-xs">
+        <span class="badge-tag">STAGE 05 // VERIFICATION &amp; PRODUCTION RUN</span>
+        <span class="text-emerald">HEALTH CHECK · CLAIM VERIFICATION · DOSSIERS</span>
+      </div>
+      <h4 class="stage-h4 font-display">Run Environment Doctor &amp; Execute Your First Research Run</h4>
+      <p class="stage-p text-secondary text-sm leading-relaxed">
+        Verify your environment using the built-in diagnostic doctor. You can run research interactively through your AI agent, or execute model-free research runs via the CLI:
+      </p>
+      <div class="code-terminal-block">
+        <div class="code-terminal-header font-mono text-xs">
+          <span>BASH // ENVIRONMENT DOCTOR &amp; CLI RESEARCH RUN</span>
+          <button type="button" class="btn-copy-code text-xs" data-copy-target="doctor-cli-code">Copy</button>
+        </div>
+        <pre class="terminal-pre font-mono text-xs" id="doctor-cli-code"><code># 1. Run comprehensive local health diagnostics
+python -m agletras_mcp.cli doctor
+
+# Expected Output:
+# [OK] Python runtime: 3.11.x (supported)
+# [OK] Packages: mcp >= 2.3, pypdf >= 6.21
+# [OK] SQLite: 3.42.0 (WAL + FTS5 enabled)
+# [OK] Writable directories: data, reports, cache, logs
+# [OK] NetPolicy: SSRF private IP blocker active
+# Doctor check: 7/7 required checks passed.
+
+# 2. Run model-free pipeline demo
+python scripts/demo_research.py</code></pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Interactive Onboarding Stepper
+  (() => {
+    const stepBtns = document.querySelectorAll<HTMLButtonElement>('.step-nav-btn')
+    const panels = document.querySelectorAll<HTMLElement>('.stage-panel')
+
+    stepBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const step = btn.getAttribute('data-step')
+        if (!step) return
+
+        stepBtns.forEach((b) => {
+          b.classList.remove('is-active')
+          b.setAttribute('aria-selected', 'false')
+        })
+        panels.forEach((p) => {
+          p.classList.remove('is-active')
+          p.hidden = true
+        })
+
+        btn.classList.add('is-active')
+        btn.setAttribute('aria-selected', 'true')
+
+        const targetPanel = document.getElementById(`stage-panel-${step}`)
+        if (targetPanel) {
+          targetPanel.classList.add('is-active')
+          targetPanel.hidden = false
+        }
+      })
+    })
+
+    // Code copy buttons inside onboarding
+    const copyBtns = document.querySelectorAll<HTMLButtonElement>('.btn-copy-code')
+    copyBtns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const targetId = btn.getAttribute('data-copy-target')
+        if (!targetId) return
+        const targetEl = document.getElementById(targetId)
+        if (!targetEl) return
+
+        const codeText = targetEl.textContent || ''
+        try {
+          await navigator.clipboard.writeText(codeText)
+          const origText = btn.textContent
+          btn.textContent = 'Copied ✓'
+          btn.classList.add('is-copied')
+          setTimeout(() => {
+            btn.textContent = origText
+            btn.classList.remove('is-copied')
+          }, 2000)
+        } catch (e) {
+          btn.textContent = 'Failed'
+        }
+      })
+    })
+  })()
+</script>
+
+<style>
+  .onboarding-journey-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .onboarding-header {
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .eyebrow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .onboarding-title {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  /* Stepper Nav */
+  .journey-stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .step-nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    color: var(--text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .step-nav-btn:hover {
+    border-color: rgba(46, 186, 135, 0.4);
+    color: var(--text-primary);
+  }
+
+  .step-nav-btn.is-active {
+    background-color: rgba(46, 186, 135, 0.12);
+    border-color: var(--brand-green);
+    color: var(--brand-green-bright);
+    box-shadow: 0 0 12px rgba(46, 186, 135, 0.2);
+  }
+
+  .step-num {
+    font-size: 0.72rem;
+    font-weight: 700;
+    opacity: 0.8;
+  }
+
+  .step-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .step-connector {
+    width: 24px;
+    height: 1px;
+    background-color: var(--border-hairline);
+    flex-shrink: 0;
+  }
+
+  /* Stage Panels */
+  .journey-stage-body {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .stage-panel {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .stage-badge-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .badge-tag {
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .stage-h4 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 10px;
+  }
+
+  .stage-p {
+    margin-bottom: 20px;
+  }
+
+  .stage-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    background-color: rgba(46, 186, 135, 0.04);
+    border: 1px solid rgba(46, 186, 135, 0.2);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  /* Code Terminal Block */
+  .code-terminal-block {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #030705;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+  }
+
+  .code-terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background-color: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-hairline);
+    color: var(--text-dim);
+  }
+
+  .btn-copy-code {
+    background: transparent;
+    border: 1px solid var(--border-hairline);
+    border-radius: 4px;
+    color: var(--text-muted);
+    padding: 2px 8px;
+    font-family: var(--font-mono);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-copy-code:hover {
+    color: var(--brand-green-bright);
+    border-color: var(--brand-green);
+  }
+
+  .btn-copy-code.is-copied {
+    color: var(--brand-green-electric);
+    border-color: var(--brand-green-bright);
+    background-color: rgba(46, 186, 135, 0.1);
+  }
+
+  .terminal-pre {
+    margin: 0;
+    padding: 16px;
+    overflow-x: auto;
+    color: #a7f3d0;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 640px) {
+    .onboarding-journey-card {
+      padding: 20px 14px;
+    }
+    .stage-panel {
+      padding: 16px 14px;
+    }
+    .stage-spec-grid {
+      grid-template-columns: 1fr;
+    }
+    .step-connector {
+      display: none;
+    }
+  }
+</style>

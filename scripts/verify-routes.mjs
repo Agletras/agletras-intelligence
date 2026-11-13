@@ -33,7 +33,7 @@ const distDir = path.resolve(process.cwd(), 'dist')
 
 function isPortListening(port) {
   return new Promise((resolve) => {
-    const req = http.get(`http://127.0.0.1:${port}/`, (res) => {
+    const req = http.get(`http://127.0.0.1:${port}/agletras-intelligence/`, (res) => {
       resolve(true)
     })
     req.on('error', () => resolve(false))
@@ -91,9 +91,10 @@ function startStaticServer() {
   })
 }
 
-async function checkRoute(port, routePath) {
+async function checkRoute(port, routePath, basePrefix = '') {
+  const fullPath = routePath === '/' && basePrefix ? `${basePrefix}/` : `${basePrefix}${routePath}`
   return new Promise((resolve) => {
-    http.get(`http://127.0.0.1:${port}${routePath}`, (res) => {
+    http.get(`http://127.0.0.1:${port}${fullPath}`, (res) => {
       let data = ''
       res.on('data', (chunk) => (data += chunk))
       res.on('end', () => {
@@ -113,6 +114,7 @@ async function checkRoute(port, routePath) {
 async function main() {
   let server = null
   let testPort = 4322
+  let basePrefix = ''
 
   const has4322 = await isPortListening(4322)
   if (!has4322) {
@@ -125,14 +127,15 @@ async function main() {
     testPort = started.port
     console.log(`Ephemeral static server started on port ${testPort} for route verification.`)
   } else {
-    console.log(`Connecting to running preview server on port ${testPort}.`)
+    basePrefix = '/agletras-intelligence'
+    console.log(`Connecting to running preview server on port ${testPort} with base path ${basePrefix}.`)
   }
 
   try {
     console.log('--- VERIFYING REMAINING CANONICAL ROUTES OVER HTTP ---')
     let passed = 0
     for (const r of canonicalRoutes) {
-      const res = await checkRoute(testPort, r)
+      const res = await checkRoute(testPort, r, basePrefix)
       const icon = res.ok ? '✓' : '✗'
       console.log(`${icon} [${res.statusCode}] ${r.padEnd(45)} (${res.sizeBytes || 0} bytes)`)
       if (res.ok) passed++
@@ -142,7 +145,7 @@ async function main() {
     console.log('\n--- VERIFYING REMOVED SERVICES ROUTES RETURN 404 ---')
     let removedPassed = 0
     for (const r of removedRoutes) {
-      const res = await checkRoute(testPort, r)
+      const res = await checkRoute(testPort, r, basePrefix)
       const isUnpublished = res.statusCode === 404
       const icon = isUnpublished ? '✓' : '✗'
       console.log(`${icon} [${res.statusCode}] ${r.padEnd(45)} (Expected 404 Not Found)`)

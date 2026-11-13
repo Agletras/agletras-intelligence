@@ -19,21 +19,28 @@
 
     <div class="terminal-badge font-mono text-xs">
       <span class="beacon-dot"></span>
+      <span class="text-amber font-bold">[SIMULATED WALKTHROUGH]</span>
+      <span class="text-dim">|</span>
       <span class="text-emerald">STDIO // WAL</span>
     </div>
   </div>
 
-  <!-- Simulation Notice -->
+  <!-- Simulation Notice & Live Execution Distinction -->
   <div class="simulation-banner font-mono text-xs">
-    <span class="text-amber font-bold">[SIMULATED DEMONSTRATION]</span>
-    <span class="text-muted">Illustrative telemetry demonstrating the 5-stage research pipeline of the 40 registered MCP tools. All displayed timings, sample entities, passage counts, and match scores are simulated examples and do not represent live customer results or production measurements.</span>
+    <div class="sim-banner-row">
+      <span class="text-amber font-bold">[SIMULATED TELEMETRY // DEMO PRESET]</span>
+      <span class="sim-live-badge text-emerald font-bold">LIVE SYSTEM: LOCAL STDIO PROTOCOL</span>
+    </div>
+    <span class="text-muted leading-relaxed">
+      This walkthrough displays deterministic pre-recorded execution traces from our hermetic test suite demonstrating the 5-stage pipeline. Live research runs locally on your machine via <code>python -m agletras_mcp</code> over standard I/O; evidence remains in your local SQLite store with zero telemetry or analytical data sent to Agletras or external AI platforms. Outbound network requests are limited to target URLs governed by local NetPolicy SSRF guards.
+    </span>
   </div>
 
   <!-- View Switcher Tabs -->
   <div class="terminal-nav" role="tablist" aria-label="Terminal views">
     <button 
       type="button" 
-      class="sim-tab-btn is-active font-mono text-xs" 
+      class="sim-tab-btn is-active text-xs" 
       data-target="tab-trace"
       role="tab"
       aria-selected="true"
@@ -45,7 +52,7 @@
     </button>
     <button 
       type="button" 
-      class="sim-tab-btn font-mono text-xs" 
+      class="sim-tab-btn text-xs" 
       data-target="tab-passages"
       role="tab"
       aria-selected="false"
@@ -57,7 +64,7 @@
     </button>
     <button 
       type="button" 
-      class="sim-tab-btn font-mono text-xs" 
+      class="sim-tab-btn text-xs" 
       data-target="tab-synthesis"
       role="tab"
       aria-selected="false"
@@ -67,69 +74,129 @@
       <span class="tab-label-full">03. Validated Synthesis</span>
       <span class="tab-label-short">03 Synthesis</span>
     </button>
+    <button 
+      type="button" 
+      class="sim-tab-btn text-xs" 
+      data-target="tab-protocol"
+      role="tab"
+      aria-selected="false"
+      aria-controls="tab-protocol"
+      id="tab-btn-protocol"
+    >
+      <span class="tab-label-full">04. JSON-RPC Protocol Contract</span>
+      <span class="tab-label-short">04 Protocol</span>
+    </button>
   </div>
 
   <!-- Terminal Content Body -->
   <div class="terminal-body font-mono text-xs">
     <!-- Panel 1: Execution Trace -->
     <div class="sim-panel is-active" id="tab-trace" role="tabpanel" aria-labelledby="tab-btn-trace">
-      <div class="log-line text-muted">
-        <span class="log-ts text-dim">[00:00.08]</span>
-        <span class="log-tag text-emerald font-bold">INIT</span>
-        <span>Agletras MCP Server v0.2.0 active (transport: stdio, 40 registered tools)</span>
+      <!-- Sequential Pipeline Stage Indicator -->
+      <div class="trace-workflow-strip font-mono text-xs" aria-label="Simulated workflow sequence">
+        <span class="workflow-label text-dim">SIMULATED STAGE:</span>
+        <div class="trace-step-indicator is-active" data-step="1">
+          <span class="step-num font-bold">01</span>
+          <span class="step-label">Query &amp; Bound</span>
+        </div>
+        <span class="step-arrow" aria-hidden="true">&rarr;</span>
+        <div class="trace-step-indicator" data-step="2">
+          <span class="step-num font-bold">02</span>
+          <span class="step-label">Source Ingestion</span>
+        </div>
+        <span class="step-arrow" aria-hidden="true">&rarr;</span>
+        <div class="trace-step-indicator" data-step="3">
+          <span class="step-num font-bold">03</span>
+          <span class="step-label">Passage Indexing</span>
+        </div>
+        <span class="step-arrow" aria-hidden="true">&rarr;</span>
+        <div class="trace-step-indicator" data-step="4">
+          <span class="step-num font-bold">04</span>
+          <span class="step-label">Claim Verification</span>
+        </div>
+        <span class="step-arrow" aria-hidden="true">&rarr;</span>
+        <div class="trace-step-indicator" data-step="5">
+          <span class="step-num font-bold">05</span>
+          <span class="step-label">Report Delivery</span>
+        </div>
+
+        <button type="button" class="btn-replay-trace" id="btn-replay-trace" aria-label="Replay simulated trace sequence" title="Replay simulated trace animation">
+          <span class="replay-icon" aria-hidden="true">&#x21bb;</span>
+          <span class="replay-label">Replay</span>
+        </button>
       </div>
-      <div class="log-line">
-        <span class="log-ts text-dim">[00:00.64]</span>
-        <span class="log-tag text-emerald font-bold">PLAN</span>
-        <span class="text-primary">save_research_plan() -> 4 subquestions formulated. Budget cap: 8 questions, 2 rounds, 20 unique sources.</span>
+
+      <div class="trace-stage-block" data-stage="1">
+        <div class="log-line text-muted">
+          <span class="log-ts text-dim">[00:00.08]</span>
+          <span class="log-tag text-emerald font-bold">INIT</span>
+          <span>Agletras MCP Server v0.2.0 active (transport: stdio, 40 registered tools)</span>
+        </div>
+        <div class="log-line">
+          <span class="log-ts text-dim">[00:00.64]</span>
+          <span class="log-tag text-emerald font-bold">PLAN</span>
+          <span class="text-primary">save_research_plan() -&gt; 4 subquestions formulated. Budget cap: 8 questions, 2 rounds, 20 unique sources.</span>
+        </div>
       </div>
-      <div class="log-line">
-        <span class="log-ts text-dim">[00:01.32]</span>
-        <span class="log-tag text-cyan font-bold">SEARCH</span>
-        <span class="text-secondary">search_web(query='Target Entity ownership filings Maharashtra') -> 4 candidate URLs returned</span>
+
+      <div class="trace-stage-block" data-stage="2">
+        <div class="log-line">
+          <span class="log-ts text-dim">[00:01.32]</span>
+          <span class="log-tag text-cyan font-bold">SEARCH</span>
+          <span class="text-secondary">search_web(query='Target Entity ownership filings Maharashtra') -&gt; 4 candidate URLs returned</span>
+        </div>
+        <div class="log-line">
+          <span class="log-ts text-dim">[00:02.15]</span>
+          <span class="log-tag text-cyan font-bold">INGEST</span>
+          <span class="text-secondary">collect_sources(sources=4, include_text=true) -&gt; SSRF check: 4/4 PASS (RFC1918 blocked)</span>
+        </div>
       </div>
-      <div class="log-line">
-        <span class="log-ts text-dim">[00:02.15]</span>
-        <span class="log-tag text-cyan font-bold">INGEST</span>
-        <span class="text-secondary">collect_sources(sources=4, include_text=true) -> SSRF check: 4/4 PASS (RFC1918 blocked)</span>
+
+      <div class="trace-stage-block" data-stage="3">
+        <div class="log-line">
+          <span class="log-ts text-dim">[00:02.98]</span>
+          <span class="log-tag text-emerald font-bold">INDEX</span>
+          <span class="text-primary">64 content-addressed passages saved to SQLite with character offsets, SHA-256 hashes &amp; page locators</span>
+        </div>
       </div>
-      <div class="log-line">
-        <span class="log-ts text-dim">[00:02.98]</span>
-        <span class="log-tag text-emerald font-bold">INDEX</span>
-        <span class="text-primary">64 content-addressed passages saved to SQLite with character offsets, SHA-256 hashes &amp; page locators</span>
+
+      <div class="trace-stage-block" data-stage="4">
+        <div class="log-line log-divider">
+          <span class="log-ts text-dim">[00:03.80]</span>
+          <span class="log-tag text-emerald font-bold">VERIFY</span>
+          <span class="text-primary">verify_claims() -&gt; Evaluating claims against exact stored passage text:</span>
+        </div>
+        <div class="log-line log-indent">
+          <span class="log-bullet text-emerald">├─ [F1]</span>
+          <span class="text-secondary">Claim: 'Registered office located in Nashik, Maharashtra, PIN 422003'</span>
+          <span class="badge-status status-supported font-bold">SUPPORTED</span>
+          <span class="text-dim">(Passage #12: 94% term match)</span>
+        </div>
+        <div class="log-line log-indent">
+          <span class="log-bullet text-amber">├─ [F2]</span>
+          <span class="text-secondary">Claim: 'Reported $12M Series A funding in Q3 2024'</span>
+          <span class="badge-status status-conflict font-bold">CONFLICTING EVIDENCE</span>
+          <span class="text-dim">(Passage #19 vs #41)</span>
+        </div>
+        <div class="log-line log-indent">
+          <span class="log-bullet text-muted">└─ [F3]</span>
+          <span class="text-secondary">Claim: 'Unattributed market dominance claim'</span>
+          <span class="badge-status status-unverified font-bold">UNVERIFIED</span>
+          <span class="text-dim">(Coverage: 18%, 0 citations attached)</span>
+        </div>
       </div>
-      <div class="log-line log-divider">
-        <span class="log-ts text-dim">[00:03.80]</span>
-        <span class="log-tag text-emerald font-bold">VERIFY</span>
-        <span class="text-primary">verify_claims() -> Evaluating claims against exact stored passage text:</span>
-      </div>
-      <div class="log-line log-indent">
-        <span class="log-bullet text-emerald">├─ [F1]</span>
-        <span class="text-secondary">Claim: 'Registered office located in Nashik, Maharashtra, PIN 422003'</span>
-        <span class="badge-status status-supported font-bold">SUPPORTED</span>
-        <span class="text-dim">(Passage #12: 94% term match)</span>
-      </div>
-      <div class="log-line log-indent">
-        <span class="log-bullet text-amber">├─ [F2]</span>
-        <span class="text-secondary">Claim: 'Reported $12M Series A funding in Q3 2024'</span>
-        <span class="badge-status status-conflict font-bold">CONFLICTING EVIDENCE</span>
-        <span class="text-dim">(Passage #19 vs #41)</span>
-      </div>
-      <div class="log-line log-indent">
-        <span class="log-bullet text-muted">└─ [F3]</span>
-        <span class="text-secondary">Claim: 'Unattributed market dominance claim'</span>
-        <span class="badge-status status-unverified font-bold">UNVERIFIED</span>
-        <span class="text-dim">(Coverage: 18%, 0 citations attached)</span>
-      </div>
-      <div class="log-line">
-        <span class="log-ts text-dim">[00:04.90]</span>
-        <span class="log-tag text-emerald font-bold">REPORT</span>
-        <span class="text-primary">generate_markdown_report() + generate_client_report() -> 10-section report & DOCX created</span>
-      </div>
-      <div class="log-line">
-        <span class="log-ts text-dim">[00:05.42]</span>
-        <span class="log-tag text-emerald font-bold">VALIDATE</span>
-        <span class="text-emerald font-bold">validate_report() -> STRUCTURAL INTEGRITY PASSED (0 dangling citations, hashes intact)</span>
+
+      <div class="trace-stage-block" data-stage="5">
+        <div class="log-line">
+          <span class="log-ts text-dim">[00:04.90]</span>
+          <span class="log-tag text-emerald font-bold">REPORT</span>
+          <span class="text-primary">generate_markdown_report() + generate_client_report() -&gt; 10-section report &amp; DOCX created</span>
+        </div>
+        <div class="log-line">
+          <span class="log-ts text-dim">[00:05.42]</span>
+          <span class="log-tag text-emerald font-bold">VALIDATE</span>
+          <span class="text-emerald font-bold">validate_report() -&gt; STRUCTURAL INTEGRITY PASSED (0 dangling citations, hashes intact)</span>
+        </div>
       </div>
     </div>
 
@@ -182,16 +249,71 @@
         </div>
       </div>
     </div>
+
+    <!-- Panel 4: JSON-RPC Protocol Contract -->
+    <div class="sim-panel" id="tab-protocol" role="tabpanel" aria-labelledby="tab-btn-protocol" hidden>
+      <div class="contract-container">
+        <div class="json-comment">// Actual Stdio JSON-RPC 2.0 exchange demonstrating tools/call for 'verify_claims'</div>
+        
+        <div class="contract-block">
+          <div class="contract-header font-mono text-xs">
+            <span class="text-cyan font-bold">&gt; AGENT RUNTIME REQUEST (STDIN):</span>
+            <span class="text-muted">METHOD: tools/call</span>
+          </div>
+          <pre class="contract-pre font-mono text-xs"><code>&#123;
+  <span class="json-key">"jsonrpc"</span>: <span class="json-str">"2.0"</span>,
+  <span class="json-key">"id"</span>: <span class="json-num">104</span>,
+  <span class="json-key">"method"</span>: <span class="json-str">"tools/call"</span>,
+  <span class="json-key">"params"</span>: &#123;
+    <span class="json-key">"name"</span>: <span class="json-str">"verify_claims"</span>,
+    <span class="json-key">"arguments"</span>: &#123;
+      <span class="json-key">"run_id"</span>: <span class="json-num">1</span>,
+      <span class="json-key">"claim_ids"</span>: [<span class="json-num">42</span>],
+      <span class="json-key">"method"</span>: <span class="json-str">"deterministic"</span>
+    &#125;
+  &#125;
+&#125;</code></pre>
+        </div>
+
+        <div class="contract-block">
+          <div class="contract-header font-mono text-xs">
+            <span class="text-emerald font-bold">&lt; AGLETRAS MCP SERVER RESPONSE (STDOUT):</span>
+            <span class="text-muted">STATUS: 200 OK (STDIO FRAME)</span>
+          </div>
+          <pre class="contract-pre font-mono text-xs"><code>&#123;
+  <span class="json-key">"jsonrpc"</span>: <span class="json-str">"2.0"</span>,
+  <span class="json-key">"id"</span>: <span class="json-num">104</span>,
+  <span class="json-key">"result"</span>: &#123;
+    <span class="json-key">"run_id"</span>: <span class="json-num">1</span>,
+    <span class="json-key">"verifications_evaluated"</span>: <span class="json-num">1</span>,
+    <span class="json-key">"claims"</span>: [
+      &#123;
+        <span class="json-key">"claim_id"</span>: <span class="json-num">42</span>,
+        <span class="json-key">"claim_text"</span>: <span class="json-str">"Registered corporate office located in Nashik, Maharashtra, PIN 422003"</span>,
+        <span class="json-key">"epistemic_status"</span>: <span class="json-str text-emerald">"SUPPORTED"</span>,
+        <span class="json-key">"matched_passage_id"</span>: <span class="json-num">12</span>,
+        <span class="json-key">"term_coverage"</span>: <span class="json-num">0.94</span>,
+        <span class="json-key">"exact_quote_match"</span>: <span class="json-bool">true</span>,
+        <span class="json-key">"source_locator"</span>: <span class="json-str">"page 3, sec: Statutory Registration"</span>,
+        <span class="json-key">"sha256"</span>: <span class="json-str">"4b2f8a19c3e218e87d0921473fa0081d6..."</span>
+      &#125;
+    ],
+    <span class="json-key">"unresolved_conflicts_surfaced"</span>: <span class="json-num">0</span>
+  &#125;
+&#125;</code></pre>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Terminal Footer Indicator -->
   <div class="terminal-footer font-mono text-xs text-muted">
     <div class="footer-left">
       <span class="beacon-dot"></span>
-      <span>READY: 40 MCP tools registered • stdio JSON-RPC ready for agent connection</span>
+      <span>SIMULATED PIPELINE TELEMETRY: Demonstrates 40 registered MCP tools • Connect locally via stdio JSON-RPC for live execution</span>
     </div>
     <div class="footer-right">
-      <span>No Paid API Key Required for Core Operation</span>
+      <span>Zero Mandatory Paid APIs for Core Operation</span>
     </div>
   </div>
 </div>
@@ -248,10 +370,98 @@
       }
     })
   })
+
+  // Sequential pipeline stage animation (Simulation Walkthrough)
+  const stepIndicators = Array.from(document.querySelectorAll<HTMLElement>('.trace-step-indicator'))
+  const stageBlocks = Array.from(document.querySelectorAll<HTMLElement>('.trace-stage-block'))
+  const replayBtn = document.getElementById('btn-replay-trace') as HTMLButtonElement | null
+
+  let traceTimeouts: number[] = []
+
+  function clearTraceTimeouts() {
+    traceTimeouts.forEach(t => clearTimeout(t))
+    traceTimeouts = []
+  }
+
+  function playTraceSequence() {
+    clearTraceTimeouts()
+
+    // Respect user's motion preferences
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      stepIndicators.forEach(ind => ind.classList.add('is-completed'))
+      stageBlocks.forEach(blk => blk.classList.add('is-revealed'))
+      return
+    }
+
+    // Reset initial states
+    stepIndicators.forEach((ind, i) => {
+      ind.classList.remove('is-active', 'is-completed')
+      if (i === 0) ind.classList.add('is-active')
+    })
+    stageBlocks.forEach(blk => blk.classList.remove('is-revealed'))
+
+    // Stage 1 appears immediately
+    stageBlocks[0]?.classList.add('is-revealed')
+
+    // Stagger stages 2-5
+    const delays = [0, 480, 960, 1440, 1920]
+    for (let i = 1; i < stageBlocks.length; i++) {
+      const timer = window.setTimeout(() => {
+        // Mark previous steps completed
+        for (let j = 0; j < i; j++) {
+          stepIndicators[j]?.classList.remove('is-active')
+          stepIndicators[j]?.classList.add('is-completed')
+        }
+        // Activate current step and reveal stage block
+        stepIndicators[i]?.classList.add('is-active')
+        stageBlocks[i]?.classList.add('is-revealed')
+
+        if (i === stageBlocks.length - 1) {
+          // Final stage reached: mark all completed after brief pause
+          const finishTimer = window.setTimeout(() => {
+            stepIndicators[i]?.classList.remove('is-active')
+            stepIndicators[i]?.classList.add('is-completed')
+          }, 600)
+          traceTimeouts.push(finishTimer)
+        }
+      }, delays[i])
+      traceTimeouts.push(timer)
+    }
+  }
+
+  // Trigger sequence when trace panel is visible via IntersectionObserver
+  let hasAnimatedOnce = false
+  if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+    const traceSection = document.getElementById('tab-trace')
+    if (traceSection) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimatedOnce) {
+            hasAnimatedOnce = true
+            playTraceSequence()
+          }
+        })
+      }, { threshold: 0.15 })
+      observer.observe(traceSection)
+    }
+  } else {
+    // Zero-JS or no IntersectionObserver: reveal everything
+    stageBlocks.forEach(blk => blk.classList.add('is-revealed'))
+    stepIndicators.forEach(ind => ind.classList.add('is-completed'))
+  }
+
+  if (replayBtn) {
+    replayBtn.addEventListener('click', () => {
+      playTraceSequence()
+    })
+  }
 </script>
 
 <style>
   .terminal-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
     background-color: var(--bg-surface);
     border: 1px solid var(--border-subtle);
     border-radius: 8px;
@@ -291,13 +501,60 @@
   }
 
   .simulation-banner {
-    padding: 8px 18px;
+    padding: 10px 18px;
     background-color: rgba(245, 158, 11, 0.08);
     border-bottom: 1px solid rgba(245, 158, 11, 0.2);
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .sim-banner-row {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .sim-live-badge {
+    padding: 2px 7px;
+    border-radius: 3px;
+    background-color: rgba(46, 186, 135, 0.12);
+    border: 1px solid rgba(46, 186, 135, 0.3);
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+  }
+
+  .contract-container {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .contract-block {
+    background-color: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .contract-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .contract-pre {
+    margin: 0;
+    padding: 14px;
+    overflow-x: auto;
+    line-height: 1.6;
+    background-color: transparent;
   }
 
   .terminal-nav {
@@ -314,6 +571,10 @@
   }
 
   .sim-tab-btn {
+    font-family: var(--font-body);
+    font-size: 0.825rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     padding: 10px 18px;
     background: transparent;
     border: none;
@@ -331,9 +592,9 @@
   }
 
   .sim-tab-btn.is-active {
-    color: var(--accent-emerald);
+    color: var(--brand-green-bright);
     background-color: var(--bg-surface-elevated);
-    border-bottom-color: var(--accent-emerald);
+    border-bottom-color: var(--brand-green-bright);
   }
 
   .terminal-body {
@@ -344,12 +605,138 @@
     overflow-x: auto;
   }
 
+  @keyframes tabFadeSlide {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .sim-panel {
     display: none;
   }
 
   .sim-panel.is-active {
     display: block;
+    animation: tabFadeSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Workflow sequence indicator strip */
+  .trace-workflow-strip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+    background-color: rgba(0, 0, 0, 0.45);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    flex-wrap: wrap;
+  }
+
+  .workflow-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    font-weight: 700;
+  }
+
+  .trace-step-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-hairline);
+    color: var(--text-dim);
+    transition: all 0.25s ease;
+  }
+
+  .trace-step-indicator.is-active {
+    background-color: rgba(46, 186, 135, 0.14);
+    border-color: rgba(46, 186, 135, 0.45);
+    color: var(--brand-green-bright);
+    box-shadow: 0 0 10px rgba(46, 186, 135, 0.18);
+  }
+
+  .trace-step-indicator.is-completed {
+    background-color: rgba(46, 186, 135, 0.06);
+    border-color: rgba(46, 186, 135, 0.25);
+    color: var(--accent-emerald);
+  }
+
+  .step-arrow {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+  }
+
+  .btn-replay-trace {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+  }
+
+  .btn-replay-trace:hover {
+    color: var(--brand-green-bright);
+    background-color: rgba(46, 186, 135, 0.12);
+    border-color: rgba(46, 186, 135, 0.35);
+  }
+
+  .btn-replay-trace:hover .replay-icon {
+    transform: rotate(180deg);
+  }
+
+  .replay-icon {
+    display: inline-block;
+    transition: transform 0.4s ease;
+    font-size: 0.85rem;
+  }
+
+  /* Trace stage blocks with progressive reveal */
+  .trace-stage-block {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    margin-bottom: 6px;
+  }
+
+  :global(html.js-motion-ready) .trace-stage-block {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  :global(html.js-motion-ready) .trace-stage-block.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sim-panel.is-active {
+      animation: none !important;
+    }
+    :global(html.js-motion-ready) .trace-stage-block {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
+    .trace-step-indicator {
+      transition: none !important;
+    }
   }
 
   .log-line {
@@ -379,28 +766,29 @@
   }
 
   .badge-status {
-    padding: 1px 6px;
+    padding: 2px 7px;
     border-radius: 4px;
-    font-size: 0.7rem;
-    letter-spacing: 0.05em;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
   }
 
   .status-supported {
-    background-color: rgba(16, 185, 129, 0.15);
-    color: var(--accent-emerald);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+    background-color: rgba(46, 186, 135, 0.15);
+    color: var(--brand-green-bright);
+    border: 1px solid rgba(46, 186, 135, 0.35);
   }
 
   .status-conflict {
     background-color: rgba(245, 158, 11, 0.15);
-    color: var(--accent-amber);
-    border: 1px solid rgba(245, 158, 11, 0.3);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
   }
 
   .status-unverified {
-    background-color: rgba(255, 255, 255, 0.08);
+    background-color: rgba(255, 255, 255, 0.06);
     color: var(--text-muted);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--border-subtle);
   }
 
   .json-block {
@@ -482,16 +870,25 @@
       }
     }
     .terminal-nav {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      width: 100%;
+      display: flex;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-hairline);
+    }
+    .terminal-nav::-webkit-scrollbar {
+      display: none;
     }
     .sim-tab-btn {
-      width: 100%;
+      flex: 1 0 auto;
       text-align: center;
       justify-content: center;
-      padding: 8px 4px;
-      font-size: 0.68rem;
+      padding: 10px 14px;
+      font-size: 0.74rem;
+      font-weight: 600;
+      white-space: nowrap;
+      min-height: 42px;
     }
     .terminal-body {
       padding: 16px 14px;
@@ -499,6 +896,42 @@
     .simulation-banner {
       padding: 8px 14px;
       font-size: 0.68rem;
+    }
+    .contract-container {
+      gap: 10px;
+    }
+    .contract-header {
+      padding: 6px 12px;
+      font-size: 0.68rem;
+    }
+    .contract-pre {
+      font-size: 0.69rem;
+      line-height: 1.5;
+      padding: 10px 12px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: hidden;
+    }
+    .trace-workflow-strip {
+      padding: 8px 10px;
+      gap: 6px;
+    }
+    .trace-step-indicator {
+      padding: 2px 6px;
+      font-size: 0.65rem;
+    }
+    .workflow-label {
+      width: 100%;
+      margin-bottom: 2px;
+    }
+    .step-arrow {
+      display: none;
+    }
+    .btn-replay-trace {
+      margin-left: 0;
+      width: 100%;
+      justify-content: center;
+      margin-top: 4px;
     }
     .terminal-footer {
       padding: 8px 14px;

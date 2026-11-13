@@ -9,7 +9,7 @@
     <div class="snippet-tabs" role="tablist" aria-label="Agent Integration Configs">
       <button 
         type="button" 
-        class="agent-tab-btn is-active font-mono text-xs" 
+        class="agent-tab-btn is-active text-xs" 
         data-target="agent-opencode"
         role="tab"
         aria-selected="true"
@@ -21,7 +21,7 @@
       </button>
       <button 
         type="button" 
-        class="agent-tab-btn font-mono text-xs" 
+        class="agent-tab-btn text-xs" 
         data-target="agent-claude"
         role="tab"
         aria-selected="false"
@@ -33,7 +33,7 @@
       </button>
       <button 
         type="button" 
-        class="agent-tab-btn font-mono text-xs" 
+        class="agent-tab-btn text-xs" 
         data-target="agent-cursor"
         role="tab"
         aria-selected="false"
@@ -45,7 +45,7 @@
       </button>
       <button 
         type="button" 
-        class="agent-tab-btn font-mono text-xs" 
+        class="agent-tab-btn text-xs" 
         data-target="agent-cli"
         role="tab"
         aria-selected="false"
@@ -60,7 +60,7 @@
     <!-- Active Copy Button -->
     <button 
       type="button" 
-      class="btn-copy-snippet font-mono text-xs" 
+      class="btn-copy-snippet text-xs" 
       id="btn-copy-active-snippet"
       aria-label="Copy active configuration snippet"
     >
@@ -76,6 +76,10 @@
   <div class="snippet-content">
     <!-- Panel 1: OpenCode -->
     <div class="agent-panel is-active" id="agent-opencode" role="tabpanel" aria-labelledby="tab-btn-opencode">
+      <div class="panel-meta-bar font-mono text-xs">
+        <span class="meta-tag text-emerald font-bold">NATIVE STDIO // JSON-RPC 2.0</span>
+        <span class="meta-loc text-dim">TARGET FILE: ./opencode.json</span>
+      </div>
       <div class="snippet-desc text-muted font-mono text-xs">
         Save to <code class="text-emerald">opencode.json</code> in your project root. Enables native stdio tool exposure without Code Mode wrappers.
       </div>
@@ -95,12 +99,21 @@
     &#125;
   &#125;
 &#125;</code></pre>
+      <div class="panel-env-hints font-mono text-xs text-dim">
+        <span>OPTIONAL ENV:</span>
+        <code>AGLETRAS_STORAGE_DIR=./data</code>
+        <code>AGLETRAS_ALLOWED_DOMAINS=gov.in,mca.gov.in</code>
+      </div>
     </div>
 
     <!-- Panel 2: Claude Desktop -->
     <div class="agent-panel" id="agent-claude" role="tabpanel" aria-labelledby="tab-btn-claude" hidden>
+      <div class="panel-meta-bar font-mono text-xs">
+        <span class="meta-tag text-emerald font-bold">CROSS-PLATFORM DESKTOP // STDIO</span>
+        <span class="meta-loc text-dim">macOS: ~/Library/Application Support/Claude/ · Windows: %APPDATA%\Claude\</span>
+      </div>
       <div class="snippet-desc text-muted font-mono text-xs">
-        Add to <code class="text-emerald">claude_desktop_config.json</code>. Direct local stdio connection with paced web-search pacing.
+        Add to <code class="text-emerald">claude_desktop_config.json</code>. Direct local stdio connection with paced web-search rate limiting.
       </div>
       <pre class="code-pre font-mono text-xs"><code id="code-claude">&#123;
   "mcpServers": &#123;
@@ -117,10 +130,19 @@
     &#125;
   &#125;
 &#125;</code></pre>
+      <div class="panel-env-hints font-mono text-xs text-dim">
+        <span>OPTIONAL ENV:</span>
+        <code>AGLETRAS_SEARCH_PROVIDER=duckduckgo</code>
+        <code>AGLETRAS_ALLOW_PRIVATE_HOSTS=0</code>
+      </div>
     </div>
 
     <!-- Panel 3: Cursor IDE -->
     <div class="agent-panel" id="agent-cursor" role="tabpanel" aria-labelledby="tab-btn-cursor" hidden>
+      <div class="panel-meta-bar font-mono text-xs">
+        <span class="meta-tag text-emerald font-bold">IDE HARNESS // LOCAL PROCESS</span>
+        <span class="meta-loc text-dim">PROJECT ROOT: .cursor/mcp.json OR SETTINGS &gt; FEATURES &gt; MCP</span>
+      </div>
       <div class="snippet-desc text-muted font-mono text-xs">
         Configure under <code class="text-emerald">Settings &gt; Features &gt; MCP</code> or add to <code class="text-emerald">.cursor/mcp.json</code>.
       </div>
@@ -135,21 +157,45 @@
     &#125;
   &#125;
 &#125;</code></pre>
+      <div class="panel-env-hints font-mono text-xs text-dim">
+        <span>OPTIONAL ENV:</span>
+        <code>AGLETRAS_LOCAL_ROOTS=./workspace</code>
+      </div>
     </div>
 
     <!-- Panel 4: Model-Free CLI -->
     <div class="agent-panel" id="agent-cli" role="tabpanel" aria-labelledby="tab-btn-cli" hidden>
+      <div class="panel-meta-bar font-mono text-xs">
+        <span class="meta-tag text-emerald font-bold">HERMETIC CLI // ZERO-LLM TEST MODE</span>
+        <span class="meta-loc text-dim">STANDALONE COMMAND LINE RUNNER</span>
+      </div>
       <div class="snippet-desc text-muted font-mono text-xs">
         Execute full autonomous research workflows from the terminal without an agent model or external API keys.
       </div>
-      <pre class="code-pre font-mono text-xs"><code id="code-cli"># 1. Run local environment pre-flight check
-agletras doctor
+      <pre class="code-pre font-mono text-xs"><code id="code-cli"># 1. Run local environment pre-flight check (FTS5, storage, dependencies)
+python -m agletras_mcp.doctor
 
 # 2. Execute end-to-end research with bounded depth
-agletras run "Analyze corporate lineage and beneficial ownership" --depth standard
+python -m agletras_mcp.cli run "Analyze corporate lineage and beneficial ownership" --depth standard
 
-# 3. Export Mermaid evidence map & CSV tables
-agletras export 1 --format mermaid --out ./visuals</code></pre>
+# 3. Export validated Markdown deliverable & Word DOCX
+python -m agletras_mcp.cli export 1 --format docx --out ./reports/deliverable.docx</code></pre>
+      <div class="panel-env-hints font-mono text-xs text-dim">
+        <span>VERIFICATION STATUS:</span>
+        <span class="text-emerald">Hermetic test suite passed (tests/test_server.py)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snippet Footer -->
+  <div class="snippet-footer font-mono text-xs">
+    <div class="footer-left">
+      <span class="text-dim">PYTHON 3.10+ // STDLIB + PYPDF</span>
+    </div>
+    <div class="footer-right">
+      <a href="https://github.com/Agletras/Agletras-mcp.git" target="_blank" rel="noopener noreferrer" class="text-emerald underline">
+        View agletras_mcp on GitHub ↗
+      </a>
     </div>
   </div>
 </div>
@@ -161,8 +207,8 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
   const copyBtn = document.getElementById('btn-copy-active-snippet') as HTMLButtonElement | null
   const copyLabel = copyBtn ? copyBtn.querySelector<HTMLElement>('.copy-label') : null
 
-  function activateAgentTab(btn: HTMLButtonElement) {
-    const targetId = btn.getAttribute('data-target')
+  function activateAgentTab(targetBtn: HTMLButtonElement) {
+    const targetId = targetBtn.getAttribute('data-target')
     if (!targetId) return
 
     agentTabs.forEach(b => {
@@ -175,10 +221,10 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
       p.hidden = true
     })
 
-    btn.classList.add('is-active')
-    btn.setAttribute('aria-selected', 'true')
-    btn.tabIndex = 0
-    btn.focus()
+    targetBtn.classList.add('is-active')
+    targetBtn.setAttribute('aria-selected', 'true')
+    targetBtn.tabIndex = 0
+    targetBtn.focus()
     const targetPanel = document.getElementById(targetId)
     if (targetPanel) {
       targetPanel.classList.add('is-active')
@@ -190,9 +236,9 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
     btn.addEventListener('click', () => activateAgentTab(btn))
     btn.addEventListener('keydown', (e) => {
       let targetIndex: number | null = null
-      if (e.key === 'ArrowRight') {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
         targetIndex = (index + 1) % agentTabs.length
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         targetIndex = (index - 1 + agentTabs.length) % agentTabs.length
       } else if (e.key === 'Home') {
         targetIndex = 0
@@ -284,6 +330,10 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
   }
 
   .agent-tab-btn {
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     padding: 12px 18px;
     background: transparent;
     border: none;
@@ -300,37 +350,63 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
   }
 
   .agent-tab-btn.is-active {
-    color: var(--accent-emerald);
-    border-bottom-color: var(--accent-emerald);
+    color: var(--brand-green-bright);
+    border-bottom-color: var(--brand-green-bright);
+    font-weight: 600;
   }
 
   .btn-copy-snippet {
     display: flex;
     align-items: center;
     gap: 6px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
     padding: 6px 12px;
-    background-color: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background-color: rgba(46, 186, 135, 0.1);
+    border: 1px solid rgba(46, 186, 135, 0.25);
     border-radius: 4px;
-    color: var(--accent-emerald);
+    color: var(--brand-green-bright);
     cursor: pointer;
     transition: all var(--transition-fast);
   }
 
   .btn-copy-snippet:hover {
-    background-color: rgba(16, 185, 129, 0.2);
-    border-color: var(--accent-emerald);
+    background-color: rgba(46, 186, 135, 0.2);
+    border-color: var(--brand-green-bright);
   }
 
   .btn-copy-snippet.is-copied {
-    background-color: var(--accent-emerald);
+    background-color: var(--brand-green-bright);
     color: #030705;
     font-weight: 700;
   }
 
   .snippet-content {
-    padding: 20px;
+    padding: 24px;
     background-color: #030705;
+  }
+
+  .panel-meta-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @keyframes tabFadeSlide {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .agent-panel {
@@ -339,6 +415,7 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
 
   .agent-panel.is-active {
     display: block;
+    animation: tabFadeSlide 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
 
   .snippet-desc {
@@ -347,7 +424,7 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
   }
 
   .code-pre {
-    margin: 0;
+    margin: 0 0 14px 0;
     padding: 16px;
     background-color: rgba(0, 0, 0, 0.4);
     border: 1px solid var(--border-hairline);
@@ -357,8 +434,44 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
     line-height: 1.6;
   }
 
+  .panel-env-hints {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding-top: 8px;
+  }
+
+  .panel-env-hints code {
+    background-color: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-hairline);
+    padding: 2px 6px;
+    border-radius: 3px;
+    color: var(--text-secondary);
+  }
+
+  .snippet-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background-color: var(--bg-surface-elevated);
+    border-top: 1px solid var(--border-hairline);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
   .agent-tab-short {
     display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .agent-panel.is-active {
+      animation: none !important;
+    }
+    .agent-tab-btn {
+      transition: none !important;
+    }
   }
 
   @media (max-width: 640px) {
@@ -392,11 +505,16 @@ agletras export 1 --format mermaid --out ./visuals</code></pre>
       padding: 8px 14px;
     }
     .snippet-content {
-      padding: 14px;
+      padding: 16px 14px;
     }
     .code-pre {
       padding: 12px;
       font-size: 0.75rem;
+    }
+    .panel-meta-bar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
     }
   }
 </style>

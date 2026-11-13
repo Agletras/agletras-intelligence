@@ -48,7 +48,7 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
             <li>
               <a 
                 href={link.href} 
-                class={`nav-link font-mono ${isActive ? 'is-active' : ''}`}
+                class={`nav-link ${isActive ? 'is-active' : ''}`}
                 aria-current={isActive ? 'page' : undefined}
                 target={link.external ? '_blank' : undefined}
                 rel={link.external ? 'noopener noreferrer' : undefined}
@@ -131,8 +131,8 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
   }
 
   .site-header.is-menu-open {
-    background: #030705 !important;
-    background-color: #030705 !important;
+    background: var(--bg-deep) !important;
+    background-color: var(--bg-deep) !important;
     backdrop-filter: none !important;
     -webkit-backdrop-filter: none !important;
   }
@@ -200,9 +200,10 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
   }
 
   .nav-link {
-    font-size: 0.78rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     color: var(--text-secondary);
     text-decoration: none;
     transition: color var(--transition-fast);
@@ -330,8 +331,8 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
     bottom: 0;
     height: calc(100vh - 72px);
     height: calc(100dvh - 72px);
-    background: #030705 !important;
-    background-color: #030705 !important;
+    background: var(--bg-deep) !important;
+    background-color: var(--bg-deep) !important;
     border-top: 1px solid var(--border-subtle);
     padding: 24px var(--grid-margin);
     z-index: 999;
@@ -347,8 +348,8 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
-    background: #030705 !important;
-    background-color: #030705 !important;
+    background: var(--bg-deep) !important;
+    background-color: var(--bg-deep) !important;
   }
 
   .mobile-nav-list {
@@ -360,16 +361,21 @@ const navLinks: Array<{ label: string; href: string; external?: boolean }> = [
   }
 
   .mobile-nav-link {
-    font-size: 1.8rem;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
     font-weight: 700;
     color: var(--text-primary);
     text-decoration: none;
+    transition: color var(--transition-fast);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--brand-green-bright);
   }
 
   @media (max-width: 1140px) {
     .site-header {
-      background: #030705 !important;
-      background-color: #030705 !important;
+      background: var(--bg-deep) !important;
+      background-color: var(--bg-deep) !important;
       backdrop-filter: none !important;
       -webkit-backdrop-filter: none !important;
     }

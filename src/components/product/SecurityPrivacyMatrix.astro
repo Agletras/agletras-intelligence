@@ -1,0 +1,271 @@
+---
+/**
+ * SecurityPrivacyMatrix.astro
+ *
+ * Grounded 1:1 in src/agletras_mcp/netpolicy.py, storage.py, localfs.py, and planner.py.
+ * Documents verified technical safeguards, socket-level SSRF prevention,
+ * local-first storage isolation, and ethical non-intrusion guarantees.
+ */
+
+interface SecurityPillar {
+  num: string
+  title: string
+  tag: string
+  badgeClass: string
+  guarantee: string
+  implementation: string
+  module: string
+  envVar?: string
+}
+
+const pillars: SecurityPillar[] = [
+  {
+    num: '01',
+    title: 'Local-First SQLite Storage & Zero Remote Leakage',
+    tag: 'LOCAL STORAGE',
+    badgeClass: 'badge-emerald',
+    guarantee: 'All collected sources, passage offsets, and research runs are stored strictly on the local machine in SQLite WAL mode. Zero data is transmitted to external cloud servers.',
+    implementation: 'Single-file SQLite store (research.db) with PRAGMA journal_mode=WAL, foreign keys enabled, and busy timeouts. No ORM, no external analytics, no telemetry beacons.',
+    module: 'src/agletras_mcp/storage.py',
+    envVar: 'AGLETRAS_STORAGE_DIR',
+  },
+  {
+    num: '02',
+    title: 'Socket-Level SSRF Guard & Redirect Validation',
+    tag: 'OUTBOUND NETPOLICY',
+    badgeClass: 'badge-cyan',
+    guarantee: 'All outbound HTTP(S) fetches validate resolved DNS addresses against a comprehensive denylist before initiating connections, neutralizing internal network pivot attacks.',
+    implementation: 'Blocks RFC 1918 private ranges (10/8, 172.16/12, 192.168/16), loopback (127.0.0.1), CGNAT, and cloud metadata (169.254.169.254). SafeRedirectHandler re-validates each redirect hop.',
+    module: 'src/agletras_mcp/netpolicy.py',
+    envVar: 'AGLETRAS_ALLOWED_DOMAINS',
+  },
+  {
+    num: '03',
+    title: 'Filesystem Boundary Confinement & Symlink Defense',
+    tag: 'LOCAL FS GUARD',
+    badgeClass: 'badge-emerald',
+    guarantee: 'Local document extraction is confined to explicit allowed roots. Symlinks resolving outside the configured root directory are refused with access_denied.',
+    implementation: 'Directory traversal guards with path containment checks. Automatically skips editor locks, temporary files (~, .tmp), and system files (.ds_store, desktop.ini). Logs never record file contents.',
+    module: 'src/agletras_mcp/localfs.py',
+    envVar: 'AGLETRAS_LOCAL_ROOTS',
+  },
+  {
+    num: '04',
+    title: 'Deterministic Budget Bounding & Runaway Prevention',
+    tag: 'BUDGET CONTROL',
+    badgeClass: 'badge-amber',
+    guarantee: 'Autonomous research agents operate within hard execution caps to prevent infinite loops, rate-limit bans, and runaway resource consumption.',
+    implementation: 'Default limits enforced in code: max 8 subquestions, max 2 follow-up rounds, max 4 candidates per question, and max 20 unique sources per run. Append-only SQLite event audit trail.',
+    module: 'src/agletras_mcp/planner.py',
+    envVar: 'LIMIT_CEILINGS',
+  },
+]
+---
+
+<div class="security-matrix-card panel-telemetry" id="security-matrix">
+  <div class="matrix-header">
+    <div class="matrix-title-group">
+      <div class="eyebrow-badge font-mono text-xs">
+        <span class="beacon-dot"></span>
+        <span class="text-emerald font-bold">DATA PRIVACY, NETPOLICY &amp; SECURITY GUARANTEES</span>
+      </div>
+      <h3 class="matrix-h3 font-display">Enterprise-Grade Security Architecture Grounded in Code</h3>
+      <p class="matrix-lead text-secondary text-sm leading-relaxed">
+        Agletras Intelligence is designed for sensitive corporate intelligence and regulated research environments. Every security control below is implemented in tested Python source code.
+      </p>
+    </div>
+  </div>
+
+  <div class="matrix-grid">
+    {pillars.map((p) => (
+      <div class="pillar-card">
+        <div class="pillar-top font-mono text-xs">
+          <span class="pillar-num text-emerald font-bold">{p.num} // {p.tag}</span>
+          <span class="pillar-module text-dim">{p.module}</span>
+        </div>
+
+        <h4 class="pillar-title font-display">{p.title}</h4>
+
+        <div class="pillar-body">
+          <div class="pillar-section">
+            <span class="section-label font-mono text-xs text-muted">VERIFIED GUARANTEE:</span>
+            <p class="section-p text-secondary text-xs leading-relaxed">{p.guarantee}</p>
+          </div>
+
+          <div class="pillar-section">
+            <span class="section-label font-mono text-xs text-muted">CODE IMPLEMENTATION:</span>
+            <p class="section-p text-secondary text-xs leading-relaxed">{p.implementation}</p>
+          </div>
+        </div>
+
+        {p.envVar && (
+          <div class="pillar-footer font-mono text-xs">
+            <span class="text-dim">CONFIG ENV:</span>
+            <code class="env-tag text-emerald">{p.envVar}</code>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+
+  <!-- Passive OSINT Ethical Boundary Banner -->
+  <div class="ethical-charter-strip">
+    <div class="charter-badge font-mono text-xs text-emerald font-bold">
+      ETHICAL NON-INTRUSION CHARTER
+    </div>
+    <p class="charter-text text-secondary text-xs leading-relaxed">
+      Agletras Intelligence strictly conducts lawful, passive research using publicly accessible records, corporate registries, official gazettes, and user-provided documents. The server contains zero functionality for port scanning, credential stuffing, vulnerability exploitation, or unauthorized portal access.
+    </p>
+  </div>
+</div>
+
+<style>
+  .security-matrix-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 32px;
+    margin-top: 32px;
+  }
+
+  .matrix-header {
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 20px;
+  }
+
+  .eyebrow-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .matrix-h3 {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .matrix-lead {
+    max-width: 820px;
+  }
+
+  .matrix-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .pillar-card {
+    min-width: 0;
+    word-break: break-word;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .pillar-card:hover {
+    border-color: rgba(46, 186, 135, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .pillar-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  .pillar-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.35;
+  }
+
+  .pillar-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pillar-section {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .section-label {
+    letter-spacing: 0.05em;
+    font-size: 0.68rem;
+    font-weight: 600;
+  }
+
+  .pillar-footer {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border-hairline);
+    margin-top: auto;
+  }
+
+  .env-tag {
+    background-color: rgba(46, 186, 135, 0.08);
+    border: 1px solid rgba(46, 186, 135, 0.2);
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.72rem;
+    word-break: break-all;
+  }
+
+  .ethical-charter-strip {
+    margin-top: 24px;
+    padding: 16px 20px;
+    background-color: rgba(46, 186, 135, 0.04);
+    border: 1px solid rgba(46, 186, 135, 0.25);
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .charter-badge {
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 860px) {
+    .matrix-grid {
+      grid-template-columns: 1fr;
+    }
+    .security-matrix-card {
+      padding: 20px 16px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .security-matrix-card {
+      padding: 20px 14px;
+    }
+    .pillar-card {
+      padding: 16px 14px;
+    }
+    .ethical-charter-strip {
+      padding: 14px 14px;
+    }
+  }
+</style>

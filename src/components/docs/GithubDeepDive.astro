@@ -1,0 +1,498 @@
+---
+/**
+ * GithubDeepDive.astro
+ *
+ * GitHub Deep Dive view presenting the open-source repository architecture,
+ * README highlights, verified 40-tool inventory, contribution standards,
+ * and project status (MIT License, v0.2.0).
+ */
+---
+
+<div class="github-deepdive-card panel-telemetry" id="github-deep-dive">
+  <div class="deepdive-header">
+    <div class="header-split">
+      <div>
+        <div class="eyebrow-badge font-mono text-xs">
+          <span class="beacon-dot"></span>
+          <span class="text-emerald font-bold">OPEN SOURCE REPOSITORY DEEP DIVE // GITHUB</span>
+        </div>
+        <h3 class="deepdive-title font-display">Agletras MCP Repository &amp; Developer Tooling</h3>
+      </div>
+      <div class="repo-badges-row font-mono text-xs">
+        <span class="repo-badge"><span class="badge-dot"></span> v0.2.0 STABLE</span>
+        <span class="repo-badge">MIT LICENSE</span>
+        <span class="repo-badge">40 TOOLS</span>
+        <span class="repo-badge">PURE PYTHON</span>
+      </div>
+    </div>
+    <p class="deepdive-desc text-secondary text-sm leading-relaxed">
+      Agletras Intelligence is developed openly with high test coverage, deterministic execution standards, and clean architecture boundaries.
+    </p>
+  </div>
+
+  <!-- Deep Dive Tabs -->
+  <div class="deepdive-nav-tabs" role="tablist" aria-label="GitHub Repository Views">
+    <button type="button" class="deepdive-tab-btn is-active text-xs" data-dive-target="dive-overview" role="tab" aria-selected="true" id="tab-dive-overview">Repository Overview</button>
+    <button type="button" class="deepdive-tab-btn text-xs" data-dive-target="dive-tools" role="tab" aria-selected="false" id="tab-dive-tools">40-Tool Inventory</button>
+    <button type="button" class="deepdive-tab-btn text-xs" data-dive-target="dive-arch" role="tab" aria-selected="false" id="tab-dive-arch">Architecture Diagram</button>
+    <button type="button" class="deepdive-tab-btn text-xs" data-dive-target="dive-contrib" role="tab" aria-selected="false" id="tab-dive-contrib">Contributing &amp; License</button>
+  </div>
+
+  <!-- Tab Panels -->
+  <div class="deepdive-panels">
+    <!-- PANEL 1: OVERVIEW -->
+    <div class="dive-panel is-active" id="dive-overview" role="tabpanel" aria-labelledby="tab-dive-overview">
+      <div class="readme-mockup">
+        <div class="readme-title-bar font-mono text-xs">
+          <span>README.md — Agletras MCP // Agentic Research Toolkit</span>
+          <a href="https://github.com/Agletras/Agletras-mcp.git" target="_blank" rel="noopener noreferrer" class="link-github text-emerald">View on GitHub ↗</a>
+        </div>
+        <div class="readme-body text-secondary text-sm leading-relaxed">
+          <p>
+            <strong>Agletras MCP</strong> is a local, <strong>zero-cost</strong> research MCP server for AI agent harnesses. It provides open-web search with query politeness, web retrieval with socket-level SSRF defenses, PDF/DOCX/XLSX/CSV document extraction, SQLite-backed source/citation tracking, and Markdown/DOCX dossier exports.
+          </p>
+          <div class="key-invariants-box font-mono text-xs">
+            <div class="text-emerald font-bold mb-2">// CORE ARCHITECTURAL INVARIANTS:</div>
+            <div>✓ ZERO CLOUD TELEMETRY: No analytics beacons, no tracking, no phone-home.</div>
+            <div>✓ NO OLLAMA DEPENDENCY: Operates independently of local LLM daemons.</div>
+            <div>✓ ZERO REQUIRED SECRETS: Runs immediately without paid API subscriptions.</div>
+            <div>✓ STRICT STDIO SEPARATION: Stdout reserved exclusively for JSON-RPC 2.0 frames.</div>
+            <div>✓ DETERMINISTIC VERIFICATION: Fact-checking operates on exact character offsets.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 2: 40-TOOL INVENTORY -->
+    <div class="dive-panel" id="dive-tools" role="tabpanel" aria-labelledby="tab-dive-tools" hidden>
+      <h4 class="dive-h4 font-display">All 40 Registered MCP Tools by Suite</h4>
+      <p class="text-secondary text-xs leading-relaxed mb-4">Every entry point below is decorated with <code>@mcp.tool</code> in <code>server.py</code> and available over stdio.</p>
+      
+      <div class="suites-accordion">
+        <details class="suite-details" open>
+          <summary class="suite-summary font-mono text-xs">
+            <span class="text-emerald font-bold">SUITE 1: INGESTION &amp; RETRIEVAL (8 TOOLS)</span>
+            <span class="text-dim">health_check · fetch_url · search_web · extract_pdf...</span>
+          </summary>
+          <div class="suite-body font-mono text-xs">
+            <div class="tool-grid-item"><code>health_check</code> — Returns server health, active SQLite schema, and tool status.</div>
+            <div class="tool-grid-item"><code>fetch_url</code> — SSRF-protected HTTP/HTTPS page fetcher with HTML-to-text conversion.</div>
+            <div class="tool-grid-item"><code>search_web</code> — Open-web search (DuckDuckGo HTML / Wikipedia API) with pacing.</div>
+            <div class="tool-grid-item"><code>extract_pdf</code> — Pure-Python PDF text extraction with page boundary markers.</div>
+            <div class="tool-grid-item"><code>collect_sources</code> — Multi-source concurrent gatherer with failure isolation.</div>
+            <div class="tool-grid-item"><code>collect_local_folder</code> — Safe folder scanner with path boundary confinement.</div>
+            <div class="tool-grid-item"><code>extract_document</code> — Unified parser for DOCX, XLSX, CSV, Markdown, and text.</div>
+            <div class="tool-grid-item"><code>save_source</code> — Persists source metadata with SHA-256 de-duplication.</div>
+          </div>
+        </details>
+
+        <details class="suite-details">
+          <summary class="suite-summary font-mono text-xs">
+            <span class="text-emerald font-bold">SUITE 2: EVIDENCE &amp; STORE MANAGEMENT (7 TOOLS)</span>
+            <span class="text-dim">get_source · list_sources · search_sources · save_evidence...</span>
+          </summary>
+          <div class="suite-body font-mono text-xs">
+            <div class="tool-grid-item"><code>get_source</code> — Retrieves stored source records by integer ID.</div>
+            <div class="tool-grid-item"><code>list_sources</code> — Paginated listing of stored sources with kind and date filters.</div>
+            <div class="tool-grid-item"><code>search_sources</code> — Keyword and full-text search across stored source contents.</div>
+            <div class="tool-grid-item"><code>export_report</code> — Exports collected research sources into Markdown format.</div>
+            <div class="tool-grid-item"><code>stats</code> — Diagnostic statistics on sources, storage footprint, and cache hit rates.</div>
+            <div class="tool-grid-item"><code>save_evidence</code> — Stores evidence with canonical deduplication and passage indexing.</div>
+            <div class="tool-grid-item"><code>search_evidence</code> — FTS5 passage search with exact snippet matches and locators.</div>
+          </div>
+        </details>
+
+        <details class="suite-details">
+          <summary class="suite-summary font-mono text-xs">
+            <span class="text-emerald font-bold">SUITE 3: EPISTEMIC CLAIM &amp; CITATION ENGINE (7 TOOLS)</span>
+            <span class="text-dim">start_research_run · register_claim · attach_citation...</span>
+          </summary>
+          <div class="suite-body font-mono text-xs">
+            <div class="tool-grid-item"><code>start_research_run</code> — Initializes an isolated research session and audit log.</div>
+            <div class="tool-grid-item"><code>register_claim</code> — Records a discrete factual proposition for validation.</div>
+            <div class="tool-grid-item"><code>attach_citation</code> — Links a claim to an exact passage offset with quote validation.</div>
+            <div class="tool-grid-item"><code>get_claim_citations</code> — Retrieves all supporting, conflicting, or context citations.</div>
+            <div class="tool-grid-item"><code>get_research_history</code> — Fetches complete execution history for a research run.</div>
+            <div class="tool-grid-item"><code>generate_report</code> — Compiles citation-validated report with references register.</div>
+            <div class="tool-grid-item"><code>validate_report</code> — Re-validates citations, quotes, and passage offsets in a report.</div>
+          </div>
+        </details>
+
+        <details class="suite-details">
+          <summary class="suite-summary font-mono text-xs">
+            <span class="text-emerald font-bold">SUITE 4: AUTONOMOUS PLANNER &amp; ORCHESTRATION (7 TOOLS)</span>
+            <span class="text-dim">save_research_plan · update_subquestion · log_run_event...</span>
+          </summary>
+          <div class="suite-body font-mono text-xs">
+            <div class="tool-grid-item"><code>save_research_plan</code> — Persists structured decomposition of subquestions and budget caps.</div>
+            <div class="tool-grid-item"><code>update_subquestion</code> — Updates execution status, answer text, and evidence links.</div>
+            <div class="tool-grid-item"><code>log_run_event</code> — Records structured events to the append-only SQLite log.</div>
+            <div class="tool-grid-item"><code>start_followup_round</code> — Triggers bounded follow-up research rounds (max 2).</div>
+            <div class="tool-grid-item"><code>finish_research_run</code> — Closes run, records stopping condition, and finalizes audit trail.</div>
+            <div class="tool-grid-item"><code>get_engagement</code> — Checks current client engagement stage and deliverable readiness.</div>
+            <div class="tool-grid-item"><code>generate_client_report</code> — Compiles official DOCX client deliverable via Word package.</div>
+          </div>
+        </details>
+
+        <details class="suite-details">
+          <summary class="suite-summary font-mono text-xs">
+            <span class="text-emerald font-bold">SUITE 5: VISUAL RESEARCH &amp; CONFLICT VERIFICATION (7 TOOLS)</span>
+            <span class="text-dim">search_images · analyze_image · extract_claims · verify_claims...</span>
+          </summary>
+          <div class="suite-body font-mono text-xs">
+            <div class="tool-grid-item"><code>search_images</code> — Discovers images via Wikimedia Commons with verified metadata.</div>
+            <div class="tool-grid-item"><code>analyze_image</code> — Opt-in visual inspection via local/OpenAI-compatible endpoint.</div>
+            <div class="tool-grid-item"><code>extract_claims</code> — Extracts candidate factual statements from stored sources.</div>
+            <div class="tool-grid-item"><code>verify_claims</code> — Evaluates claims into 6 deterministic epistemic states.</div>
+            <div class="tool-grid-item"><code>analyze_conflicts</code> — Detects contradictory claims, date mismatches, and turnover disparities.</div>
+            <div class="tool-grid-item"><code>generate_markdown_report</code> — Formats 10-section synthesis dossier with stable IDs.</div>
+            <div class="tool-grid-item"><code>get_report</code> — Retrieves compiled report text and structural validation status.</div>
+          </div>
+        </details>
+
+        <details class="suite-details">
+          <summary class="suite-summary font-mono text-xs">
+            <span class="text-emerald font-bold">SUITE 6: LONG-TERM MEMORY &amp; TARGET MONITORING (4 TOOLS)</span>
+            <span class="text-dim">search_memory · monitor_add_target · monitor_check · monitor_changes</span>
+          </summary>
+          <div class="suite-body font-mono text-xs">
+            <div class="tool-grid-item"><code>search_memory</code> — Recalls previously verified evidence across historical runs.</div>
+            <div class="tool-grid-item"><code>monitor_add_target</code> — Registers an external URL or file target for change detection.</div>
+            <div class="tool-grid-item"><code>monitor_check</code> — Checks registered targets using conditional HTTP (ETag/Last-Modified).</div>
+            <div class="tool-grid-item"><code>monitor_changes</code> — Computes structured content diffs and alerts on meaningful changes.</div>
+          </div>
+        </details>
+      </div>
+    </div>
+
+    <!-- PANEL 3: ARCHITECTURE DIAGRAM -->
+    <div class="dive-panel" id="dive-arch" role="tabpanel" aria-labelledby="tab-dive-arch" hidden>
+      <h4 class="dive-h4 font-display">End-to-End System Flow Diagram</h4>
+      <div class="diagram-box font-mono text-xs">
+        <pre class="ascii-diagram"><code>┌────────────────────────────────────────────────────────────────────────┐
+│                   AI AGENT CLIENT (Claude / Cursor / OpenCode)          │
+└────────────────────────────────────┬───────────────────────────────────┘
+                                     │ JSON-RPC 2.0 (stdio)
+┌────────────────────────────────────▼───────────────────────────────────┐
+│              AGLETRAS MCP SERVER (python -m agletras_mcp)              │
+│                                                                        │
+│   ┌────────────────────────┐         ┌──────────────────────────────┐  │
+│   │   NetPolicy Gateway    │         │      Unified Parsers         │  │
+│   │  SSRF & IP Denylist    │         │  PDF, DOCX, XLSX, CSV, HTML  │  │
+│   └───────────┬────────────┘         └──────────────┬───────────────┘  │
+│               │                                     │                  │
+│   ┌───────────▼─────────────────────────────────────▼───────────────┐  │
+│   │                     Evidence Library Engine                     │  │
+│   │    Passage Splitting · SHA-256 Hashes · Epistemic Truth Matrix   │  │
+│   └───────────────────────────────────┬─────────────────────────────┘  │
+└───────────────────────────────────────┼────────────────────────────────┘
+                                        │ Atomic WAL Transactions
+┌───────────────────────────────────────▼────────────────────────────────┐
+│               LOCAL PERSISTENCE LAYER (data/research.db)               │
+│         research_runs · sources · contents · passages · claims         │
+└────────────────────────────────────────────────────────────────────────┘</code></pre>
+      </div>
+    </div>
+
+    <!-- PANEL 4: CONTRIBUTING & LICENSE -->
+    <div class="dive-panel" id="dive-contrib" role="tabpanel" aria-labelledby="tab-dive-contrib" hidden>
+      <h4 class="dive-h4 font-display">Contributing Standards &amp; MIT License</h4>
+      <p class="text-secondary text-sm leading-relaxed mb-4">
+        We welcome contributions that adhere to the project's zero-cost, zero-dependency, and deterministic verification principles.
+      </p>
+      <div class="contrib-grid font-mono text-xs">
+        <div class="contrib-card">
+          <div class="text-emerald font-bold mb-1">TESTING REQUIREMENT</div>
+          <div class="text-secondary">Every feature must include unit and stdio protocol tests in <code>tests/</code>. Run with <code>python -m unittest discover -s tests -t . -v</code>.</div>
+        </div>
+        <div class="contrib-card">
+          <div class="text-emerald font-bold mb-1">ZERO-DEPENDENCY POLICY</div>
+          <div class="text-secondary">Do not add external packages unless approved. Parse formats using the Python standard library whenever possible.</div>
+        </div>
+        <div class="contrib-card">
+          <div class="text-emerald font-bold mb-1">STRICT ERROR HANDLING</div>
+          <div class="text-secondary">Tool failures must raise <code>ToolError</code> and return <code>&#123;"ok": false&#125;</code> envelopes. Never crash the stdio server process.</div>
+        </div>
+        <div class="contrib-card">
+          <div class="text-emerald font-bold mb-1">LICENSE: MIT</div>
+          <div class="text-secondary">Agletras Intelligence is open software licensed under the permissive MIT License. Full rights to inspect, run, modify, and distribute.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (() => {
+    const tabBtns = document.querySelectorAll<HTMLButtonElement>('.deepdive-tab-btn')
+    const panels = document.querySelectorAll<HTMLElement>('.dive-panel')
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const targetId = btn.getAttribute('data-dive-target')
+        if (!targetId) return
+
+        tabBtns.forEach((b) => {
+          b.classList.remove('is-active')
+          b.setAttribute('aria-selected', 'false')
+        })
+        panels.forEach((p) => {
+          p.classList.remove('is-active')
+          p.hidden = true
+        })
+
+        btn.classList.add('is-active')
+        btn.setAttribute('aria-selected', 'true')
+
+        const targetPanel = document.getElementById(targetId)
+        if (targetPanel) {
+          targetPanel.classList.add('is-active')
+          targetPanel.hidden = false
+        }
+      })
+    })
+  })()
+</script>
+
+<style>
+  .github-deepdive-card {
+    grid-column: 1 / -1;
+    min-width: 0;
+    box-sizing: border-box;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    padding: 32px;
+    margin-bottom: 32px;
+  }
+
+  .deepdive-header {
+    border-bottom: 1px solid var(--border-hairline);
+    padding-bottom: 20px;
+    margin-bottom: 24px;
+  }
+
+  .header-split {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .deepdive-title {
+    font-size: clamp(1.4rem, 2.2vw, 1.8rem);
+    font-weight: 800;
+    color: var(--text-primary);
+    margin: 4px 0 0;
+    letter-spacing: -0.01em;
+  }
+
+  .repo-badges-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .repo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: rgba(46, 186, 135, 0.08);
+    border: 1px solid rgba(46, 186, 135, 0.25);
+    padding: 4px 10px;
+    border-radius: 4px;
+    color: var(--brand-green-bright);
+    font-size: 0.68rem;
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--brand-green-bright);
+  }
+
+  .deepdive-nav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    margin-bottom: 24px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .deepdive-tab-btn {
+    padding: 8px 14px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+  }
+
+  .deepdive-tab-btn:hover {
+    border-color: rgba(46, 186, 135, 0.4);
+    color: var(--text-primary);
+  }
+
+  .deepdive-tab-btn.is-active {
+    background-color: rgba(46, 186, 135, 0.12);
+    border-color: var(--brand-green);
+    color: var(--brand-green-bright);
+    box-shadow: 0 0 10px rgba(46, 186, 135, 0.2);
+  }
+
+  .deepdive-panels {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  .dive-panel {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 24px;
+  }
+
+  .readme-mockup {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: #030705;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+  }
+
+  .readme-title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--bg-surface-elevated);
+    border-bottom: 1px solid var(--border-hairline);
+    color: var(--text-dim);
+  }
+
+  .link-github {
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .link-github:hover {
+    text-decoration: underline;
+  }
+
+  .readme-body {
+    padding: 20px;
+  }
+
+  .key-invariants-box {
+    margin-top: 16px;
+    background-color: rgba(46, 186, 135, 0.04);
+    border: 1px solid rgba(46, 186, 135, 0.2);
+    border-radius: 6px;
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* Suites Accordion */
+  .suites-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .suite-details {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .suite-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    cursor: pointer;
+    background-color: var(--bg-surface-elevated);
+    user-select: none;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .suite-summary:hover {
+    background-color: rgba(46, 186, 135, 0.06);
+  }
+
+  .suite-body {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .tool-grid-item code {
+    color: var(--brand-green-bright);
+    background-color: rgba(46, 186, 135, 0.08);
+    padding: 2px 6px;
+    border-radius: 3px;
+    margin-right: 6px;
+  }
+
+  /* Diagram Box */
+  .diagram-box {
+    background-color: #030705;
+    border: 1px solid var(--border-subtle);
+    border-radius: 6px;
+    padding: 16px;
+    overflow-x: auto;
+  }
+
+  .ascii-diagram {
+    margin: 0;
+    color: #a7f3d0;
+    line-height: 1.4;
+  }
+
+  /* Contrib Grid */
+  .contrib-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+
+  .contrib-card {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-hairline);
+    border-radius: 6px;
+    padding: 16px;
+  }
+
+  @media (max-width: 640px) {
+    .github-deepdive-card {
+      padding: 20px 14px;
+    }
+    .dive-panel {
+      padding: 16px 14px;
+    }
+    .contrib-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -103,6 +103,7 @@ export const paths = {
   intelligence: (): string => withBase('/intelligence'),
   about: (): string => withBase('/about'),
   contact: (): string => withBase('/contact'),
+  thankYou: (): string => withBase('/contact/thank-you'),
   privacy: (): string => withBase('/privacy'),
   terms: (): string => withBase('/terms'),
   // Legacy / anchor helpers:

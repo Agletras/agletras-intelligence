@@ -29,9 +29,9 @@ import { companyData } from '@/lib/companyData'
           </p>
 
           <div class="telemetry-rules font-mono text-xs text-muted">
-            <span>DISPATCH: TRANSPARENT DIRECT INTAKE</span>
+            <span>DISPATCH: DIRECT CLIENT EMAIL INTAKE</span>
             <span class="separator">/</span>
-            <span>NO FAKE FORMS</span>
+            <span>END-TO-END AUDIT TRAIL</span>
             <span class="separator">/</span>
             <span>MUTUAL NDA PRIOR TO RESEARCH</span>
           </div>
@@ -76,15 +76,25 @@ import { companyData } from '@/lib/companyData'
           </div>
         </div>
 
-        {/* Right Column: Honest Scoping Brief Form */}
+        {/* Right Column: Research Scoping Intake Form */}
         <div class="contact-form-col">
           <div class="form-panel panel-telemetry">
             <div class="form-header font-mono text-xs">
               <span class="text-emerald font-bold">RESEARCH SCOPING INTAKE SPECIFICATION</span>
-              <span class="text-muted">HONEST_DISPATCH_PROTOCOL</span>
+              <span class="text-muted">DIRECT_MAILTO_PROTOCOL</span>
             </div>
 
-            <form id="scoping-form" class="scoping-form">
+            <form 
+              id="scoping-form" 
+              action="mailto:info.agletras@gmail.com" 
+              method="POST" 
+              enctype="text/plain" 
+              class="scoping-form"
+              novalidate
+            >
+              {/* Basic Client-Side Automated Spam Trap (Non-Comprehensive Filter) */}
+              <input type="text" id="form-honey" name="_honey" style="display:none;" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
               <div class="form-field">
                 <label for="form-org" class="form-label font-mono text-xs text-muted">
                   01 // ORGANIZATION / COUNTERPARTY NAME:
@@ -114,47 +124,115 @@ import { companyData } from '@/lib/companyData'
               </div>
 
               <div class="form-field">
-                <label for="form-service" class="form-label font-mono text-xs text-muted">
+                <label for="form-inquiry-focus" class="form-label font-mono text-xs text-muted">
                   03 // RESEARCH INQUIRY FOCUS:
                 </label>
-                <select id="form-service" name="service" class="form-select font-mono text-sm">
-                  <option value="Partner & Company Checks">Partner & Company Checks (Commercial Due Diligence)</option>
-                  <option value="Ownership & Relationships">Ownership & Corporate Relationship Tracing</option>
-                  <option value="Leadership Backgrounds">Leadership Background & Credential Verification</option>
-                  <option value="Online Threats & Impersonation">Online Threats & Brand Impersonation Research</option>
-                  <option value="Agletras MCP Infrastructure">Agletras MCP Integration & Infrastructure</option>
+                <select id="form-inquiry-focus" name="inquiry_focus" class="form-select font-mono text-sm" required>
+                  <option value="Business Partner & Company Checks">Business Partner & Company Checks (Commercial Due Diligence)</option>
+                  <option value="Ownership & Corporate Relationships">Ownership & Corporate Relationship Tracing</option>
+                  <option value="Leadership Backgrounds & Online Exposure">Leadership Background & Credential Verification</option>
+                  <option value="Online Threats & Brand Impersonation">Online Threats & Brand Impersonation Research</option>
+                  <option value="Agletras MCP Infrastructure & Integration">Agletras MCP Infrastructure & Integration</option>
                   <option value="General Scoping Inquiry">General Scoping & Research Inquiry</option>
                 </select>
               </div>
 
               <div class="form-field">
-                <label for="form-scope" class="form-label font-mono text-xs text-muted">
-                  04 // TARGET ANCHORS & SCOPING OBJECTIVE:
-                </label>
+                <div class="field-label-row">
+                  <label for="form-research-objective" class="form-label font-mono text-xs text-muted">
+                    04 // TARGET ANCHORS & SCOPING OBJECTIVE:
+                  </label>
+                  <span id="objective-counter" class="field-counter font-mono text-xs text-muted" aria-live="polite">0 / 2,000 characters</span>
+                </div>
                 <textarea 
-                  id="form-scope" 
-                  name="scope" 
+                  id="form-research-objective" 
+                  name="research_objective" 
                   rows="4" 
+                  maxlength="2000"
                   class="form-textarea font-mono text-sm" 
                   placeholder="Outline the commercial question, known entity names, jurisdictions, domains, and expected turnaround timeline..."
                   required
                 ></textarea>
               </div>
 
-              {/* Form Action Notice: Explaining Honest Mailto Dispatch */}
-              <div class="form-notice font-mono text-xs text-muted">
-                <p>
-                  <strong class="text-emerald font-bold">HONEST DISPATCH NOTICE:</strong> This form compiles your brief directly into a pre-structured email addressed to <code class="text-primary font-bold">info.agletras@gmail.com</code>. We do not transmit or store your scoping details on third-party marketing servers.
+              {/* Client-Side Intake Protocol Note */}
+              <div class="activation-notice font-mono text-xs">
+                <div class="activation-header">
+                  <span class="beacon-dot"></span>
+                  <span class="text-emerald font-bold">DIRECT EMAIL INTAKE PROTOCOL:</span>
+                </div>
+                <p class="text-muted leading-relaxed">
+                  <strong>Direct Corporate Transport:</strong> Research briefs are formatted locally in your browser and addressed directly to <code class="text-primary font-bold">info.agletras@gmail.com</code> via your default email application. Zero third-party form processors, zero external databases, and zero tracking scripts.
                 </p>
               </div>
 
-              <button type="submit" class="btn-primary" style="width: 100%;">
-                <span>Compile & Dispatch Scoping Email</span>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              {/* Privacy and Dispatch Notice */}
+              <div class="form-notice font-mono text-xs text-muted">
+                <p>
+                  <strong class="text-emerald font-bold">SUBMISSION NOTICE:</strong> Submitting will format and launch your default email client with your scoping parameters. You must press <strong>Send</strong> in your email client to transmit the inquiry. Inquiries are subject to mutual NDA prior to exchanging confidential records. Alternatively, email our team directly via <a href="mailto:info.agletras@gmail.com" class="text-emerald font-bold">mailto:info.agletras@gmail.com</a>.
+                </p>
+              </div>
+
+              {/* Status Region for Live Feedback */}
+              <div id="form-status-region" class="form-status-region font-mono text-xs" aria-live="polite"></div>
+
+              <button type="submit" id="submit-btn" class="btn-primary" style="width: 100%;">
+                <span id="submit-btn-text">Submit Research Scoping Inquiry</span>
+                <svg class="submit-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                   <path d="M3 11L11 3M11 3H5M11 3V9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
               </button>
             </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Commercial Scoping & Partnership Lifecycle */}
+    <section class="lifecycle-section">
+      <div class="grid-container">
+        <div class="lifecycle-col">
+          <div class="eyebrow-badge font-mono text-xs">
+            <span class="beacon-dot"></span>
+            <span class="text-emerald font-bold">CLIENT ENGAGEMENT LIFECYCLE</span>
+          </div>
+          <h2 class="lifecycle-title font-display">From Inquiry to Validated Dossier</h2>
+          <p class="lifecycle-lead text-secondary text-sm">
+            We operate with strict evidentiary standards and confidential handling protocols. Every client engagement progresses through four clear stages.
+          </p>
+
+          <div class="lifecycle-steps-grid">
+            <div class="lifecycle-step-card panel-telemetry">
+              <span class="step-badge font-mono text-xs text-emerald font-bold">STAGE 01</span>
+              <h3 class="step-card-title font-display">Brief Submission</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Submit target entities, factual questions, and geographic scope using the scoping brief or direct email.
+              </p>
+            </div>
+
+            <div class="lifecycle-step-card panel-telemetry">
+              <span class="step-badge font-mono text-xs text-emerald font-bold">STAGE 02</span>
+              <h3 class="step-card-title font-display">Feasibility Check</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Our analytical team evaluates public record accessibility, jurisdictional boundaries, and potential conflicts of interest before confirming research feasibility.
+              </p>
+            </div>
+
+            <div class="lifecycle-step-card panel-telemetry">
+              <span class="step-badge font-mono text-xs text-emerald font-bold">STAGE 03</span>
+              <h3 class="step-card-title font-display">Mutual NDA</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Execution of formal mutual non-disclosure and boundary agreements prior to receiving confidential targets or proprietary data.
+              </p>
+            </div>
+
+            <div class="lifecycle-step-card panel-telemetry">
+              <span class="step-badge font-mono text-xs text-emerald font-bold">STAGE 04</span>
+              <h3 class="step-card-title font-display">Deliverable Delivery</h3>
+              <p class="step-card-desc text-secondary text-xs leading-relaxed">
+                Delivery of validated research dossiers with complete citation registers, character offsets, and verified Word (.docx) packages.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -232,6 +310,8 @@ import { companyData } from '@/lib/companyData'
     text-decoration: none;
     font-size: 0.95rem;
     transition: color var(--transition-fast);
+    word-break: break-all;
+    overflow-wrap: anywhere;
   }
 
   .channel-email:hover {
@@ -249,10 +329,12 @@ import { companyData } from '@/lib/companyData'
     display: flex;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
   }
 
   .contact-form-col {
     grid-column: span 20;
+    min-width: 0;
   }
 
   .form-panel {
@@ -260,12 +342,17 @@ import { companyData } from '@/lib/companyData'
     display: flex;
     flex-direction: column;
     gap: 24px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .form-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
     border-bottom: 1px solid var(--border-hairline);
     padding-bottom: 12px;
   }
@@ -274,16 +361,44 @@ import { companyData } from '@/lib/companyData'
     display: flex;
     flex-direction: column;
     gap: 20px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
   }
 
   .form-field {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .field-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .field-counter {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    letter-spacing: 0.02em;
+    transition: color var(--transition-fast);
+  }
+
+  .field-counter.is-near-limit {
+    color: var(--brand-green-bright);
+    font-weight: 600;
   }
 
   .form-input, .form-select, .form-textarea {
     width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
     background: rgba(3, 6, 8, 0.8);
     border: 1px solid var(--border-subtle);
     padding: 12px 14px;
@@ -298,16 +413,154 @@ import { companyData } from '@/lib/companyData'
     box-shadow: 0 0 10px rgba(16, 185, 129, 0.15);
   }
 
-  .form-notice {
+  .activation-notice {
     padding: 14px 16px;
     background: rgba(16, 185, 129, 0.05);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .activation-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .form-notice {
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid var(--border-subtle);
     border-radius: 2px;
     line-height: 1.5;
   }
 
+  .form-status-region {
+    display: none;
+  }
+
+  .form-status-region:not(:empty) {
+    display: block;
+  }
+
+  :global(.status-box) {
+    padding: 12px 16px;
+    border-radius: 2px;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  :global(.error-box) {
+    background: rgba(239, 68, 68, 0.08);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+  }
+
+  :global(.success-box) {
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+  }
+
+  :global(.transmitting-box) {
+    background: rgba(16, 185, 129, 0.05);
+    border: 1px dashed rgba(16, 185, 129, 0.4);
+  }
+
+  :global(.text-red) {
+    color: #ef4444;
+  }
+
+  :global(.btn-fallback) {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-top: 6px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid var(--brand-green-bright);
+    border-radius: 2px;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  :global(.btn-fallback:hover) {
+    background: var(--brand-green-bright);
+    color: #030608 !important;
+  }
+
+  .btn-primary.is-loading {
+    opacity: 0.85;
+    cursor: wait;
+    position: relative;
+  }
+
   .text-emerald {
     color: var(--brand-green-bright);
+  }
+
+  /* Commercial Engagement Lifecycle */
+  .lifecycle-section {
+    margin-top: 80px;
+    padding-top: 60px;
+    border-top: 1px solid var(--border-hairline);
+  }
+
+  .lifecycle-col {
+    grid-column: span 32;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .lifecycle-title {
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+  }
+
+  .lifecycle-lead {
+    max-width: 65ch;
+    line-height: 1.6;
+  }
+
+  .lifecycle-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 16px;
+  }
+
+  .lifecycle-step-card {
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(4, 10, 8, 0.6);
+    border: 1px solid var(--border-subtle);
+    border-radius: 2px;
+    transition: border-color var(--transition-fast), transform var(--transition-fast);
+  }
+
+  .lifecycle-step-card:hover {
+    border-color: rgba(16, 185, 129, 0.35);
+    transform: translateY(-2px);
+  }
+
+  .step-badge {
+    letter-spacing: 0.08em;
+  }
+
+  .step-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .step-card-desc {
+    color: var(--text-secondary);
+    line-height: 1.55;
   }
 
   @media (max-width: 1280px) {
@@ -319,12 +572,24 @@ import { companyData } from '@/lib/companyData'
     }
   }
 
+  @media (max-width: 1024px) {
+    .lifecycle-steps-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 768px) {
     .contact-hero-col {
       grid-column: span 8;
     }
     .contact-channels-col, .contact-form-col {
       grid-column: span 8;
+    }
+    .lifecycle-col {
+      grid-column: span 8;
+    }
+    .lifecycle-steps-grid {
+      grid-template-columns: 1fr;
     }
     .form-panel {
       padding: 24px 20px;
@@ -338,29 +603,151 @@ import { companyData } from '@/lib/companyData'
     .contact-channels-col, .contact-form-col {
       grid-column: span 4;
     }
+    .lifecycle-col {
+      grid-column: span 4;
+    }
+    .form-panel {
+      padding: 20px 14px;
+    }
+    .form-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
   }
 </style>
 
 <script>
-  const form = document.getElementById('scoping-form') as HTMLFormElement
-  if (form) {
+  const form = document.getElementById('scoping-form') as HTMLFormElement | null
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement | null
+  const submitBtnText = document.getElementById('submit-btn-text') as HTMLSpanElement | null
+  const statusRegion = document.getElementById('form-status-region') as HTMLDivElement | null
+  const objectiveInput = document.getElementById('form-research-objective') as HTMLTextAreaElement | null
+  const objectiveCounter = document.getElementById('objective-counter') as HTMLSpanElement | null
+
+  // Live character counter for research objective (Max 2,000 characters)
+  if (objectiveInput && objectiveCounter) {
+    const updateCounter = () => {
+      const len = objectiveInput.value.length
+      objectiveCounter.textContent = `${len.toLocaleString()} / 2,000 characters`
+      if (len >= 1800) {
+        objectiveCounter.classList.add('is-near-limit')
+      } else {
+        objectiveCounter.classList.remove('is-near-limit')
+      }
+    }
+    objectiveInput.addEventListener('input', updateCounter)
+    updateCounter()
+  }
+
+  if (form && submitBtn && submitBtnText && statusRegion) {
     form.addEventListener('submit', (e) => {
       e.preventDefault()
-      const org = (document.getElementById('form-org') as HTMLInputElement).value
-      const email = (document.getElementById('form-email') as HTMLInputElement).value
-      const service = (document.getElementById('form-service') as HTMLSelectElement).value
-      const scope = (document.getElementById('form-scope') as HTMLTextAreaElement).value
 
-      const subject = encodeURIComponent(`Scoped Engagement Inquiry — ${org} [${service}]`)
-      const body = encodeURIComponent(
-        `ORGANIZATION: ${org}\r\n` +
-        `AUTHORIZED CONTACT: ${email}\r\n` +
-        `SERVICE AREA: ${service}\r\n\r\n` +
-        `TARGET ANCHORS & SCOPING OBJECTIVE:\r\n${scope}\r\n\r\n` +
-        `CONFIDENTIALITY ACKNOWLEDGMENT:\r\nWe request Agletras mutual NDA prior to delivering sensitive evidentiary targets.`
-      )
+      // Reset status region
+      statusRegion.innerHTML = ''
+      statusRegion.className = 'form-status-region font-mono text-xs'
 
-      window.location.href = `mailto:info.agletras@gmail.com?subject=${subject}&body=${body}`
+      // Extract field values
+      const orgInput = document.getElementById('form-org') as HTMLInputElement | null
+      const emailInput = document.getElementById('form-email') as HTMLInputElement | null
+      const focusInput = document.getElementById('form-inquiry-focus') as HTMLSelectElement | null
+      const honeyInput = document.getElementById('form-honey') as HTMLInputElement | null
+
+      const org = orgInput?.value?.trim() || ''
+      const email = emailInput?.value?.trim() || ''
+      const inquiry_focus = focusInput?.value?.trim() || ''
+      const research_objective = objectiveInput?.value?.trim() || ''
+      const honey = honeyInput?.value?.trim() || ''
+
+      // Basic client-side automated spam trap (Non-comprehensive filter)
+      if (honey) {
+        console.warn('Submission filtered via basic client-side spam trap.')
+        statusRegion.className = 'form-status-region font-mono text-xs'
+        statusRegion.innerHTML = `
+          <div class="status-box error-box">
+            <span class="status-title font-mono text-xs font-bold text-red">DISPATCH FILTERED:</span>
+            <p class="font-mono text-xs text-secondary">Submission filtered by basic client-side automated spam trap.</p>
+          </div>
+        `
+        return
+      }
+
+      // Input validation
+      if (!org || !email || !inquiry_focus || !research_objective) {
+        statusRegion.className = 'form-status-region font-mono text-xs'
+        statusRegion.innerHTML = `
+          <div class="status-box error-box">
+            <span class="status-title font-mono text-xs font-bold text-red">VALIDATION ERROR:</span>
+            <p class="font-mono text-xs text-secondary">All intake specification fields are required prior to dispatch.</p>
+          </div>
+        `
+        return
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      if (!emailRegex.test(email)) {
+        statusRegion.className = 'form-status-region font-mono text-xs'
+        statusRegion.innerHTML = `
+          <div class="status-box error-box">
+            <span class="status-title font-mono text-xs font-bold text-red">INVALID EMAIL FORMAT:</span>
+            <p class="font-mono text-xs text-secondary">Please enter a valid corporate or professional email address.</p>
+          </div>
+        `
+        return
+      }
+
+      if (research_objective.length > 2000) {
+        statusRegion.className = 'form-status-region font-mono text-xs'
+        statusRegion.innerHTML = `
+          <div class="status-box error-box">
+            <span class="status-title font-mono text-xs font-bold text-red">CHARACTER LIMIT EXCEEDED:</span>
+            <p class="font-mono text-xs text-secondary">Target anchors & scoping objective cannot exceed 2,000 characters.</p>
+          </div>
+        `
+        return
+      }
+
+      // Build structured URL-encoded mailto link
+      const subject = `New Agletras Research Inquiry — ${org} [${inquiry_focus}]`
+      const body =
+        `AGLETRAS RESEARCH INTELLIGENCE // SCOPING INTAKE DOSSIER\r\n` +
+        `============================================================\r\n` +
+        `ORGANIZATION / COUNTERPARTY:\r\n${org}\r\n\r\n` +
+        `AUTHORIZED REPRESENTATIVE EMAIL:\r\n${email}\r\n\r\n` +
+        `RESEARCH INQUIRY FOCUS:\r\n${inquiry_focus}\r\n\r\n` +
+        `TARGET ANCHORS & SCOPING OBJECTIVE:\r\n${research_objective}\r\n\r\n` +
+        `============================================================\r\n` +
+        `CONFIDENTIALITY PROTOCOL:\r\n` +
+        `This inquiry initiates preliminary research scoping. Mutual NDA is requested prior to evidentiary record exchange.`
+
+      const mailtoUrl = `mailto:info.agletras@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+
+      // Request visitor's default email application
+      window.location.href = mailtoUrl
+
+      // Display honest status feedback without claiming verification
+      statusRegion.className = 'form-status-region font-mono text-xs'
+      statusRegion.innerHTML = `
+        <div class="status-box success-box">
+          <span class="status-title font-mono text-xs font-bold text-emerald">EMAIL COMPOSER REQUESTED — Complete and send your inquiry from your email application.</span>
+          <p class="font-mono text-xs text-secondary leading-relaxed">
+            Your browser has requested your default email application with your scoping parameters addressed to <code>info.agletras@gmail.com</code>.
+          </p>
+          <p class="font-mono text-xs text-secondary leading-relaxed" style="margin-top: 4px;">
+            Web browsers cannot verify whether your email client opened successfully. If your email application did not launch automatically, click the button below to open or copy your inquiry.
+          </p>
+          <p class="font-mono text-xs text-muted" style="margin-top: 4px;">
+            <strong class="text-emerald">Action Required:</strong> You must click <strong>Send</strong> in your email application to transmit the inquiry. Your inquiry is <em>not sent or delivered</em> merely because the composer was requested.
+          </p>
+          <div style="margin-top: 8px;">
+            <a href="${mailtoUrl}" class="btn-fallback font-mono text-xs text-emerald font-bold">
+              Re-open Email Composer ↗
+            </a>
+          </div>
+        </div>
+      `
+      submitBtnText.textContent = 'EMAIL COMPOSER REQUESTED'
     })
   }
 </script>

@@ -1,9 +1,15 @@
 ---
 import BaseLayout from '@/components/layout/BaseLayout.astro'
 import TerminalSimulator from '@/components/product/TerminalSimulator.astro'
-import AgentSnippets from '@/components/product/AgentSnippets.astro'
 import McpToolDirectory from '@/components/product/McpToolDirectory.astro'
-import { paths } from '@/lib/routes'
+import InteractiveArchitecture from '@/components/product/InteractiveArchitecture.astro'
+import SecurityPrivacyMatrix from '@/components/product/SecurityPrivacyMatrix.astro'
+import ProductRoadmap from '@/components/product/ProductRoadmap.astro'
+import DeveloperOnboarding from '@/components/docs/DeveloperOnboarding.astro'
+import IntegrationShowcase from '@/components/docs/IntegrationShowcase.astro'
+import TechnicalDocumentation from '@/components/docs/TechnicalDocumentation.astro'
+import GithubDeepDive from '@/components/docs/GithubDeepDive.astro'
+import { paths, withBase } from '@/lib/routes'
 ---
 
 <BaseLayout
@@ -14,6 +20,51 @@ import { paths } from '@/lib/routes'
   <div class="product-home">
     {/* SECTION 1: Product-Focused Technology Hero */}
     <section class="hero-section" id="hero">
+      {/* Cinematic Underwater Algae Video Backdrop */}
+      <div class="hero-video-backdrop" aria-hidden="true">
+        <video
+          id="hero-bg-video"
+          class="hero-video-media"
+          autoplay
+          loop
+          muted
+          playsinline
+          webkit-playsinline="true"
+          preload="auto"
+          poster={withBase('/hero-algae-poster.jpg')}
+        >
+          <source src={withBase('/hero-algae.mp4')} type="video/mp4" />
+        </video>
+        <img
+          class="hero-fallback-poster"
+          src={withBase('/hero-algae-poster.jpg')}
+          alt=""
+          loading="eager"
+          decoding="async"
+        />
+        <div class="hero-caustics-shimmer" aria-hidden="true"></div>
+        <div class="hero-video-overlay"></div>
+        <div class="hero-spotlight-glow" aria-hidden="true"></div>
+      </div>
+      <script is:inline>
+        (() => {
+          const v = document.getElementById('hero-bg-video');
+          if (v) {
+            const ensurePlay = () => {
+              if (v.paused) {
+                v.play().catch(() => {});
+              }
+            };
+            ensurePlay();
+            document.addEventListener('visibilitychange', () => {
+              if (!document.hidden) ensurePlay();
+            });
+            window.addEventListener('pointerdown', ensurePlay, { once: true });
+          }
+        })();
+      </script>
+
+      <div class="hero-ambient-glow" aria-hidden="true"></div>
       <div class="grid-container">
         <div class="hero-col">
           <div class="hero-badge font-mono text-xs">
@@ -26,20 +77,53 @@ import { paths } from '@/lib/routes'
           </h1>
 
           <p class="hero-subhead text-secondary leading-relaxed">
-            Agletras Intelligence connects AI agents to structured research workflows, multi-source evidence ingestion, passage indexing, claim verification and citation-backed reporting through a standardized Model Context Protocol interface.
+            Agletras Intelligence is an open-source, local-first Model Context Protocol (MCP) server that connects frontier AI agents to structured, bounded multi-source research pipelines, SQLite WAL evidence indexing, and automated epistemic claim verification with zero mandatory paid APIs.
           </p>
 
+          <!-- System Status & Specification Strip -->
+          <div class="hero-telemetry-pill panel-telemetry text-xs">
+            <div class="pill-item">
+              <span class="pill-dot"></span>
+              <span class="font-mono text-emerald font-bold">v0.2.0 SPECIFICATION</span>
+              <span class="text-muted">MCP PROTOCOL 2024-11-05</span>
+            </div>
+            <div class="pill-divider" aria-hidden="true">/</div>
+            <div class="pill-item">
+              <span class="pill-dot"></span>
+              <span class="font-mono text-emerald font-bold">NATIVE STDIO</span>
+              <span class="text-muted">JSON-RPC 2.0 PROTOCOL</span>
+            </div>
+            <div class="pill-divider" aria-hidden="true">/</div>
+            <div class="pill-item">
+              <span class="pill-dot"></span>
+              <span class="font-mono text-emerald font-bold">40 TOOLS // 6 SUITES</span>
+              <span class="text-muted">ZERO PAID API KEYS FOR CORE</span>
+            </div>
+            <div class="pill-divider" aria-hidden="true">/</div>
+            <div class="pill-item">
+              <span class="pill-dot"></span>
+              <span class="font-mono text-emerald font-bold">SQLITE WAL</span>
+              <span class="text-muted">LOCAL-FIRST STORE &amp; FTS5</span>
+            </div>
+            <div class="pill-divider" aria-hidden="true">/</div>
+            <div class="pill-item">
+              <span class="pill-dot"></span>
+              <span class="font-mono text-emerald font-bold">NETPOLICY</span>
+              <span class="text-muted">RFC1918 &amp; CLOUD METADATA BLOCKED</span>
+            </div>
+          </div>
+
           <!-- Foundational Epistemic Principle Strip -->
-          <div class="hero-epistemic-quote font-mono text-xs">
-            <span class="text-emerald font-bold">CORE STANDARD:</span>
-            <span class="text-secondary">"Intelligence is only as strong as its evidence."</span>
+          <div class="hero-epistemic-quote text-xs">
+            <span class="hero-quote-badge font-mono text-emerald font-bold">CORE STANDARD</span>
+            <span class="text-primary font-medium">"Intelligence is only as strong as its evidence."</span>
             <span class="text-muted">— Every statement requires verifiable passage locators.</span>
           </div>
 
           <!-- Hero Action CTAs -->
           <div class="hero-actions">
             <a href="#mcp" class="btn-primary" id="btn-explore-arch">
-              <span>Explore the Architecture</span>
+              <span>Explore Architecture &amp; NetPolicy</span>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -50,51 +134,37 @@ import { paths } from '@/lib/routes'
                 <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4M9.5 2.5V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </a>
-            <a href="#cockpit" class="btn-explore font-mono text-xs text-emerald" id="btn-explore-cockpit">
-              <span>Explore the Live Demonstration ↓</span>
+            <a href="#cockpit" class="btn-explore text-sm text-emerald font-medium" id="btn-explore-cockpit">
+              <span>Explore Simulated Pipeline Demonstration ↓</span>
             </a>
-          </div>
-
-          <!-- Quick Telemetry Pill -->
-          <div class="hero-telemetry-pill panel-telemetry font-mono text-xs">
-            <div class="pill-item">
-              <span class="pill-dot"></span>
-              <span class="text-emerald font-bold">40 TOOLS</span>
-              <span class="text-muted">REGISTERED MCP PROTOCOL</span>
-            </div>
-            <div class="pill-divider" aria-hidden="true">/</div>
-            <div class="pill-item">
-              <span class="pill-dot"></span>
-              <span class="text-emerald font-bold">NO MANDATORY PAID API KEYS</span>
-              <span class="text-muted">FOR CORE OPERATION</span>
-            </div>
-            <div class="pill-divider" aria-hidden="true">/</div>
-            <div class="pill-item">
-              <span class="pill-dot"></span>
-              <span class="text-emerald font-bold">SQLITE WAL</span>
-              <span class="text-muted">LOCAL-FIRST EVIDENCE</span>
-            </div>
-            <div class="pill-divider" aria-hidden="true">/</div>
-            <div class="pill-item">
-              <span class="pill-dot"></span>
-              <span class="text-emerald font-bold">SHA-256</span>
-              <span class="text-muted">CHANGE DETECTION</span>
-            </div>
           </div>
         </div>
       </div>
     </section>
 
     {/* SECTION 2: Show the Actual Working Project — Interactive Research Cockpit */}
-    <section class="demo-section" id="cockpit">
+    <section class="demo-section reveal-on-scroll" id="cockpit">
+      {/* Underwater Algae Ambient Spotlight Reveal Backdrop */}
+      <div class="section-algae-backdrop" aria-hidden="true">
+        <img
+          class="section-algae-img"
+          src={withBase('/hero-algae-poster.jpg')}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="section-algae-overlay"></div>
+        <div class="section-spotlight-glow"></div>
+      </div>
+
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
-            SIMULATED PIPELINE DEMONSTRATION // WORKING PROJECT
+            INTERACTIVE RESEARCH COCKPIT // SIMULATED PIPELINE DEMONSTRATION
           </div>
           <h2 class="section-title font-display">Interactive Research Cockpit</h2>
           <p class="section-desc text-secondary leading-relaxed">
-            Inspect an illustrative execution trace showing how Agletras Intelligence bounds subquestions, fetches multi-format sources with outbound SSRF protection, indexes passages with exact character offsets, and verifies claims into explicit epistemic states via standard MCP integration. All displayed timings, sample entities, and passage counts are simulated examples.
+            Inspect an illustrative execution trace demonstrating how Agletras Intelligence bounds subquestions, fetches multi-format sources with outbound SSRF protection, indexes passages with exact character offsets, and verifies claims into explicit epistemic states via standard MCP integration. All displayed timings, sample entities, and passage counts are simulated examples demonstrating actual tool capabilities, not live server execution.
           </p>
         </div>
 
@@ -105,7 +175,7 @@ import { paths } from '@/lib/routes'
     </section>
 
     {/* SECTION 3: Agletras Intelligence Architecture */}
-    <section class="mcp-section" id="mcp">
+    <section class="mcp-section reveal-on-scroll" id="mcp">
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
@@ -113,8 +183,13 @@ import { paths } from '@/lib/routes'
           </div>
           <h2 class="section-title font-display">Connect AI Agents to Evidence-Driven Intelligence</h2>
           <p class="section-desc text-secondary leading-relaxed">
-            Agletras Intelligence exposes a standardized Model Context Protocol (MCP) server that connects frontier models directly to local-first evidence pipelines. Through 40 registered MCP tools, agents can orchestrate investigations, retrieve multi-format sources, index passages, and verify factual claims through evidence-backed claim verification. Public web search and URL retrieval require internet access with strict outbound SSRF protections, while parsing, evidence indexing, and claim verification run entirely locally with zero mandatory paid APIs.
+            Agletras Intelligence exposes a standardized Model Context Protocol (MCP) server that connects frontier models directly to local-first evidence pipelines. Through 40 registered MCP tools across 6 suites, agents can orchestrate investigations, retrieve multi-format sources, index passages, and verify factual claims through evidence-backed claim verification. Public web search and URL retrieval require internet access with strict outbound SSRF protections, while parsing, evidence indexing, and claim verification run entirely locally with zero mandatory paid APIs.
           </p>
+        </div>
+
+        {/* Interactive 5-Tier Architecture Visualization Grounded in Code */}
+        <div class="arch-wrapper">
+          <InteractiveArchitecture />
         </div>
 
         <div class="mcp-capabilities-grid">
@@ -163,18 +238,48 @@ import { paths } from '@/lib/routes'
             </div>
           </div>
 
-          <!-- Suite 4: Autonomous Planner & Delivery -->
+          <!-- Suite 4: Autonomous Orchestration & Planning -->
           <div class="mcp-suite-card panel-telemetry">
             <div class="suite-header">
               <span class="suite-num font-mono text-xs text-emerald font-bold">04 // ORCHESTRATION</span>
-              <span class="suite-badge font-mono text-xs text-muted">13 TOOLS</span>
+              <span class="suite-badge font-mono text-xs text-muted">7 TOOLS</span>
             </div>
-            <h3 class="suite-title font-display">Autonomous Planner &amp; Client Reports</h3>
+            <h3 class="suite-title font-display">Autonomous Orchestration &amp; Planning</h3>
             <p class="suite-desc text-secondary text-sm leading-relaxed">
-              Orchestrates primary OpenCode research agents under bounded execution budgets (subquestions, rounds, candidate caps). Renders 10-section Markdown synthesis reports and automatically populates validated corporate DOCX deliverable packages.
+              Orchestrates primary OpenCode research agents under bounded execution budgets (subquestions, rounds, candidate caps). Enforces stopping rationale, logs immutable audit events, and automatically populates validated corporate DOCX deliverable packages.
             </p>
             <div class="suite-tools font-mono text-xs text-dim">
-              <span>save_research_plan · finish_research_run · generate_client_report · monitor_changes</span>
+              <span>save_research_plan · update_subquestion · log_run_event · finish_research_run</span>
+            </div>
+          </div>
+
+          <!-- Suite 5: Continuous Monitoring & Project Memory -->
+          <div class="mcp-suite-card panel-telemetry">
+            <div class="suite-header">
+              <span class="suite-num font-mono text-xs text-emerald font-bold">05 // MEMORY</span>
+              <span class="suite-badge font-mono text-xs text-muted">4 TOOLS</span>
+            </div>
+            <h3 class="suite-title font-display">Continuous Monitoring &amp; Project Memory</h3>
+            <p class="suite-desc text-secondary text-sm leading-relaxed">
+              Recalls verified evidence and findings across historical research runs. Registers web pages and file targets for periodic change detection checks with SHA-256 diff hashing and historical modification tracking.
+            </p>
+            <div class="suite-tools font-mono text-xs text-dim">
+              <span>search_memory · monitor_add_target · monitor_check · monitor_changes</span>
+            </div>
+          </div>
+
+          <!-- Suite 6: Visual Analysis & Image Research -->
+          <div class="mcp-suite-card panel-telemetry">
+            <div class="suite-header">
+              <span class="suite-num font-mono text-xs text-emerald font-bold">06 // VISUAL ANALYSIS</span>
+              <span class="suite-badge font-mono text-xs text-muted">2 TOOLS</span>
+            </div>
+            <h3 class="suite-title font-display">Visual Analysis &amp; Image Research</h3>
+            <p class="suite-desc text-secondary text-sm leading-relaxed">
+              Queries visual source metadata for candidate discovery across research targets. Performs visual analysis and OCR extraction via local image paths or optional external vision endpoints without breaking local-first workflows.
+            </p>
+            <div class="suite-tools font-mono text-xs text-dim">
+              <span>search_images · analyze_image</span>
             </div>
           </div>
         </div>
@@ -196,80 +301,96 @@ import { paths } from '@/lib/routes'
 
         <!-- Verified 40-Tool MCP Directory Grounded in Code -->
         <McpToolDirectory />
+
+        <!-- Data Privacy, NetPolicy & Security Matrix Grounded in Code -->
+        <SecurityPrivacyMatrix />
       </div>
     </section>
 
-    {/* SECTION 4: Verified Capabilities (The 4 Pillars) */}
-    <section class="capabilities-section" id="capabilities">
+    {/* SECTION 4: Four Verified Investigative Use Cases */}
+    <section class="capabilities-section reveal-on-scroll" id="capabilities">
+      {/* Underwater Algae Ambient Spotlight Reveal Backdrop */}
+      <div class="section-algae-backdrop" aria-hidden="true">
+        <img
+          class="section-algae-img"
+          src={withBase('/hero-algae-poster.jpg')}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="section-algae-overlay"></div>
+        <div class="section-spotlight-glow"></div>
+      </div>
+
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
-            ENGINEERING SPECIFICATIONS
+            VERIFIED INVESTIGATIVE USE CASES
           </div>
-          <h2 class="section-title font-display">Four Architectural Pillars Grounded in Code</h2>
+          <h2 class="section-title font-display">Four Grounded Use Cases for Enterprise Intelligence</h2>
           <p class="section-desc text-secondary leading-relaxed">
-            Agletras Intelligence operates with a local-first storage architecture, zero mandatory paid APIs for core operation, and deterministic standard library logic. Public web retrieval requires internet access with strict SSRF controls, while local data is content-hashed for change detection.
+            How autonomous agents and analytical teams deploy Agletras Intelligence across corporate entity tracing, executive vetting, digital threat mapping, and compliance verification with verifiable passage citations, character-offset anchors, and deterministic claim evaluation.
           </p>
         </div>
 
         <div class="capabilities-grid">
-          <!-- Pillar 1 -->
+          <!-- Use Case 1 -->
           <div class="cap-card panel-telemetry">
             <div class="cap-header">
-              <span class="cap-num font-mono text-xs text-emerald font-bold">01 // INGESTION</span>
-              <span class="cap-tag font-mono text-xs text-muted">SSRF-GUARDED</span>
+              <span class="cap-num font-mono text-xs text-emerald font-bold">01 // DUE DILIGENCE</span>
+              <span class="cap-tag font-mono text-xs text-muted">OWNERSHIP LINEAGE</span>
             </div>
-            <h3 class="cap-title font-display">Multi-Format Research Ingestion</h3>
+            <h3 class="cap-title font-display">Corporate Entity &amp; Beneficial Ownership Diligence</h3>
             <p class="cap-desc text-secondary text-sm leading-relaxed">
-              Paced web search via DuckDuckGo and Wikipedia without API keys. Outbound retrieval requires public internet access, guarded by strict private-IP and metadata blocking. Direct text extraction from PDF (<code>pypdf</code>), DOCX/XLSX (stdlib <code>zipfile</code> + <code>xml.etree</code>), CSV, and local directories with path containment.
+              Autonomous agents bound multi-source inquiries across corporate registries, official gazettes, and cross-border holding networks. Extracts shareholder networks and ultimate beneficial ownership structures directly linked to verifiable primary filings.
             </p>
             <div class="cap-footer font-mono text-xs text-dim">
-              <span>Outbound NetPolicy: RFC1918 &amp; Loopback Blocked</span>
+              <span>Verified Tools: collect_sources · search_web · extract_pdf · save_evidence</span>
             </div>
           </div>
 
-          <!-- Pillar 2 -->
+          <!-- Use Case 2 -->
           <div class="cap-card panel-telemetry">
             <div class="cap-header">
-              <span class="cap-num font-mono text-xs text-emerald font-bold">02 // EVIDENCE</span>
-              <span class="cap-tag font-mono text-xs text-muted">CONTENT-HASHED</span>
+              <span class="cap-num font-mono text-xs text-emerald font-bold">02 // VETTING</span>
+              <span class="cap-tag font-mono text-xs text-muted">EXECUTIVE INTEGRITY</span>
             </div>
-            <h3 class="cap-title font-display">Content-Addressed Evidence Store</h3>
+            <h3 class="cap-title font-display">Leadership Background &amp; Credential Verification</h3>
             <p class="cap-desc text-secondary text-sm leading-relaxed">
-              Every collected source undergoes change detection through SHA-256 content hashing and is stored in local SQLite WAL mode. Text is segmented into deterministic passage slices with exact character offsets and page locators. Citations must point to exact, verified passage text.
+              Systematic evaluation of executive employment timelines, past directorships, regulatory compliance records, and public digital exposure. Deterministic number and date checks immediately flag timeline conflicts.
             </p>
             <div class="cap-footer font-mono text-xs text-dim">
-              <span>SQLite FTS5 Full-Text Passage Search</span>
+              <span>Verified Tools: extract_claims · verify_claims · analyze_conflicts</span>
             </div>
           </div>
 
-          <!-- Pillar 3 -->
+          <!-- Use Case 3 -->
           <div class="cap-card panel-telemetry">
             <div class="cap-header">
-              <span class="cap-num font-mono text-xs text-emerald font-bold">03 // PLANNER</span>
-              <span class="cap-tag font-mono text-xs text-muted">BOUNDED BUDGET</span>
+              <span class="cap-num font-mono text-xs text-emerald font-bold">03 // SECURITY</span>
+              <span class="cap-tag font-mono text-xs text-muted">THREAT SURFACE</span>
             </div>
-            <h3 class="cap-title font-display">Bounded Autonomous Orchestrator</h3>
+            <h3 class="cap-title font-display">Brand Impersonation &amp; Digital Attack Surface</h3>
             <p class="cap-desc text-secondary text-sm leading-relaxed">
-              Enforces bounded execution budgets on autonomous agents: max 8 subquestions, max 2 follow-up rounds, max 4 candidates per question, and max 20 sources per run. Stop conditions enforce budget limits to prevent runaway execution.
+              Investigate external digital threats, fraudulent lookalike domain registrations, and deceptive counterparties targeting your organization. Socket-level NetPolicy prevents SSRF pivots during threat intelligence gathering.
             </p>
             <div class="cap-footer font-mono text-xs text-dim">
-              <span>Append-Only SQLite Execution Log</span>
+              <span>Verified Tools: fetch_url · search_web · monitor_add_target · monitor_changes</span>
             </div>
           </div>
 
-          <!-- Pillar 4 -->
+          <!-- Use Case 4 -->
           <div class="cap-card panel-telemetry">
             <div class="cap-header">
-              <span class="cap-num font-mono text-xs text-emerald font-bold">04 // VERIFICATION</span>
-              <span class="cap-tag font-mono text-xs text-muted">EPISTEMIC ENGINE</span>
+              <span class="cap-num font-mono text-xs text-emerald font-bold">04 // COMPLIANCE</span>
+              <span class="cap-tag font-mono text-xs text-muted">EVIDENTIARY PROVENANCE</span>
             </div>
-            <h3 class="cap-title font-display">Six-State Epistemic Verification</h3>
+            <h3 class="cap-title font-display">Regulatory &amp; Compliance Evidence Provenance</h3>
             <p class="cap-desc text-secondary text-sm leading-relaxed">
-              Evaluates factual statements against exact passage text into 6 unambiguous states: <code>SUPPORTED</code>, <code>PARTIALLY SUPPORTED</code>, <code>CONTRADICTED</code>, <code>CONFLICTING EVIDENCE</code>, <code>UNSUPPORTED</code>, <code>UNVERIFIABLE</code>. Exposes disagreements without resolving them by preference.
+              Audit-ready evidentiary dossiers with unbroken citation chains for legal counsel, auditors, and compliance officers. Every assertion is tied to character offsets and SHA-256 hashes with zero dangling citations.
             </p>
             <div class="cap-footer font-mono text-xs text-dim">
-              <span>Deterministic Conflict &amp; Disagreement Surfacing</span>
+              <span>Verified Tools: generate_markdown_report · generate_client_report · validate_report</span>
             </div>
           </div>
         </div>
@@ -297,46 +418,41 @@ import { paths } from '@/lib/routes'
     </section>
 
     {/* SECTION 5: Developer Quickstart & Agent Integrations */}
-    <section class="quickstart-section" id="quickstart">
+    <section class="quickstart-section reveal-on-scroll" id="quickstart">
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
-            AGENT HARNESS CONFIGURATION &amp; INSTALLATION
+            DEVELOPER ONBOARDING &amp; AGENT HARNESS INTEGRATION
           </div>
-          <h2 class="section-title font-display">Connect to Your Preferred Agent Harness</h2>
+          <h2 class="section-title font-display">Fast-Track Onboarding &amp; Client Integration</h2>
           <p class="section-desc text-secondary leading-relaxed">
-            Agletras Intelligence connects via standard Model Context Protocol (stdio) or runs standalone via Python CLI. Connect it directly to OpenCode, Claude Desktop, Cursor, or install it locally.
+            Follow the 5-step journey to discover, install, configure, connect, and execute Agletras Intelligence v0.2.0. Connect directly via standard Model Context Protocol (stdio) or model-free CLI.
           </p>
         </div>
 
-        <!-- Quickstart Installation Command Box -->
-        <div class="quickstart-install-wrap">
-          <div class="install-header font-mono text-xs text-muted">
-            <span>REPOSITORY INSTALLATION // PYTHON 3.11+</span>
-          </div>
-          <div class="hero-install-box">
-            <div class="install-line">
-              <span class="prompt-sym font-mono text-emerald">$</span>
-              <code class="install-code font-mono text-sm" id="hero-install-cmd">git clone https://github.com/Agletras/Agletras-mcp.git &amp;&amp; cd Agletras-mcp &amp;&amp; pip install -e .</code>
-            </div>
-            <button type="button" class="btn-copy-install font-mono text-xs" id="btn-copy-hero-cmd" aria-label="Copy installation command">
-              <span class="copy-txt">Copy</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-              </svg>
-            </button>
-          </div>
-        </div>
+        <!-- 5-Stage Developer Journey: Discover -> Install -> Configure -> Connect -> Execute -->
+        <DeveloperOnboarding />
 
-        <div class="quickstart-wrapper">
-          <AgentSnippets />
-        </div>
+        <!-- Verified Client Configurations & Wire Protocols -->
+        <IntegrationShowcase />
       </div>
     </section>
 
     {/* SECTION 6: Five-Stage Research Workflow */}
-    <section class="workflow-section" id="workflow">
+    <section class="workflow-section reveal-on-scroll" id="workflow">
+      {/* Underwater Algae Ambient Spotlight Reveal Backdrop */}
+      <div class="section-algae-backdrop" aria-hidden="true">
+        <img
+          class="section-algae-img"
+          src={withBase('/hero-algae-poster.jpg')}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="section-algae-overlay"></div>
+        <div class="section-spotlight-glow"></div>
+      </div>
+
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
@@ -393,7 +509,7 @@ import { paths } from '@/lib/routes'
     </section>
 
     {/* SECTION 7: Commercial Advisory Practice — Human-Led Research */}
-    <section class="human-led-section" id="human-led">
+    <section class="human-led-section reveal-on-scroll" id="human-led">
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
@@ -461,18 +577,44 @@ import { paths } from '@/lib/routes'
       </div>
     </section>
 
-    {/* SECTION 8: Documentation, Open Source and Corporate Contact */}
-    <section class="docs-cta-section" id="docs">
+    {/* SECTION 8: Product Roadmap & Protocol Evolution */}
+    <section class="roadmap-section reveal-on-scroll" id="roadmap-section">
+      <div class="grid-container">
+        <ProductRoadmap />
+      </div>
+    </section>
+
+    {/* SECTION 9: Documentation, Open Source and Corporate Contact */}
+    <section class="docs-cta-section reveal-on-scroll" id="docs">
+      {/* Underwater Algae Ambient Spotlight Reveal Backdrop */}
+      <div class="section-algae-backdrop" aria-hidden="true">
+        <img
+          class="section-algae-img"
+          src={withBase('/hero-algae-poster.jpg')}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+        <div class="section-algae-overlay"></div>
+        <div class="section-spotlight-glow"></div>
+      </div>
+
       <div class="grid-container">
         <div class="section-header">
           <div class="eyebrow-tag font-mono text-xs text-emerald font-bold">
-            RESOURCES &amp; INQUIRY ROUTING
+            TECHNICAL DOCUMENTATION &amp; OPEN SOURCE HUB
           </div>
-          <h2 class="section-title font-display">Documentation, Open Source &amp; Inquiries</h2>
+          <h2 class="section-title font-display">System Manual, Specifications &amp; Repository Deep Dive</h2>
           <p class="section-desc text-secondary leading-relaxed">
-            Explore the complete technical specifications, review the open Python codebase on GitHub, or submit a scoping brief directly to our analytical team.
+            Exhaustive architectural specifications, runtime prerequisites, storage and evidence models, and GitHub repository internals.
           </p>
         </div>
+
+        <!-- Technical Documentation Hub -->
+        <TechnicalDocumentation />
+
+        <!-- GitHub Repository Deep Dive -->
+        <GithubDeepDive />
 
         <div class="docs-grid">
           <div class="cta-card panel-telemetry">
@@ -576,6 +718,24 @@ import { paths } from '@/lib/routes'
       }
     })
   }
+
+  // IntersectionObserver for smooth section scroll reveals
+  if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+    const revealSections = document.querySelectorAll('.reveal-on-scroll')
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-revealed')
+          observer.unobserve(entry.target)
+        }
+      })
+    }, {
+      threshold: 0.08,
+      rootMargin: '0px 0px -40px 0px'
+    })
+
+    revealSections.forEach((sec) => revealObserver.observe(sec))
+  }
 </script>
 
 <style>
@@ -619,6 +779,7 @@ import { paths } from '@/lib/routes'
   #quickstart,
   #workflow,
   #human-led,
+  #roadmap-section,
   #docs {
     scroll-margin-top: 100px;
   }
@@ -627,8 +788,198 @@ import { paths } from '@/lib/routes'
      SECTION 1: Product Hero
      ========================================================================== */
   .hero-section {
-    padding: 72px 0 88px;
+    padding: 64px 0 68px;
     border-bottom: 1px solid var(--border-hairline);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Hero Video Backdrop with Dynamic Bioluminescent Spotlight Reveal */
+  .hero-video-backdrop {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .hero-video-media {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.85;
+    filter: saturate(1.25) brightness(0.96) contrast(1.05);
+    transform: scale(1.02);
+    will-change: filter, opacity;
+  }
+
+  .hero-caustics-shimmer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(52, 211, 153, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 20% 15%, rgba(16, 185, 129, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 80% 15%, rgba(52, 211, 153, 0.06) 0%, transparent 50%);
+    mix-blend-mode: screen;
+    opacity: 0.7;
+    animation: hero-caustics-drift 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes hero-caustics-drift {
+    0% {
+      opacity: 0.55;
+      transform: translateY(0) scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: translateY(-8px) scale(1.03);
+    }
+    100% {
+      opacity: 0.65;
+      transform: translateY(-4px) scale(0.98);
+    }
+  }
+
+  .hero-video-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      /* Dynamic Spotlight Reveal Mask: lifts darkness around cursor location */
+      radial-gradient(
+        circle var(--hero-spot-radius, 420px) at var(--hero-spot-x, 50%) var(--hero-spot-y, 35%),
+        rgba(3, 7, 5, 0.03) 0%,
+        rgba(3, 7, 5, 0.16) 45%,
+        rgba(3, 7, 5, 0.38) 75%,
+        rgba(3, 7, 5, 0.48) 100%
+      ),
+      /* Center Readability Layer: ensures crystal clarity for white headline & badges while leaves flourish at flanks */
+      radial-gradient(
+        ellipse 72% 62% at 50% 38%,
+        rgba(3, 7, 5, 0.62) 0%,
+        rgba(3, 7, 5, 0.42) 55%,
+        rgba(3, 7, 5, 0.12) 100%
+      ),
+      /* Smooth depth gradient down to section border */
+      linear-gradient(180deg, rgba(3, 7, 5, 0.08) 0%, rgba(3, 7, 5, 0.28) 60%, rgba(3, 7, 5, 0.94) 100%);
+    will-change: background;
+    transition: background 0.04s ease-out;
+  }
+
+  .hero-spotlight-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle var(--hero-spot-radius, 420px) at var(--hero-spot-x, 50%) var(--hero-spot-y, 35%),
+      rgba(52, 211, 153, 0.26) 0%,
+      rgba(46, 186, 135, 0.13) 42%,
+      rgba(16, 185, 129, 0.02) 75%,
+      transparent 100%
+    );
+    mix-blend-mode: screen;
+    opacity: var(--hero-spot-glow-opacity, 0.85);
+    will-change: background, opacity;
+    transition: opacity 0.4s ease-out;
+  }
+
+  .hero-ambient-glow {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: clamp(520px, 65vw, 920px);
+    height: clamp(340px, 42vw, 560px);
+    background: radial-gradient(
+      ellipse 65% 55% at 50% 50%,
+      rgba(46, 186, 135, 0.14),
+      rgba(10, 51, 38, 0.05) 50%,
+      transparent 75%
+    );
+    filter: blur(52px);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.85;
+    animation: hero-ambient-breathe 14s ease-in-out infinite alternate;
+    will-change: transform, opacity;
+  }
+
+  @keyframes hero-ambient-breathe {
+    0% {
+      transform: translate(-50%, -50%) scale(0.95);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translate(-48%, -52%) scale(1.08);
+      opacity: 0.95;
+    }
+    100% {
+      transform: translate(-52%, -48%) scale(1.02);
+      opacity: 0.8;
+    }
+  }
+
+  .hero-fallback-poster {
+    display: none;
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.54;
+    filter: saturate(1.28) brightness(0.92);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video-media,
+    .hero-caustics-shimmer {
+      display: none !important;
+    }
+    .hero-fallback-poster {
+      display: block !important;
+    }
+    .hero-ambient-glow {
+      animation: none !important;
+      opacity: 0.7 !important;
+      transform: translate(-50%, -50%) !important;
+    }
+    .hero-spotlight-glow,
+    .section-spotlight-glow {
+      display: none !important;
+    }
+    .hero-video-overlay {
+      background: radial-gradient(
+        ellipse 85% 70% at 50% 35%,
+        rgba(3, 7, 5, 0.45) 0%,
+        rgba(3, 7, 5, 0.82) 72%,
+        #030705 100%
+      ),
+      linear-gradient(180deg, rgba(3, 7, 5, 0.12) 0%, rgba(3, 7, 5, 0.92) 100%) !important;
+    }
+    .section-algae-overlay {
+      background: linear-gradient(180deg, rgba(3, 7, 5, 0.88) 0%, rgba(3, 7, 5, 0.98) 100%) !important;
+    }
+  }
+
+  /* Coarse pointers and mobile viewports: retain calm underwater background, hide dynamic spotlight glow */
+  @media (pointer: coarse), (hover: none), (max-width: 1024px) {
+    .hero-spotlight-glow,
+    .section-spotlight-glow {
+      display: none !important;
+    }
+    .hero-video-overlay {
+      background:
+        radial-gradient(
+          ellipse 90% 70% at 50% 30%,
+          rgba(3, 7, 5, 0.42) 0%,
+          rgba(3, 7, 5, 0.65) 65%,
+          #030705 100%
+        ),
+        linear-gradient(180deg, rgba(3, 7, 5, 0.10) 0%, rgba(3, 7, 5, 0.88) 100%) !important;
+    }
   }
 
   .hero-col {
@@ -636,6 +987,8 @@ import { paths } from '@/lib/routes'
     display: flex;
     flex-direction: column;
     gap: 24px;
+    position: relative;
+    z-index: 1;
   }
 
   .hero-badge {
@@ -671,13 +1024,22 @@ import { paths } from '@/lib/routes'
   .hero-epistemic-quote {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     flex-wrap: wrap;
-    padding: 8px 14px;
-    background: rgba(16, 185, 129, 0.04);
-    border-left: 2px solid var(--accent-emerald);
+    padding: 8px 16px;
+    background: rgba(46, 186, 135, 0.05);
+    border: 1px solid rgba(46, 186, 135, 0.2);
+    border-left: 3px solid var(--accent-emerald);
+    border-radius: 4px;
     width: fit-content;
     max-width: 100%;
+  }
+
+  .hero-quote-badge {
+    padding: 2px 6px;
+    border-radius: 3px;
+    background: rgba(46, 186, 135, 0.12);
+    letter-spacing: 0.08em;
   }
 
   .hero-actions {
@@ -706,13 +1068,14 @@ import { paths } from '@/lib/routes'
     align-items: center;
     gap: 16px;
     padding: 12px 20px;
-    background: rgba(6, 18, 12, 0.6);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
     border-radius: 8px;
     width: fit-content;
     max-width: 100%;
     flex-wrap: wrap;
     margin-top: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   }
 
   .pill-item {
@@ -735,11 +1098,96 @@ import { paths } from '@/lib/routes'
   }
 
   /* ==========================================================================
+     SECTION-LEVEL UNDERWATER ALGAE AMBIENT SPOTLIGHT REVEAL
+     ========================================================================== */
+  .section-algae-backdrop {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+  }
+
+  .section-algae-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.16;
+    filter: saturate(1.28) brightness(0.78);
+    pointer-events: none;
+  }
+
+  .section-algae-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: 
+      radial-gradient(
+        circle var(--sec-spot-radius, 380px) at var(--spot-x, 50%) var(--spot-y, 50%),
+        rgba(3, 7, 5, 0.28) 0%,
+        rgba(3, 7, 5, 0.72) 55%,
+        #030705 92%
+      ),
+      linear-gradient(180deg, rgba(3, 7, 5, 0.82) 0%, rgba(3, 7, 5, 0.96) 100%);
+    will-change: background;
+    transition: background 0.04s ease-out;
+  }
+
+  .section-spotlight-glow {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(
+      circle var(--sec-spot-radius, 380px) at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgba(52, 211, 153, 0.16) 0%,
+      rgba(46, 186, 135, 0.08) 42%,
+      rgba(16, 185, 129, 0.015) 70%,
+      transparent 100%
+    );
+    mix-blend-mode: screen;
+    opacity: var(--spot-opacity, 0);
+    will-change: background, opacity;
+    transition: opacity 0.4s ease-out;
+  }
+
+  .demo-section,
+  .capabilities-section,
+  .workflow-section,
+  .docs-cta-section {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .demo-section .grid-container,
+  .capabilities-section .grid-container,
+  .workflow-section .grid-container,
+  .docs-cta-section .grid-container {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ==========================================================================
      SECTION 2: Interactive Cockpit Demo
      ========================================================================== */
   .demo-section {
-    padding: 88px 0;
+    padding: 68px 0 88px;
     border-bottom: 1px solid var(--border-hairline);
+    position: relative;
+  }
+
+  .demo-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: clamp(240px, 40vw, 640px);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--border-emerald-subtle), transparent);
+    pointer-events: none;
   }
 
   .demo-wrapper {
@@ -754,10 +1202,20 @@ import { paths } from '@/lib/routes'
     border-bottom: 1px solid var(--border-hairline);
   }
 
+  .arch-wrapper {
+    grid-column: 1 / span 32;
+    margin-bottom: 32px;
+  }
+
+  :global(#security-matrix) {
+    grid-column: 1 / span 32;
+    margin-top: 32px;
+  }
+
   .mcp-capabilities-grid {
     grid-column: 1 / span 32;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     margin-bottom: 32px;
   }
@@ -966,23 +1424,26 @@ import { paths } from '@/lib/routes'
     display: flex;
     align-items: center;
     gap: 6px;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-weight: 500;
     padding: 6px 12px;
-    background-color: rgba(16, 185, 129, 0.1);
-    border: 1px solid rgba(16, 185, 129, 0.25);
+    background-color: rgba(46, 186, 135, 0.1);
+    border: 1px solid rgba(46, 186, 135, 0.25);
     border-radius: 4px;
-    color: var(--accent-emerald);
+    color: var(--brand-green-bright);
     cursor: pointer;
     white-space: nowrap;
     transition: all var(--transition-fast);
   }
 
   .btn-copy-install:hover {
-    background-color: rgba(16, 185, 129, 0.2);
-    border-color: var(--accent-emerald);
+    background-color: rgba(46, 186, 135, 0.2);
+    border-color: var(--brand-green-bright);
   }
 
   .btn-copy-install.is-copied {
-    background-color: var(--accent-emerald);
+    background-color: var(--brand-green-bright);
     color: #030705;
     font-weight: 700;
   }
@@ -1076,7 +1537,19 @@ import { paths } from '@/lib/routes'
   }
 
   /* ==========================================================================
-     SECTION 8: Docs CTA & Inquiries
+     SECTION 8: Product Roadmap
+     ========================================================================== */
+  .roadmap-section {
+    padding: 88px 0;
+    border-bottom: 1px solid var(--border-hairline);
+  }
+
+  :global(#roadmap) {
+    grid-column: 1 / span 32;
+  }
+
+  /* ==========================================================================
+     SECTION 9: Docs CTA & Inquiries
      ========================================================================== */
   .docs-cta-section {
     padding: 88px 0;
@@ -1109,6 +1582,10 @@ import { paths } from '@/lib/routes'
 
   /* Responsive Adjustments */
   @media (max-width: 1200px) {
+    .mcp-capabilities-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
     .workflow-steps-grid {
       grid-template-columns: repeat(3, 1fr);
     }
@@ -1123,10 +1600,6 @@ import { paths } from '@/lib/routes'
   }
 
   @media (max-width: 900px) {
-    .mcp-capabilities-grid {
-      grid-template-columns: 1fr;
-    }
-
     .capabilities-grid {
       grid-template-columns: 1fr;
     }
@@ -1140,21 +1613,43 @@ import { paths } from '@/lib/routes'
     }
   }
 
+  @media (max-width: 768px) {
+    .mcp-capabilities-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
   @media (max-width: 640px) {
+    .hero-section {
+      padding: 36px 0 44px;
+    }
+
+    .hero-ambient-glow {
+      width: 90vw;
+      max-width: 340px;
+      height: 240px;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .hero-col {
+      gap: 16px;
+    }
+
     .hero-badge {
-      display: flex;
+      display: inline-flex;
       align-items: flex-start;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 0.68rem;
-      line-height: 1.45;
-      width: 100%;
+      gap: 7px;
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 0.65rem;
+      line-height: 1.35;
+      width: fit-content;
       max-width: 100%;
     }
 
     .hero-badge .beacon-dot {
-      margin-top: 4px;
+      margin-top: 3px;
       flex-shrink: 0;
     }
 
@@ -1164,19 +1659,35 @@ import { paths } from '@/lib/routes'
     }
 
     .hero-headline {
-      font-size: clamp(1.8rem, 6.8vw, 2.3rem);
+      font-size: clamp(1.75rem, 6.2vw, 2.25rem);
+      line-height: 1.15;
+      letter-spacing: -0.025em;
+      text-wrap: balance;
+    }
+
+    .hero-subhead {
+      font-size: 0.925rem;
+      line-height: 1.55;
     }
 
     .hero-telemetry-pill {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 7px;
+      padding: 10px 14px;
+      border-radius: 6px;
       width: 100%;
+      margin-top: 4px;
     }
 
     .pill-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
       white-space: normal;
       flex-wrap: wrap;
+      font-size: 0.70rem;
+      line-height: 1.3;
     }
 
     .pill-divider {
@@ -1259,6 +1770,35 @@ import { paths } from '@/lib/routes'
       flex-direction: column;
       align-items: stretch;
       padding: 20px;
+    }
+  }
+
+  @media (max-width: 420px) {
+    .hero-section {
+      padding: 24px 0 32px;
+    }
+
+    .hero-col {
+      gap: 14px;
+    }
+
+    .hero-headline {
+      font-size: 1.7rem;
+      line-height: 1.16;
+    }
+
+    .hero-subhead {
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+
+    .hero-telemetry-pill {
+      padding: 8px 12px;
+      gap: 6px;
+    }
+
+    .pill-item {
+      font-size: 0.68rem;
     }
   }
 </style>
