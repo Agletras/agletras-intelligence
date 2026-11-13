@@ -50,6 +50,9 @@ jobs:
 
       - name: Verify build artifacts and routes
         run: npm test
+        env:
+          SITE_URL: ${{ vars.SITE_URL || 'https://agletras.github.io' }}
+          BASE_PATH: ${{ vars.BASE_PATH || '/agletras-intelligence' }}
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
