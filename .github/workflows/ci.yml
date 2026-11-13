@@ -1,0 +1,47 @@
+name: Site CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Install, validate, test, and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.0
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Type-check Astro and TypeScript
+        run: npm run check
+
+      - name: Run test suite
+        run: npm test
+        env:
+          SITE_URL: https://agletras.github.io
+          BASE_PATH: /
+
+      - name: Build root-hosted site
+        run: npm run build
+        env:
+          SITE_URL: https://agletras.github.io
+          BASE_PATH: /
