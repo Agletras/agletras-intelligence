@@ -28,6 +28,7 @@ export interface CompanyData {
     socials: {
       github: string
       linkedin: string
+      instagram: string
     }
   }
   principles: Array<{
@@ -82,6 +83,7 @@ export const companyData: CompanyData = {
     socials: {
       github: 'https://github.com/Agletras',
       linkedin: 'https://www.linkedin.com/company/agletras/',
+      instagram: 'https://www.instagram.com/agletras.ai/',
     },
   },
   principles: [
