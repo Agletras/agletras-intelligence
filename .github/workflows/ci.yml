@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Install, validate, test, and build
+    name: Install, validate, build, and test
     runs-on: ubuntu-latest
 
     steps:
@@ -34,14 +34,14 @@ jobs:
       - name: Type-check Astro and TypeScript
         run: npm run check
 
-      - name: Run test suite
-        run: npm test
+      - name: Build root-hosted site
+        run: npm run build
         env:
           SITE_URL: https://agletras.github.io
           BASE_PATH: /
 
-      - name: Build root-hosted site
-        run: npm run build
+      - name: Run test suite
+        run: npm test
         env:
           SITE_URL: https://agletras.github.io
           BASE_PATH: /
